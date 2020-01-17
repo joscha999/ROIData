@@ -25,11 +25,12 @@ namespace ROIDataExtractor {
 		};
 
 		public void Update() {
-			var bla = ManagerBehaviour<ActorManager>.instance;
-			if (bla == null)
+			var actorManager = ManagerBehaviour<ActorManager>.instance;
+			if (actorManager == null)
 				return;
 
-			if (bla.actors.count == 0)
+			//check if no actors (settlements, state, players, ...) are found
+			if (actorManager.actors.count == 0)
 				return;
 
 			var moneyManager = ManagerBehaviour<MoneyManager>.instance;
@@ -47,12 +48,15 @@ namespace ROIDataExtractor {
 				return;
 			}
 
+			//run once
 			//if (!saveReadyCalled)
 			//	SaveReady();
 
+			//run every month
 			var timeManager = ManagerBehaviour<TimeManager>.instance;
-			if (timeManager != null && (timeManager.today - lastUpdate).Months >= 1) {
-				GetPlayerBalance();
+			if (timeManager != null && (timeManager.today - lastUpdate).Months >= 1)
+			{
+				SaveReady();
 				lastUpdate = timeManager.today;
 			}
 		}
@@ -60,8 +64,9 @@ namespace ROIDataExtractor {
 		private void SaveReady() {
 			saveReadyCalled = true;
 
-			GetPlayerBalance();
+			//GetPlayerBalance();
 			//WriteRecipes();
+			WriteShopData();
 		}
 
 		private HumanPlayer Player => ManagerBehaviour<ActorManager>.instance.actors.FirstOrDefault(a => a is HumanPlayer) as HumanPlayer;
@@ -104,6 +109,45 @@ namespace ROIDataExtractor {
 					Debug.Log("Failed to serialize:\n" + traceWriter);
 					throw;
 				}
+			}
+		}
+
+		public static T GetField<T>(Type t, string field, object instance) where T : class
+		{
+			var fieldInfo = t.GetField(field, BindingFlags.NonPublic | BindingFlags.Instance);
+			return fieldInfo.GetValue(instance) as T;
+		}
+		private void WriteShopData()
+		{
+			//get Settlements
+			var settlementManager = ManagerBehaviour<SettlementManager>.instance;
+			var settlements = settlementManager.settlements;
+
+			//get Time
+			var timeManager = ManagerBehaviour<TimeManager>.instance;
+			//loop over all settlements
+			foreach (var settlement in settlements)
+			{
+				Debug.Log("Settlement " + settlement.settlementName + " found.");
+				//loop over all shops
+				foreach (var shop in settlement.buildings.shops)
+				{
+					Debug.Log("Shop " + shop.buildingName + " found.");
+
+					var sales = GetField<Dictionary<IActor, ProductInfoCollection>>(typeof(Shop), "_sales", shop);
+
+					foreach (var keyValuePair in sales)
+					{
+						var actor = keyValuePair.Key;
+						var productCollection = keyValuePair.Value;
+
+						if (actor is HumanPlayer)
+						{
+							var data = GetField<Dictionary<ProductDefinition, TimeTree<ProductInfoCollection.SaleInfo>>>(typeof(ProductInfoCollection), "_data", productCollection);
+							Debug.Log("PRODUCT COLLECTION DATA: " + data.ToString());
+						}
+					}
+				}		
 			}
 		}
 	}
