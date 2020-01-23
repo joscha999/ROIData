@@ -54,11 +54,16 @@ namespace ROIDataExtractor {
 
 			//run every month
 			var timeManager = ManagerBehaviour<TimeManager>.instance;
-			if (timeManager != null && (timeManager.today - lastUpdate).Months >= 1)
-			{
+			//if (timeManager != null && (timeManager.today - lastUpdate).Months >= 1)
+			//{
+			//	SaveReady();
+			//	lastUpdate = timeManager.today;
+			//}
+
+			if (timeManager.today.Day == 1 && !saveReadyCalled)
 				SaveReady();
-				lastUpdate = timeManager.today;
-			}
+			else if (timeManager.today.Day == 2)
+				saveReadyCalled = false;
 		}
 
 		private void SaveReady() {
