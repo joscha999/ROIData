@@ -64,33 +64,23 @@ namespace ROIDataExtractor {
 		private void SaveReady() {
 			saveReadyCalled = true;
 
-			//GetPlayerBalance();
+			GetPlayerBalance();
 			//WriteRecipes();
-			WriteShopData();
+			//WriteShopData();
 		}
 
 		private HumanPlayer Player => ManagerBehaviour<ActorManager>.instance.actors.FirstOrDefault(a => a is HumanPlayer) as HumanPlayer;
 
+		private Dictionary<GameDate, double> BalanceData = new Dictionary<GameDate, double>();
+
 		private void GetPlayerBalance() {
 			var moneyManager = ManagerBehaviour<MoneyManager>.instance;
-			var actorManager = ManagerBehaviour<ActorManager>.instance;
-			var timeManager = ManagerBehaviour<TimeManager>.instance;
+			var balance = moneyManager.GetBalance(Player.money);
 
-			Debug.Log($"Found {actorManager.actors.count} actors");
-			foreach (var actor in actorManager.actors) {
-				Debug.Log($"Found actor \"{actor.actorName}\" with type {actor.GetType()}!");
-			}
-
-			foreach (var balance in moneyManager.balances) {
-				Debug.Log($"Found balance for \"{balance.Key.actor.actorName}\": {balance.Value}");
-			}
-
-			var playerActor = actorManager.actors.FirstOrDefault(a => a is HumanPlayer);
-
-			if (playerActor is HumanPlayer hp) {
-				var balance = moneyManager.GetBalance(hp.money);
-				Debug.Log("Found Player with balance: " + balance);
-			}
+			BalanceData.Add(ManagerBehaviour<TimeManager>.instance.today, balance);
+			File.WriteAllText(System.IO.Path.Combine(
+						Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RiseOfIndustry", "balanceData.json"),
+						JsonConvert.SerializeObject(BalanceData, jsonSettings));
 		}
 
 		private void WriteRecipes() {
