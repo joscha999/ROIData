@@ -54,24 +54,26 @@ namespace ROIDataExtractor {
 
 			//run every month
 			var timeManager = ManagerBehaviour<TimeManager>.instance;
-			//if (timeManager != null && (timeManager.today - lastUpdate).Months >= 1)
-			//{
-			//	SaveReady();
-			//	lastUpdate = timeManager.today;
-			//}
-
-			if (timeManager.today.Day == 1 && !saveReadyCalled)
+			if (timeManager != null && (timeManager.today - lastUpdate).Months >= 1)
+			{
 				SaveReady();
-			else if (timeManager.today.Day == 2)
-				saveReadyCalled = false;
+				lastUpdate = timeManager.today;
+			}
+
+			//if (timeManager.today.Day == 1 && !saveReadyCalled)
+			//	SaveReady();
+			//else if (timeManager.today.Day == 2)
+			//	saveReadyCalled = false;
 		}
 
 		private void SaveReady() {
 			saveReadyCalled = true;
 
-			GetPlayerBalance();
+			//GetPlayerBalance();
+			//WriteFormula();
 			//WriteRecipes();
 			//WriteShopData();
+			VehicleOutput();
 		}
 
 		private HumanPlayer Player => ManagerBehaviour<ActorManager>.instance.actors.FirstOrDefault(a => a is HumanPlayer) as HumanPlayer;
@@ -88,6 +90,72 @@ namespace ROIDataExtractor {
 						JsonConvert.SerializeObject(BalanceData, jsonSettings));
 		}
 
+		private void WriteFormula()
+		{
+			var settlementManager = ManagerBehaviour<SettlementManager>.instance;
+			var settlements = settlementManager.settlements;
+
+			foreach (var settlement in settlements)
+			{
+				foreach (var building in Player.buildings)
+				{
+					var upkeep = building.GetComponent<Upkeep>();
+
+					if (upkeep != null)
+					{
+						//Debug.Log("Formula: " + JsonConvert.SerializeObject(upkeep.monthlyUpkeep, jsonSettings));
+						//Building with gatherers: Costs with no
+						Debug.Log("Upkeep of " + building.buildingName + " is " + upkeep.totalMonthlyUpkeep + " $/month.");
+					}
+				}
+			}
+		}
+
+		private void VehicleOutput()
+		{
+
+			foreach (var vehicle in ManagerBehaviour<VehicleManager>.instance.vehicles)
+			{
+				if (vehicle == null)
+				{
+					continue;
+				}
+				
+				var sb = new StringBuilder();
+				sb.AppendLine(vehicle.name);
+
+				//Debug.Log("Vehicle " + vehicle.vehicleName + " with job: " + JsonConvert.SerializeObject(vehicle, jsonSettings));
+				foreach (var product in vehicle.productStorage)
+				{
+					sb.Append(product.definition.name).Append(", ").AppendLine(vehicle.productStorage.Count(product.definition).ToString());
+				}
+
+				//
+				var job = vehicle.activeJob;
+				if (job != null)
+				{
+					foreach (var task in job.tasks)
+					{
+						if (task is MovePathTask mpt)
+						{
+							var fieldInfo = typeof(MovePathTask).GetField("_path", BindingFlags.Instance | BindingFlags.NonPublic);
+							var data = fieldInfo.GetValue(mpt);
+
+							if (data is List<int> path)
+							{
+								//path.Aggregate(sb, (sbb, i) => sbb.Append(i).Append(", "));
+								path.ForEach(i => sb.Append(i).Append(", "));
+								sb.Append("Count: ").AppendLine(path.Count.ToString());
+							}
+						}
+					}
+				}
+				//
+
+				Debug.Log(sb.ToString());
+			}
+		}
+		
 		private void WriteRecipes() {
 			var fieldInfo = RecipeDatabase.instance.GetType().GetField("_graph", BindingFlags.Instance | BindingFlags.NonPublic);
 			var data = fieldInfo.GetValue(RecipeDatabase.instance);
