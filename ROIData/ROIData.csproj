@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BE078B8D-AF05-4BC7-9334-4FEFC0D40BCA}</ProjectGuid>
+    <ProjectGuid>{788E28D4-9A76-4781-93E9-EA6B6DFD8684}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ROIDataExtractor</RootNamespace>
-    <AssemblyName>ROIDataExtractor</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <RootNamespace>ROIData</RootNamespace>
+    <AssemblyName>ROIData</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -35,11 +35,12 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RiseOfIndustry\Rise of Industry_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RiseOfIndustry\Rise of Industry_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RiseOfIndustry\Rise of Industry_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="Planspiel.Models">
-      <HintPath>..\..\..\..\Desktop\Planspiel.Models.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,13 +56,22 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RiseOfIndustry\Rise of Industry_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RiseOfIndustry\Rise of Industry_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataExtractor.cs" />
+    <Compile Include="CompanyValueCalculator.cs" />
+    <Compile Include="DemandSatisfactionCalculator.cs" />
+    <Compile Include="LoanCalculator.cs" />
+    <Compile Include="MachineUptimeCalculator.cs" />
+    <Compile Include="PlayerBalanceCalculator.cs" />
+    <Compile Include="PollutionCalculator.cs" />
+    <Compile Include="ROIDataMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveDataModel.cs" />
+    <Compile Include="TimeStampCalculator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

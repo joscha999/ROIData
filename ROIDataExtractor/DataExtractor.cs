@@ -14,7 +14,7 @@ using System.Globalization;
 
 namespace ROIDataExtractor {
 	public class DataExtractor : Mod {
-		private bool saveReadyCalled;
+		private bool saveReadyCalled = true;
 
 		private GameDate lastUpdate = new GameDate(0, 0, 0);
 
@@ -57,28 +57,12 @@ namespace ROIDataExtractor {
 
 			//run every month
 			var timeManager = ManagerBehaviour<TimeManager>.instance;
-			//if (timeManager != null && (timeManager.today - lastUpdate).Months >= 1) {
-			//	lastUpdate = timeManager.today;
-
-			//	var sb = new StringBuilder();
-			//	sb.AppendLine("Transports for the last month:");
-
-			//	Transports.ForEach(t => sb.AppendLine(t.ToString()));
-
-			//	sb.Append("Count: ").AppendLine(Transports.Count.ToString());
-			//	sb.Append("Average(Cost): ").AppendLine(Transports.Average(t => t.Cost).ToString());
-			//	sb.Append("Sum(Cost): ").AppendLine(Transports.Sum(t => t.Cost).ToString());
-			//	Debug.Log(sb.ToString());
-
-			//	Transports.Clear();
-
-			//	//SaveReady();
-			//}
 
 			if (timeManager.today.Day == 1 && !saveReadyCalled)
 				SaveReady();
 			else if (timeManager.today.Day == 2)
 				saveReadyCalled = false;
+
 		}
 
 		private void SaveReady() {
@@ -92,14 +76,35 @@ namespace ROIDataExtractor {
 
 			StringBuilder sb = new StringBuilder();
 
-			sb.Append("Cleaner Ratio is: ").AppendLine(CleanerRatio())
-				.Append("Company Value is: ").AppendLine(CompanyValue().ToString())
-				.Append("Balance is: ").AppendLine(PlayerBalance().ToString())
-				.Append("Loans: ").AppendLine(PlayerLoans())
-				.Append("Shops:").AppendLine().AppendLine(ShopData())
-				.Append("Production: ").AppendLine().AppendLine(ProductionData());
+			//sb.Append("Cleaner Ratio is: ").AppendLine(CleanerRatio())
+			//	.Append("Company Value is: ").AppendLine(CompanyValue().ToString())
+			//	.Append("Balance is: ").AppendLine(PlayerBalance().ToString())
+			//	.Append("Loans: ").AppendLine(PlayerLoans())
+			//	.Append("Shops:").AppendLine().AppendLine(ShopData())
+			//	.Append("Production: ").AppendLine().AppendLine(ProductionData())
+			//	//.Append("Found the following achievements: ").AppendLine().AppendLine(AchievementData())
+			//	.Append("Pollution:").AppendLine().AppendLine(PollutionData());
 
-			Debug.Log(sb.ToString());
+			//foreach (var transport in Transports) {
+			//	transport.ToStringSb(sb);
+			//}
+			//sb.Append(PlayerData());
+
+			//Debug.Log(sb.ToString());
+			//UpdateVehiclesMonthly();
+		}
+
+		private void UpdateVehiclesMonthly() {
+			//var sb = new StringBuilder();
+			//sb.AppendLine("Transports for the last month:");
+
+			//Transports.ForEach(t => sb.AppendLine(t.ToString()));
+
+			//sb.Append("Count: ").AppendLine(Transports.Count.ToString());
+			//sb.Append("Average(Cost): ").AppendLine(Transports.Average(t => t.Cost).ToString());
+			//sb.Append("Sum(Cost): ").AppendLine(Transports.Sum(t => t.Cost).ToString());
+			//Debug.Log(sb.ToString());
+			Transports.Clear();
 		}
 
 		private HumanPlayer Player => ManagerBehaviour<ActorManager>.instance.actors.FirstOrDefault(a => a is HumanPlayer) as HumanPlayer;
@@ -208,13 +213,13 @@ namespace ROIDataExtractor {
 		private string ShopData() {
 			SettlementManager settlementManager = ManagerBehaviour<SettlementManager>.instance;
 			List<SettlementBase> settlements = settlementManager.settlements;
+
 			StringBuilder sb = new StringBuilder();
 			List<SaleStatistic> saleStatistics = new List<SaleStatistic>();
 
 			foreach (var settlement in settlements) {
 				foreach (var shop in settlement.buildings.shops) {
 					Dictionary<ProductDefinition, int> demands = GetField<Dictionary<ProductDefinition, int>>(typeof(Shop), "_demand", shop);
-					Shop.DeliveredByActors delivered = GetField<Shop.DeliveredByActors>(typeof(Shop), "_deliveredByActors", shop);
 
 					foreach (var kvp_demand in demands) {
 						ProductDefinition product = kvp_demand.Key;
@@ -226,7 +231,7 @@ namespace ROIDataExtractor {
 				}
 			}
 
-			saleStatistics.Where(s => s.Sales != 0).ForEach(s => s.ToStringSb(sb));
+			saleStatistics.Where(saleStatistic => saleStatistic.Sales != 0).ForEach(saleStatistic => saleStatistic.ToStringSb(sb));
 			return sb.ToString();
 		}
 
@@ -268,20 +273,50 @@ namespace ROIDataExtractor {
 		public string ProductionData() {
 			StringBuilder sb = new StringBuilder();
 			List<FactoryStatistic> factoryStatistics = new List<FactoryStatistic>();
-			List<RecipeUser> recipeUsers = Player.buildings.recipeUsers;
+			
 
-			foreach (var recipeUser in recipeUsers) {
+			//ModuleOwner and Module
+			//Dictionary<ModuleOwner, List<ProjectAutomata.Module>> gatherHubHarvesterDictionary = new Dictionary<ModuleOwner, List<ProjectAutomata.Module>>();
+
+			foreach (var recipeUser in Player.buildings.recipeUsers) {
 				factoryStatistics.Add(new FactoryStatistic(recipeUser));
 			}
+
+			//foreach (var transport in Transports) {
+			//	var fs = factoryStatistics.Find(f => transport.Vehicle.fleet.building.GetComponent<RecipeUser>() == f.RecipeUser);
+
+			//	if (fs != null) {
+			//		fs.Transports.Add(transport);
+			//	}
+			//}
+
+			////ArgumentException: Could not convert ProjectAutomata.BuildingLogistics to ProjectAutomata.BuildingLogistics.
+			//foreach (var transport in Transports) {
+			//	BuildingBehaviour origin = GetField<BuildingLogistics>(typeof(TransportJob<LandTransportJob>), "_origin", transport.TransportJob);
+			//	var fs = factoryStatistics.Find(f => f.RecipeUser == origin.GetComponent<RecipeUser>());
+
+			//	if (fs != null) {
+			//		fs.Transports.Add(transport);
+			//	}
+			//}
+
+			////ArgumentException: Could not convert ProjectAutomata.BuildingLogistics to ProjectAutomata.BuildingLogistics.
+			//foreach (var transport in Transports) {
+			//	BuildingLogistics origin = GetField<BuildingLogistics>(typeof(TransportJob<LandTransportJob>), "_origin", transport.TransportJob);
+			//	var fs = factoryStatistics.Find(f => f.RecipeUser == origin.GetComponent<RecipeUser>());
+
+			//	if (fs != null) {
+			//		fs.Transports.Add(transport);
+			//	}
+			//}
 
 			factoryStatistics.ForEach(r => r.ToStringSb(sb));
 			return sb.ToString();
 		}
 
 		public class FactoryStatistic {
-
 			public RecipeUser RecipeUser { get; }
-
+			public List<Transport> Transports { get; } = new List<Transport>();
 			public FactoryStatistic(RecipeUser recipeUser) {
 				RecipeUser = recipeUser;
 			}
@@ -290,54 +325,439 @@ namespace ROIDataExtractor {
 				if (sb == null)
 					sb = new StringBuilder();
 
-				//IBuildingEfficiency buildingEfficiency = GetField<IBuildingEfficiency>(typeof(RecipeUser), "efficiency", RecipeUser as RecipeUser);
 				Recipe currentRecipe = RecipeUser.currentRecipe;
 
-				sb.Append("Factory: ").Append(RecipeUser.buildingName)
-					.Append(", Active: ").Append(RecipeUser.isProducing)
-					.Append(", Currently Producing: ");
+				sb.Append("Factory: ").AppendLine(RecipeUser.buildingName);
+
+				//check if recipeUser is ModuleOwner
+				ModuleOwner owner = RecipeUser.GetComponent<ModuleOwner>();
+				if (owner != null) {
+					//print out number of modules
+					List<ProjectAutomata.Module> modules = owner.modules;
+					sb.Append("- Modules (").Append(modules.Count.ToString())
+						.AppendLine(")");
+					foreach (var module in modules) {
+						sb.Append("-- Name: ").Append(module.buildingName)
+							.Append(", Upkeep: ").AppendLine(module.ModuleUpkeep().ToString("C", CultureInfo.GetCultureInfo("en-US")));
+					}
+				}
+
+				sb.Append("- Active: ").AppendLine(RecipeUser.isProducing.ToString())
+					.AppendLine("- Currently Producing");
 
 				int counter = 0;
 
 				foreach (var product in currentRecipe.result) {
 					counter++;
-					sb.Append("Output ").Append(counter)
-						.Append(": ").Append(product._definition.productName)
-						.Append(" (").Append(product.amount)
-						.Append(")").AppendLine();
+					sb.Append("-- Product ").AppendLine(counter.ToString())
+						.Append("--- Name: ").AppendLine(product._definition.productName)
+						.Append("--- Amount: ").AppendLine(product.amount.ToString());
 				}
 
-				sb.Append("Production Time: ").Append(currentRecipe.gameDays * RecipeUser.productionSpeed)
-					//.Append(", Efficiency: ").Append(buildingEfficiency.efficiency.ToString("P"))
-					//.Append(", Upkeep-Modifier: ").Append(buildingEfficiency.upkeepModifier)
-					.Append(", Produced last month: ").Append(RecipeUser.producedLastMonth)
-					.Append(", Total production (so far): ").Append(RecipeUser.totalProduced)
-					.AppendLine(", Storage: ");
+				Upkeep upkeep = RecipeUser.GetComponent<Upkeep>();
+				BuildingEfficiency buildingEfficiency = RecipeUser.GetComponent<BuildingEfficiency>();
+				BuildingAnalysis buildingAnalysis = RecipeUser.GetComponent<BuildingAnalysis>();
+
+				sb.Append("- Production Time: ").AppendLine((currentRecipe.gameDays * RecipeUser.productionSpeed).ToString())
+					.Append("- Building Efficiency: ").AppendLine(buildingEfficiency.efficiency.ToString("P"))
+					.Append("- Upkeep: ").AppendLine(upkeep.totalMonthlyUpkeep.ToString("C", CultureInfo.GetCultureInfo("en-US")))
+					.Append("- Uptime: ").AppendLine((buildingAnalysis.GetLastMonthValue(upkeep.uptimeAnalysisItemDef) / 100).ToString("P"));
+
+				sb.AppendLine("- Production Statistics")
+					.Append("-- Last month: ").AppendLine(RecipeUser.producedLastMonth.ToString())
+					.Append("-- Total production: ").AppendLine(RecipeUser.totalProduced.ToString())
+					.AppendLine("- Storage");
 
 				foreach (var product in RecipeUser.productStorage) {
-					sb.Append("Product: ").Append(product._definition.productName)
-						.Append(", Stored: ").Append(product.amount)
-						.AppendLine();
+					sb.Append("-- Product: ").Append(product._definition.productName)
+						.Append(" (").Append(product.amount)
+						.AppendLine(" units)");
 				}
 
+				foreach (var transport in Transports) {
+					transport.ToStringSb(sb);
+				}
+
+				sb.AppendLine();
 				return sb;
 			}
+		}
+
+		public string AchievementData() {
+			AchievementManager achievementManager = AchievementManager.instance;
+			List<Achievement> achievements = achievementManager.achievements;
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("Achievements Enabled: ").Append(achievementManager.achievementsEnabled)
+				.Append(", Disabled with Mods: ").Append(achievementManager.disableWithMods)
+				.AppendLine();
+
+			//achievementManager.achievementsEnabled = true;
+			//sb.Append("Achievements Enabled: ").Append(achievementManager.achievementsEnabled)
+			//	.AppendLine();
+
+			foreach (var achievement in achievements) {
+				List<Achievement.AchievementStat> achievementStats = GetField<List<Achievement.AchievementStat>>(typeof(Achievement), "_achievementStats", achievement);
+				
+				//basic information
+				sb.Append("Id: ").Append(achievement.achievementId)
+					.Append(", Name: ").Append(achievement.name)
+					.AppendLine("Statistics: ");
+
+				//included statistics
+				foreach (var statistic in achievementStats) {
+					sb.Append(", Stat-Id: ").Append(statistic.stat.statId)
+						.Append(", Stat-Name: ").Append(statistic.stat.name)
+						.Append(", Stat-Value: ").Append(statistic.achievementValue)
+						.Append(", Stat-Value-2: ").Append(statistic.stat.value)
+						//AchievementManager statistics
+						.Append(", AchievementManager.GetStat() [Float]: ").Append(achievementManager.GetStat(statistic.stat.name, StatType.Float, false))
+						.Append(", AchievementManager.GetStat() [Int]: ").Append(achievementManager.GetStat(statistic.stat.name, StatType.Int, false))
+						.Append(", AchievementManager.GetStat() [Average]: ").Append(achievementManager.GetStat(statistic.stat.name, StatType.Average, false))
+						.AppendLine();
+				}
+				sb.AppendLine()
+					.AppendLine();
+			}
+			return sb.ToString();
+		}
+
+		private string PollutionData() {
+			StringBuilder sb = new StringBuilder();
+			RegionManager regionManager = ManagerBehaviour<RegionManager>.instance;
+			PermitManager permitManager = ManagerBehaviour<PermitManager>.instance;
+
+			var regions = GetField<ICollection<Region>>(typeof(RegionManager), "_serializedRegions", regionManager);
+			foreach (var region in regions) {
+				if (permitManager.OwnsPermitForRegion(Player, region, null)) {
+					sb.Append("- Region: ").AppendLine(region.regionName)
+						.Append("-- Settlement: ").AppendLine(region.settlement.settlementName)
+						.Append("-- Pollution: ").AppendLine(PollutionForRegion(region).ToString())
+						.AppendLine();
+				}
+			}
+
+			return sb.ToString();
+		}
+
+		private double PollutionForRegion(Region region) {
+			double pollution = 0;
+			PollutionManager pollutionManager = ManagerBehaviour<PollutionManager>.instance;
+
+			foreach (var tile in region.tiles)
+				pollution += pollutionManager.GetPollution(tile);
+
+			return pollution / region.tiles.count;
+		}
+
+		private string GlobalMarketData() {
+			GlobalMarket globalMarket = ManagerBehaviour<GlobalMarket>.instance;
+			StringBuilder sb = new StringBuilder();
+			Dictionary<ProductDefinition, ProductPricingInfo> globalMarketProducts = GetField<Dictionary<ProductDefinition, ProductPricingInfo>>(typeof(GlobalMarket), "_pricingInfoByProduct", globalMarket);
+
+			foreach (var globalMarketProduct in globalMarketProducts) {
+				ProductDefinition product = globalMarketProduct.Key;
+				ProductPricingInfo pricingInfo = globalMarketProduct.Value;
+
+				if (globalMarket.GetProductDemand(product, Player) > 0) {
+					sb.Append("- Product: ").AppendLine(product.productName)
+						.Append("-- Category: ").AppendLine(product.productCategory.categoryName)
+						.Append("-- Value: ").AppendLine(pricingInfo.value.ToString("C", CultureInfo.GetCultureInfo("en-US")))
+						.Append("-- Price: ").AppendLine(pricingInfo.price.ToString("C", CultureInfo.GetCultureInfo("en-US")))
+						.Append("-- Modifier: ").AppendLine(pricingInfo.modifier.ToString("P"))
+						.Append("-- Trend: ").AppendLine(pricingInfo.trend.ToString())
+						.Append("-- Demand: ").AppendLine(globalMarket.GetProductDemand(product, Player).ToString("N"))
+						.AppendLine();
+				}
+			}
+			return sb.ToString();
+		}
+
+		private class ProductInformation {
+
+			public ProductDefinition Product { get; }
+			public float Price { get; }
+			public int Demand { get; }
+			public int Sales { get; }
+
+			public ProductInformation(ProductDefinition product, float price, int demand, int sales) {
+				Product = product;
+				Price = price;
+				Demand = demand;
+				Sales = sales;
+			}
+		}
+		private class Salepoint {
+
+			public Shop Shop { get; }
+			public List<ProductInformation> ShopData { get; }
+
+			public Salepoint(Shop shop, List<ProductInformation> shopData) {
+				Shop = shop;
+				ShopData = shopData;
+			}
+
+			public StringBuilder ToStringSb(StringBuilder sb = null) {
+				if (sb == null)
+					sb = new StringBuilder();
+
+				sb.Append("- Shop: ").AppendLine(Shop.buildingName);
+
+				foreach (var productInformation in ShopData) {
+					sb.Append("-- Product: ").AppendLine(productInformation.Product.productName)
+						.Append("--- Price: ").AppendLine(productInformation.Price.ToString("C", CultureInfo.GetCultureInfo("en-US")))
+						.Append("--- Demanded: ").AppendLine(productInformation.Demand.ToString("N"))
+						.Append("--- Sold by Player: ").AppendLine(productInformation.Sales.ToString("N"));
+
+					float ratio = productInformation.Sales / ((float)productInformation.Demand * 2);
+					float offset = ratio - 1;
+
+					sb.Append("--- Satisfaction of Demand: ").AppendLine(offset.ToString("P"));
+				}
+
+				sb.AppendLine();
+				return sb;
+			}
+		}
+
+		private String PlayerData() {
+			StringBuilder sb = new StringBuilder();
+
+			//Settlements
+			sb.AppendLine("# # # # Settlements: # # # #")
+				.AppendLine(SettlementData())
+				.AppendLine();
+
+			//Houses
+			sb.AppendLine("# # # # Houses: # # # #")
+				.AppendLine(HouseData())
+				.AppendLine();
+
+			//Polluted
+			sb.AppendLine("# # # # Pollution: # # # #")
+				.AppendLine("Polluted Buildings").AppendLine(PollutedBuildingsData())
+				.AppendLine("Polluted Regions").AppendLine(PollutionData())
+				.AppendLine();
+
+			//Contracts
+			sb.AppendLine("# # # # Contracts: # # # #")
+				.AppendLine(ContractData())
+				.AppendLine();
+
+			//GlobalMarket
+			sb.AppendLine("# # # # Global Market: # # # #")
+				.AppendLine(GlobalMarketData())
+				.AppendLine();
+
+			//Shops
+			sb.AppendLine("# # # # Shops: # # # #")
+				.AppendLine(SalepointData())
+				.AppendLine();
+
+			//Factories
+			sb.AppendLine("# # # # Factories: # # # #")
+				.AppendLine(ProductionData())
+				.AppendLine();
+
+			return sb.ToString();
+		}
+
+		private string HouseData() {
+			StringBuilder sb = new StringBuilder();
+			SettlementBase settlement = Player.hq.settlement;
+			SettlementBuildingCollection buildings = settlement.buildings;
+
+			//Houses
+			List<ResidentialBuilding> houses = buildings.houses;
+			sb.Append("- ").Append(settlement.settlementName).Append(" has ")
+				.Append(houses.Count).Append(" houses. ");
+
+			int deathcounter = 0;
+			foreach (var house in houses) {
+				if (house.isDead) {
+					deathcounter++;
+				}
+			}
+
+			sb.Append(deathcounter).Append(" houses ")
+				.AppendLine("are uninhabitable due to pollution.");
+
+			return sb.ToString();
+		}
+
+		private string SalepointData() {
+			StringBuilder sb = new StringBuilder();
+			SettlementBuildingCollection buildings = Player.hq.settlement.buildings;
+
+			//Shops
+			List<Shop> shops = buildings.shops;
+			List<Salepoint> salepoints = new List<Salepoint>();
+
+			foreach (var shop in shops) {
+				Dictionary<ProductDefinition, int> productDemands = GetField<Dictionary<ProductDefinition, int>>(typeof(Shop), "_demand", shop);
+				List<ProductInformation> productInformations = new List<ProductInformation>();
+
+				foreach (var productDemand in productDemands) {
+					ProductDefinition product = productDemand.Key;
+					float price = shop.GetPrice(product, Player);
+					int demand = productDemand.Value;
+					int sales = shop.GetSoldCount(Player, product, new GamePeriod(0, 0, 29));
+
+					//add new product information
+					productInformations.Add(new ProductInformation(product, price, demand, sales));
+				}
+				//add new shop
+				salepoints.Add(new Salepoint(shop, productInformations));
+			}
+
+			foreach (var salepoint in salepoints) {
+				salepoint.ToStringSb(sb);
+			}
+
+			return sb.ToString();
+		}
+
+		private string PollutedBuildingsData() {
+			StringBuilder sb = new StringBuilder();
+			SettlementBuildingCollection buildings = Player.hq.settlement.buildings;
+
+			//Buildings affected by Pollution
+			List<BuildingPollutionEffect> affectedByPollution = buildings.affectedByPollution;
+			sb.Append("- ").Append(affectedByPollution.Count).AppendLine(" buildings are affected by pollution.");
+
+			if (affectedByPollution.Count != 0) {
+				foreach (var polluted in affectedByPollution) {
+					sb.Append("-- Building: ").AppendLine(polluted.buildingName);
+				}
+			}
+
+			return sb.ToString();
+		}
+
+		private string SettlementData() {
+			StringBuilder sb = new StringBuilder();
+			SettlementBase settlement = Player.hq.settlement;
+
+			//Basics
+			sb.Append("- Settlement: ").AppendLine(settlement.settlementName)
+				.Append("-- Actor: ").AppendLine(settlement.actorName)
+				.Append("-- Population: ").AppendLine(settlement.population.ToString("N"))
+				.Append("-- Type: ").AppendLine(settlement.type.settlementTypeName);
+
+			//Resources
+			Region region = settlement.region;
+			List<ResourceSite> resourceSites = region.resourceSites;
+
+			sb.AppendLine("- Resources");
+
+			foreach (var resourceSite in resourceSites) {
+				sb.Append("-- Resource: ").Append(resourceSite.product.productName)
+					.Append(" (").Append(resourceSite.resourceAmount)
+					.AppendLine(" units)");
+			}
+
+			//Tier
+			SettlementTier settlementTier = settlement.tier;
+			sb.Append("- Tier: ").AppendLine(settlement.tier.tierName)
+				.Append("-- Next Tier: ").AppendLine(settlement.tier.nextTier.tierName)
+				.Append("-- Previous Tier: ").AppendLine(settlement.tier.previousTier.tierName);
+
+			//Products
+			sb.AppendLine("- Needed Products");
+			foreach (var product in settlement.tier.neededProducts) {
+				sb.Append("-- Product: ").Append(product.product.productName)
+					.Append(" (from ").Append(product.amountRange.min)
+					.Append(" to ").Append(product.amountRange.max)
+					.AppendLine(" units)");
+			}
+
+			return sb.ToString();
+		}
+
+		private string ContractData() {
+			StringBuilder sb = new StringBuilder();
+			ReadOnlyList<Contract> contracts = Player.contracts.activeContracts;
+			int counter = 0;
+
+			foreach (var contract in contracts) {
+				counter++;
+				sb.Append("- Contract ").AppendLine(counter.ToString("N"))
+					.Append("-- Issuer: ").Append(contract.issuer.actorName)
+					.Append("-- Product: ").Append(contract.product.productName)
+					.Append("-- Amount: ").Append(contract.amount)
+					.Append("-- Target: ").Append(contract.target.buildingName)
+					.AppendLine();
+			}
+
+			return sb.ToString();
 		}
 
 		private readonly List<Vehicle> DeliveringVehicles = new List<Vehicle>();
 		private readonly List<Transport> Transports = new List<Transport>();
 
-		private struct Transport {
-			public float Cost { get; }
+		public class Transport {
+			//public Vehicle Vehicle { get; }
+			//public LandTransportJob TransportJob { get; }
+			//public WaypointMover Mover { get; }
+			public BuildingLogistics Origin { get; }
+			public BuildingLogistics Destination { get; }
+			//NEW
+			public Product Product { get; }
+			public int Count { get; }
+			public int Distance { get; }
+			public float Costs { get; }
 
-			public Transport(float cost) {
-				Cost = cost;
+			//OLD
+			//public Transport(Vehicle vehicle, LandTransportJob transportJob, WaypointMover mover, BuildingLogistics origin, BuildingLogistics destination) {
+			//	Vehicle = vehicle;
+			//	TransportJob = transportJob;
+			//	Mover = mover;
+			//	Origin = origin;
+			//	Destination = destination;
+			//}
 
-				_toString = $"Cost: {Cost}";
+			public Transport(BuildingLogistics origin, BuildingLogistics destination, Product product, int count, int distance, float costs) {
+				Origin = origin;
+				Destination = destination;
+				Product = product;
+				Count = count;
+				Distance = distance;
+				Costs = costs;
 			}
 
-			private readonly string _toString;
-			public override string ToString() => _toString ?? "";
+			public StringBuilder ToStringSb(StringBuilder sb = null) {
+				if (sb == null)
+					sb = new StringBuilder();
+
+				//TransportRequestPaymentHandlerBehaviour payer = Origin.building.GetComponent<TransportRequestPaymentHandlerBehaviour>();
+				//NetworkManager networkManager = GetField<NetworkManager>(typeof(WaypointMover), "network", Mover);
+
+				//Product product = Origin.building.recipeUser.currentOutput;
+				//ReadOnlyList<int> originToDestinationPath = TransportJob.originToDestinationPath;
+
+				//string originDestinationDistance = "Distance: " + Mover.distance + ", TilesMovedCount: " + Mover.tilesMovedCount + ", TilesInPath: " + Mover.tilesInPath + ", PathCount: " + originToDestinationPath.count;
+				//int amount = 1;
+				//var costs = payer.GetVehicleDispatchCost(Origin, Destination, Vehicle, Mover.distance, amount);
+
+				//sb.AppendLine("--- Transport")
+				//	.Append("---- Origin: ").AppendLine(Origin.buildingName)
+				//	.Append("---- Destination: ").AppendLine(Destination.buildingName)
+				//	.Append("---- Distance: ").AppendLine(originDestinationDistance)
+				//	.Append("---- Product: ").AppendLine(product.definition.productName)
+				//	.Append("---- Amount: ").AppendLine(amount.ToString())
+				//	.Append("---- Costs: ").AppendLine(costs.ToString("C", CultureInfo.GetCultureInfo("en-US")));
+
+				sb.AppendLine("--- Transport")
+					.Append("Origin: ").AppendLine(Origin.buildingName)
+					.Append("Destination: ").AppendLine(Destination.buildingName)
+					.Append("Product: ").AppendLine(Product.definition.productName)
+					.Append("Count: ").AppendLine(Count.ToString())
+					.Append("Distance: ").AppendLine(Distance.ToString())
+					.Append("Costs: ").AppendLine(Costs.ToString("C", CultureInfo.GetCultureInfo("en-US")))
+					.AppendLine();
+
+				return sb;
+			}
 		}
 
 		private void CheckVehicleDelivery(Vehicle v) {
@@ -362,27 +782,37 @@ namespace ROIDataExtractor {
 			return false;
 		}
 
-		private void AddTransport(Vehicle v) {
-			if (v.activeJob == null) {
+		private void AddTransport(Vehicle vehicle) {
+			if (vehicle.activeJob == null) {
 				Debug.Log("AddTransport::ActiveJob::Null");
 				return;
 			}
 
-			if (v.mover == null) {
+			if (vehicle.mover == null) {
 				Debug.Log("AddTransport::Mover::Null");
 				return;
 			}
 
-			if (v.activeJob is LandTransportJob ltj
-				&& ltj.TryGetField<BuildingLogistics>("_origin", out var origin)
-				&& ltj.TryGetField<BuildingLogistics>("_destination", out var dest)
-				&& v.mover is WaypointMover wm) {
-				var payer = origin.building.GetComponent<TransportRequestPaymentHandlerBehaviour>();
+			if (vehicle.activeJob is LandTransportJob transportJob
+				&& transportJob.TryGetField<BuildingLogistics>("_origin", out var origin)
+				&& transportJob.TryGetField<BuildingLogistics>("_destination", out var destination)
+				&& vehicle.mover is WaypointMover waypointMover) {
+
+				TransportRequestPaymentHandlerBehaviour payer = origin.building.GetComponent<TransportRequestPaymentHandlerBehaviour>();
+				WaypointPath wpp = GetField<WaypointPath>(typeof(WaypointMover), "waypointPath", waypointMover);
+				//TransportRequestHandle request = origin.GetComponent<TransportRequestHandle>();
+				//ProductDefinition product = request.product;
+				//int productAmount = request.productAmount;
+				Product product = origin.building.recipeUser.currentOutput;
+
+				int pathLength = wpp.count;
+				int productCount = vehicle.productStorage.Count(null);
+				float costs = payer.GetVehicleDispatchCost(origin, destination, vehicle, pathLength, productCount);
 
 				if (payer != null) {
-					var transport = new Transport(payer.GetVehicleDispatchCost(origin, dest, v, wm.tilesInPath, v.productStorage.Count(null)));
+					//var transport = new Transport(vehicle, transportJob, waypointMover, origin, destination);
+					Transport transport = new Transport(origin, destination, product, productCount, pathLength, costs);
 					Transports.Add(transport);
-					Debug.Log(transport.ToString());
 				}
 			}
 		}
