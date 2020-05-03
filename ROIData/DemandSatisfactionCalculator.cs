@@ -19,12 +19,10 @@ namespace ROIData {
                     ProductDefinition product = shopDemand.Key;
                     int demand = shopDemand.Value * 2;
                     int sales = shop.GetSoldCount(ROIDataMod.Player, product, new GamePeriod(0, 0, 29));
-
-                    //float ratio = sales / ((float)demand * 2);
                     
                     //only register if something has been sold (aka. product is being produced by player)
                     if (sales > 0)
-                        offset += sales - demand;
+                        offset += Math.Abs(sales - demand);
                 }
             }
             //return average offset
