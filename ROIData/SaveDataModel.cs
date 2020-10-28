@@ -1,4 +1,5 @@
 ﻿using System;
+using ROIData;
 
 namespace Planspiel.Models {
     public class SaveDataModel {
@@ -7,7 +8,7 @@ namespace Planspiel.Models {
         /// <summary>
         /// Game time at which this save data was created.
         /// </summary>
-        public DateTime TimeStamp { get; set; }
+        public Date Date { get; set; }
 
         public double Profit { get; set; }
 

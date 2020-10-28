@@ -7,9 +7,9 @@ using ProjectAutomata;
 
 namespace ROIData {
     public static class TimeStampCalculator {
-        public static DateTime GetTimeStamp() {
+        public static Date GetTimeStamp() {
             TimeManager timeManager = ManagerBehaviour<TimeManager>.instance;
-            return new DateTime(timeManager.today.Year, timeManager.today.Month, timeManager.today.Day);
+            return new Date(timeManager.today.Day, timeManager.today.Month, timeManager.today.Year);
         }
     }
 }

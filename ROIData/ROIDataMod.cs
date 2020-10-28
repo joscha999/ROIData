@@ -1,57 +1,48 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Planspiel.Models;
 using ProjectAutomata;
 using Steamworks;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace ROIData {
     public class ROIDataMod : Mod {
-		private const string BaseAddress = "https://localhost:5001/";
+		private const string postAdress = "https://roi.jgdev.de/api/Data";
 		public static HumanPlayer Player => ManagerBehaviour<ActorManager>.instance.actors.FirstOrDefault(a => a is HumanPlayer) as HumanPlayer;
-		private bool monthlyUpdateCalled = true;
-		private static HttpClient _httpClient;
+		private static string sdpath = System.IO.Path.Combine(
+					Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RiseOfIndustry", "SaveData");
+		private bool alreadySubscribed;
 
-		//There may only be one HttpClient in the whole application lifetime, will lazy initialize when needed.
-		public static HttpClient HttpClient {
-			get {
-				if (_httpClient == null) {
-					ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11;
-					_httpClient = new HttpClient();
-				}
-				return _httpClient;
-			}
-		}
-
-		public List<GameDate> allow = new List<GameDate> {
+		//GameDate Format: Year Month Day
+		public List<GameDate> taskStartTimes = new List<GameDate> {
 				//Aufgabe 1 - Scenario1 / Kartoffeln
 				new GameDate(1,4,1),
 				//Aufgabe 2 - Scenario3 / Holzzüge
-				new GameDate(1,6,1),
+				new GameDate(2,4,1),
 				//Aufgabe 3 - Scenario5 / Murmeln
-				new GameDate(5,8,3),
+				new GameDate(5,9,1),
 				//Aufgabe 4 - Scenario7 / Spielzeugzüge
-				new GameDate(7,1,1),
+				new GameDate(7,9,1),
 				//Aufgabe 5 - Scenario11 / Eisenwaren
 				new GameDate(13,9,1)
 			};
-		public List<GameDate> forbid = new List<GameDate> {
+		public List<GameDate> taskEndTimes = new List<GameDate> {
 				//Aufgabe 1 - Ende
-				new GameDate(1,5,30),
+				new GameDate(2,3,30),
 				//Aufgabe 2 - Ende
-				new GameDate(3,5,30),
+				new GameDate(3,9,30),
 				//Aufgabe 3 - Ende
-				new GameDate(6,12,30),
+				new GameDate(7,8,30),
 				//Aufgabe 4 - Ende
-				new GameDate(9,7,30)
+				new GameDate(9,8,30),
+				//Aufgabe 5 - Ende
+				new GameDate(15,8,30)
 			};
 
 		public void Update() {
@@ -78,22 +69,25 @@ namespace ROIData {
 				return;
 			}
 
-			//run every month
+			//Get instance of Timemanager
 			var timeManager = ManagerBehaviour<TimeManager>.instance;
-			if (timeManager.today.Day == 1 && !monthlyUpdateCalled)
-				MonthlyUpdate();
-			else if (timeManager.today.Day == 2)
-				monthlyUpdateCalled = false;
 
+			//run this when onDayEnd-Event fires
+			//Create pointer to HandleSomethingHappened
+			//Add it to onDayEnd's list of "Event Handlers"
+			if (!alreadySubscribed) {
+				timeManager.onDayEnd += new TimeManager.TimeManagerCallback(SendData);
+				alreadySubscribed = true;
+			}
+			
+			//Unpause time
 			UpdateCanAdvanceTime();
 		}
 
-		private void MonthlyUpdate() {
-			monthlyUpdateCalled = true;
-
+		private void SendData(GameDate _) {
 			SaveDataModel sdm = new SaveDataModel {
 				SteamID = (long)SteamUser.GetSteamID().m_SteamID,
-				TimeStamp = TimeStampCalculator.GetTimeStamp(),
+				Date = TimeStampCalculator.GetTimeStamp(),
 				Profit = PlayerBalanceCalculator.GetPlayerBalance(),
 				CompanyValue = CompanyValueCalculator.GetCompanyValue(),
 				DemandSatisfaction = DemandSatisfactionCalculator.CalculateAverageDemandSatisfaction(),
@@ -101,24 +95,48 @@ namespace ROIData {
 				AbleToPayLoansBack = LoanCalculator.GetAbleToPayBackLoan(),
 				AveragePollution = PollutionCalculator.GetAveragePollution()
 			};
-			Debug.Log(JsonConvert.SerializeObject(sdm));
-			//System.Threading.Tasks.Task.Run(() => PostSaveDataAsync(sdm));
+
+			var jsonData = JsonConvert.SerializeObject(sdm);
+			Debug.Log(jsonData);
+			Directory.CreateDirectory(sdpath);
+
+			try {
+				File.WriteAllText(System.IO.Path.Combine(
+					sdpath, sdm.Date.ToString() + ".json"),
+					jsonData);
+			} catch (Exception e) {
+				Debug.Log("Failed to serialize:\n" + e);
+				throw;
+			}
+
+			Debug.Log(jsonData);
+			//StartCoroutine(PostRequest(postAdress, jsonData));
 		}
 
-		public static async Task<string> PostSaveDataAsync(SaveDataModel sdm) {
-			var postJson = JsonConvert.SerializeObject(sdm);
-			var postContent = new StringContent(postJson, Encoding.UTF8, "application/json");
-			var response = await HttpClient.PostAsync(BaseAddress + "api/Data", postContent).ConfigureAwait(false);
+		private IEnumerator PostRequest(string url, string json) {
+			var uwr = new UnityWebRequest(url, "POST");
+			byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
+			uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
+			uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+			uwr.SetRequestHeader("Content-Type", "application/json");
 
-			return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+			//Send the request then wait here until it returns
+			yield return uwr.SendWebRequest();
+
+			if (uwr.isNetworkError) {
+				Debug.Log("Error While Sending: " + uwr.error);
+			} else {
+				Debug.Log("Received: " + uwr.downloadHandler.text);
+			}
 		}
 
 		private void UpdateCanAdvanceTime() {
 			TimeManager timeManager = ManagerBehaviour<TimeManager>.instance;
 			
-			if (allow.Contains(timeManager.today)) {
-				timeManager.canAdvanceTime = true;
-			} else if (forbid.Contains(timeManager.today)) {
+			if (taskStartTimes.Contains(timeManager.today)) {
+				//timeManager.canAdvanceTime = true;
+				timeManager.canPauseTime = false;
+			} else if (taskEndTimes.Contains(timeManager.today)) {
 				timeManager.canAdvanceTime = false;
 			}
 		}

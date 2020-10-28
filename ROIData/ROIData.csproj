@@ -57,10 +57,15 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RiseOfIndustry\Rise of Industry_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RiseOfIndustry\Rise of Industry_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompanyValueCalculator.cs" />
     <Compile Include="DemandSatisfactionCalculator.cs" />
+    <Compile Include="Date.cs" />
     <Compile Include="LoanCalculator.cs" />
     <Compile Include="MachineUptimeCalculator.cs" />
     <Compile Include="PlayerBalanceCalculator.cs" />
