@@ -7,17 +7,16 @@ using ProjectAutomata;
 
 namespace ROIData {
     public static class MachineUptimeCalculator {
-        public static double GetAverageMachineUptime() {
-            List<RecipeUser> factories = ROIDataMod.Player.buildings.recipeUsers;
-            double uptimeSum = 0;
+        public static double GetAverageMachineUptime() 
+            => ROIDataMod.Player.buildings.recipeUsers.Average(f => f.GetComponent<BuildingAnalysis>()
+                .GetLastMonthValue(f.GetComponent<Upkeep>().upkeepAnalysisItemDef) / 100);
 
-            foreach (RecipeUser factory in factories) {
-                BuildingAnalysis buildingAnalysis = factory.GetComponent<BuildingAnalysis>();
-                Upkeep upkeep = factory.GetComponent<Upkeep>();
+        //double uptimeSum = 0;
 
-                uptimeSum += (buildingAnalysis.GetLastMonthValue(upkeep.uptimeAnalysisItemDef) / 100);
-            }
-            return uptimeSum / factories.Count;
-        }
+        //foreach (RecipeUser factory in factories) {
+        //    BuildingAnalysis buildingAnalysis = factory.GetComponent<BuildingAnalysis>();
+        //    Upkeep upkeep = factory.GetComponent<Upkeep>();
+        //    uptimeSum += (buildingAnalysis.GetLastMonthValue(upkeep.uptimeAnalysisItemDef) / 100);
+        //}
     }
 }

@@ -7,8 +7,6 @@ using ProjectAutomata;
 
 namespace ROIData {
     public static class CompanyValueCalculator {
-        public static double GetCompanyValue() {
-            return ROIDataMod.Player.GetComponent<CompanyStats>().ComputeCompanyValue();
-        }
+        public static double GetCompanyValue() => ROIDataMod.Player.GetComponent<CompanyStats>().ComputeCompanyValue();
     }
 }

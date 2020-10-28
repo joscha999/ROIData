@@ -15,7 +15,7 @@ namespace ROIData {
                 amountToPay += loan.amountToPay;
             }
 
-            return PlayerBalanceCalculator.GetPlayerBalance() > amountToPay * 1.1;
+            return PlayerProfitCalculator.GetProfit() > amountToPay * 1.1;
         }
     }
 }

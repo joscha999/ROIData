@@ -88,12 +88,15 @@ namespace ROIData {
 			SaveDataModel sdm = new SaveDataModel {
 				SteamID = (long)SteamUser.GetSteamID().m_SteamID,
 				Date = TimeStampCalculator.GetTimeStamp(),
-				Profit = PlayerBalanceCalculator.GetPlayerBalance(),
+				Profit = PlayerProfitCalculator.GetProfit(),
 				CompanyValue = CompanyValueCalculator.GetCompanyValue(),
 				DemandSatisfaction = DemandSatisfactionCalculator.CalculateAverageDemandSatisfaction(),
 				MachineUptime = MachineUptimeCalculator.GetAverageMachineUptime(),
 				AbleToPayLoansBack = LoanCalculator.GetAbleToPayBackLoan(),
-				AveragePollution = PollutionCalculator.GetAveragePollution()
+				AveragePollution = PollutionCalculator.GetAveragePollution(),
+				BuildingCount = BuildingCountCalculator.GetBuildingCount(),
+				RegionCount = RegionCountCalculator.GetRegionsCount(),
+				UnlockedResearchCount = TechTreeCalculator.GetTechTreeUnlocks()
 			};
 
 			var jsonData = JsonConvert.SerializeObject(sdm);
@@ -110,6 +113,7 @@ namespace ROIData {
 			}
 
 			Debug.Log(jsonData);
+			TechTreeCalculator.PrintInformation();
 			//StartCoroutine(PostRequest(postAdress, jsonData));
 		}
 

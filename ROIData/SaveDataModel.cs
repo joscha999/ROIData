@@ -24,5 +24,11 @@ namespace Planspiel.Models {
         public bool AbleToPayLoansBack { get; set; }
 
         public double AveragePollution { get; set; }
+
+        public int BuildingCount { get; set; }
+
+        public int UnlockedResearchCount { get; set; }
+
+        public int RegionCount { get; set; }
     }
 }

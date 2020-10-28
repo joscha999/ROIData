@@ -63,16 +63,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildingCountCalculator.cs" />
     <Compile Include="CompanyValueCalculator.cs" />
     <Compile Include="DemandSatisfactionCalculator.cs" />
     <Compile Include="Date.cs" />
     <Compile Include="LoanCalculator.cs" />
     <Compile Include="MachineUptimeCalculator.cs" />
-    <Compile Include="PlayerBalanceCalculator.cs" />
+    <Compile Include="PlayerProfitCalculator.cs" />
     <Compile Include="PollutionCalculator.cs" />
+    <Compile Include="RegionCountCalculator.cs" />
     <Compile Include="ROIDataMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveDataModel.cs" />
+    <Compile Include="TechTreeCalculator.cs" />
     <Compile Include="TimeStampCalculator.cs" />
   </ItemGroup>
   <ItemGroup>
