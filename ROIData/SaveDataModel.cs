@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ROIData;
 
 namespace Planspiel.Models {
@@ -10,18 +11,20 @@ namespace Planspiel.Models {
         /// </summary>
         public Date Date { get; set; }
 
+        public float PassedTime { get; set; }
+
         public double Profit { get; set; }
 
         public double CompanyValue { get; set; }
 
-        public double DemandSatisfaction { get; set; }
+        public List<ProductInfo> DemandSatisfaction { get; set; }
 
         /// <summary>
         /// Average machine uptime.
         /// </summary>
         public double MachineUptime { get; set; }
 
-        public bool AbleToPayLoansBack { get; set; }
+        public List<LoanInfo> LoansList { get; set; }
 
         public double AveragePollution { get; set; }
 
@@ -30,5 +33,7 @@ namespace Planspiel.Models {
         public int UnlockedResearchCount { get; set; }
 
         public int RegionCount { get; set; }
+
+        public double Balance { get; set; }
     }
 }

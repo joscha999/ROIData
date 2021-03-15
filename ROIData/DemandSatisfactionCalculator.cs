@@ -8,15 +8,15 @@ using UnityEngine;
 
 namespace ROIData {
     public static class DemandSatisfactionCalculator {
+        private static List<Shop> Shops => ROIDataMod.Player.hq.settlement.buildings.shops;
+
         public static double CalculateAverageDemandSatisfaction() {
-            //shops (in player settlement)
-            List<Shop> shops = ROIDataMod.Player.hq.settlement.buildings.shops;
             
             //counters
             int offset = 0;
             StringBuilder sb = new StringBuilder();
 
-            foreach (Shop shop in shops) {
+            foreach (Shop shop in Shops) {
                 foreach (KeyValuePair<ProductDefinition, int> shopDemand in ROIDataMod.GetField<Dictionary<ProductDefinition, int>>(typeof(Shop), "_demand", shop)) {
                     ProductDefinition product = shopDemand.Key;
                     int demand = shopDemand.Value * 2;
@@ -35,6 +35,28 @@ namespace ROIData {
             //return average offset
             Debug.Log(sb.ToString());
             return offset;
+        }
+
+        public static List<ProductInfo> RemainingDemands() {
+
+            List<ProductInfo> listOfRemainingDemands = new List<ProductInfo>();
+
+            foreach (Shop shop in Shops) {
+                foreach (KeyValuePair<ProductDefinition, int> shopDemand in ROIDataMod.GetField<Dictionary<ProductDefinition, int>>(typeof(Shop), "_demand", shop)) {
+                    ProductDefinition product = shopDemand.Key;
+                    int demand = shopDemand.Value * 2;
+                    int sales = shop.GetSoldCount(ROIDataMod.Player, product, new GamePeriod(0, 0, 29));
+
+                    if (sales > 0) {
+                        int offset = Math.Abs(sales - demand);
+                        string productName = product.productName;
+
+                        listOfRemainingDemands.Add(new ProductInfo(productName, offset));
+                    }
+                }
+            }
+
+            return listOfRemainingDemands;
         }
     }
 }
