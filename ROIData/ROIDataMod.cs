@@ -141,30 +141,9 @@ namespace ROIData {
 				return false;
 			}
 
-			//wem.TriggerStaticEvent("Research Breakthrough", wea);
-			//wem.TriggerStaticEvent("Pizza Party!", wea);
-			//wem.TriggerStaticEvent("Mine Collapse", wea); //doesnt work data is null
-			//var today = ManagerBehaviour<TimeManager>.instance.today;
-			CustomEventManager.CreateEvent();
+			wem.TriggerStaticEvent("Starvation", wea);
+			CustomStaticEvent.CreateResearchEvent().TryTrigger();
 
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
-			//wem.TriggerRandomStaticEvent(today);
 			activatedEvent = true;
 
 			return true;
