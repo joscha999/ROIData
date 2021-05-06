@@ -9,6 +9,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Planspiel.Models;
 using ProjectAutomata;
+using ROIData.HelperClasses;
 using Steamworks;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -17,6 +18,9 @@ namespace ROIData {
     public class ROIDataMod : Mod {
 		private const string postAdress = "https://roi.jgdev.de/api/Data";
 		public static HumanPlayer Player => ManagerBehaviour<ActorManager>.instance.actors.FirstOrDefault(a => a is HumanPlayer) as HumanPlayer;
+		public static Dictionary<CustomEventType, CustomStaticEvent> EventTypeCustomEventPairs
+			= new Dictionary<CustomEventType, CustomStaticEvent>();
+
 		private static string sdpath = System.IO.Path.Combine(
 					Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RiseOfIndustry", "SaveData");
 		private bool alreadySubscribed;
@@ -84,31 +88,15 @@ namespace ROIData {
 				alreadySubscribed = true;
 			}
 
-			PrintEventData();
+			
+			if (!activatedEvent && TryActivateEvent(out var eventManager, out var eventAgent)) {
+				activatedEvent = true;
+			}
+
 			//Unpause time
 			//UpdateCanAdvanceTime();
 		}
-		[MethodImpl(MethodImplOptions.NoInlining)]
-		private void AppendEventData(StringBuilder stringB, StaticWorldEvent sWorldEvent) {
-			stringB.AppendLine("----------------").AppendLine("----------------").AppendLine("StaticWorldEvent: ")
-				.Append("Duration (int): ").Append(sWorldEvent.duration).AppendLine("; ")
-				.Append("Region: ").Append(sWorldEvent.region.regionName).AppendLine(";")
-				//data
-				.Append("Event Name (string): ").Append(sWorldEvent.data.eventName).AppendLine(";")
-				.Append("Description (string): ").Append(sWorldEvent.data.description).AppendLine(";")
-				.Append("When (int): ").Append(sWorldEvent.data.when).AppendLine(";")
-				.Append("Trigger (Enum): ").Append(sWorldEvent.data.triggerMode).AppendLine(";");
 
-			if (sWorldEvent.data.catalystBuildings == null) {
-				stringB.AppendLine("sWorldEvent.data.catalystBuildings ist null");
-			} else {
-				stringB.AppendLine("catalystBuildings (List<Building>):");
-				foreach (var building in sWorldEvent.data.catalystBuildings) {
-					stringB.Append(building.buildingName).Append(";");
-				}
-				stringB.AppendLine("----------------");
-			}	
-		}
 
 		//Update -> 
 		//PrintEventData 
@@ -141,271 +129,73 @@ namespace ROIData {
 				return false;
 			}
 
-			wem.TriggerStaticEvent("Starvation", wea);
-			CustomStaticEvent.CreateResearchEvent().TryTrigger();
-
-			activatedEvent = true;
+			ActivateEvents();
 
 			return true;
 		}
 
-		private void PrintEventData() {
-			if (!activatedEvent && TryActivateEvent(out var eventManager, out var eventAgent)) {
-				//Debug.Log("If::inner");
+		private void ActivateEvents() {
+			//AwaitAndExecuteActions();
+			CustomStaticEvent.CreateResearchSpeedBoostEvent().TryTrigger();
+			CustomStaticEvent.CreateResearchSpeedBoostEvent().TryTrigger();
+			//CustomStaticEvent.CreateResearchSpeedBoostEvent().TryTrigger();
+			//CustomStaticEvent.CreateDecreasedDemandAndIncreasedBuildingCostsEvent().TryTrigger();
+			//CustomStaticEvent.CreateNetworkSpeedAndDispatchCostEvent().TryTrigger();
+			//CustomStaticEvent.CreateIncreasedPollutionRateEvent().TryTrigger();
+			//CustomStaticEvent.CreatePollutionFineEvent().TryTrigger();
 
-				IEnumerable<StaticWorldEvent> activeStaticEvents = eventAgent.GetActiveStaticEvents();
-				StringBuilder stringB = new StringBuilder();
 
-				if (activeStaticEvents == null) {
-					return;
-				}
+			//Auslösen und Stoppen von Events klappt wenn nicht IsOneTimeEvent.
+		}
 
-				//Debug.Log("ForEach::outer");
-				foreach (var sWorldEvent in activeStaticEvents) {
-					//Debug.Log("ForEach::inner");
-					if (sWorldEvent == null) {
-						stringB.AppendLine("sWorldEvent ist null");
-						continue;
-					}
+		private CustomStaticEvent RevolveEvent(CustomEventType type) {
+            switch (type) {
+                case CustomEventType.IncreasedResearchSpeed: return CustomStaticEvent.CreateResearchSpeedBoostEvent();
+                case CustomEventType.PollutionFine: return CustomStaticEvent.CreatePollutionFineEvent();
+				case CustomEventType.Grant: //TODO: Add Other Event Creation Methods.
+                case CustomEventType.Fine: 
+                case CustomEventType.Upkeep: 
+                case CustomEventType.TrainShipNetworkSpeedIncrease: 
+                case CustomEventType.TrainShipDispatchCost: 
+                case CustomEventType.DemandDecrease: 
+                case CustomEventType.DemandIncrease: 
+                case CustomEventType.BuildingCostIncrease: 
+                default: return null;
+            }
+        }
 
-					AppendEventData(stringB, sWorldEvent);
-					//Debug.Log("Append::after");
-					//NullRef in diesem Abschnitt!!!!
+		private void StopEvent(CustomStaticEvent customEvent) {
 
-					if (sWorldEvent.effects == null) {
-						stringB.AppendLine("sWorldEvent.effects ist null");
-					} else {
-						stringB.AppendLine("Effects (List<WorldEventEffect>): ");
-						//Debug.Log("ForEach::outer");
-						foreach (var effect in sWorldEvent.effects) {
-							//Debug.Log("ForEach::inner");
-
-							if (effect == null) {
-								stringB.AppendLine("effect ist null");
-							} else {
-								stringB.AppendLine("----------------");
-								stringB.Append("ModifierMultiplier (float): ").Append(effect.modifierMultiplier).AppendLine(";");
-								stringB.Append("Modifier (float): ").Append(effect.modifier).AppendLine(";");
-								stringB.Append("Network (string): ").Append(effect.network).AppendLine(";");
-
-								//WorldEventEffect.region
-								if (effect.region == null) {
-									stringB.AppendLine("region ist null");
-								} else {
-									if (effect.region.regionName == null) {
-										stringB.AppendLine("effect.region.regionName ist null");
-									} else {
-										stringB.Append("Region (string): ").Append(effect.region.regionName).AppendLine(";");
-									}
-								}
-
-								
-
-								//ILists
-								GetIListContents(effect, stringB);
-
-								//WorldEventEffect.data
-								if (effect.data == null) {
-									stringB.AppendLine("effect.data ist null");
-								} else {
-									stringB.AppendLine("----------------");
-									stringB.AppendLine("Data (WorldEventEffectData): ");
-									var eData = effect.data;
-									stringB.Append("WorldEventEffectType (Enum): ").Append(eData.type).AppendLine(";")
-										.Append("WorldEffectApplyOption (Enum): ").Append(eData.whenToApply).AppendLine(",")
-										.Append("isCritical (bool): ").Append(eData.isCritical).AppendLine(",")
-										.Append("modifier (int): ").Append(eData.modifier).AppendLine(",")
-										.Append("moneyAmount (int): ").Append(eData.moneyAmount).AppendLine(",")
-										.Append("whereFilter (WorldEventEffectWhereFilter): ").Append(eData.whereFilter).AppendLine(",");
-										//.Append("productFilter: ").Append(ed.productFilter).AppendLine(",")
-										//.Append("buildingFilter: ").Append(ed.buildingFilter).AppendLine(",")
-										//.Append("recipeFilter: ").Append(ed.recipeFilter).AppendLine(",")
-										//.Append("vehicleFilter: ").Append(ed.vehicleFilter).AppendLine(",")
-										
-
-									GetProductFilter(eData.productFilter, stringB);
-									GetBuildingFilter(eData.buildingFilter, stringB);
-									GetRecipeFilter(eData.recipeFilter, stringB);
-
-									stringB.Append("networkFilter (string): ").Append(eData.networkFilter.network).AppendLine(",");
-
-									GetVehicleFilter(eData.vehicleFilter, stringB);
-
-									stringB.Append("range (int): ").Append(eData.range).AppendLine(",");
-								}
-							}
-						}
+			foreach (IWorldEventAgent worldEventAgent in GetField<List<IWorldEventAgent>>(typeof(WorldEventManager), 
+				"_worldEventAgents", ManagerBehaviour<WorldEventManager>.instance)) {
+				foreach (StaticWorldEvent item in new List<StaticWorldEvent>(worldEventAgent.GetActiveStaticEvents())) {
+                    if (item.data.eventName == customEvent.Name) {
+						worldEventAgent.EndEvent(item);
 					}
 				}
-
-				Debug.Log(stringB.ToString());
 			}
 		}
 
-		private void GetIListContents(WorldEventEffect effect, StringBuilder stringB) {
-			stringB.AppendLine("----------------");
-			if (effect.products == null) {
-				stringB.Append("effect.products ist null");
-			} else {
-				stringB.AppendLine("products (IList<ProductDefinition>):");
-				foreach (var product in effect.products) {
-					stringB.Append(product.productName).Append(";");
+        private void AwaitAndExecuteActions() {
+			//TODO: every 20 seconds, get action inputs from WebInterface
+			//Trigger
+			var receivedTrigger = 1000; //ResearchBoost
+			CustomEventType receivedKey = (CustomEventType)receivedTrigger;
+			
+			if (!EventTypeCustomEventPairs.TryGetValue(receivedKey, out CustomStaticEvent customEvent)) {
+				customEvent = RevolveEvent(receivedKey);
+				customEvent?.TryTrigger();
+
+				//only add to list when not null and not onetimevent, i.e., a Fine or Grant will not be added to the list.
+                if (customEvent != null && !customEvent.OneTimeEvent) {
+					EventTypeCustomEventPairs.Add(receivedKey, customEvent);
+					//CustomEventDebug.PrintEventData(); //Added
 				}
-			}
-
-			if (effect.buildings == null) {
-				stringB.AppendLine("effect.buildings ist null");
 			} else {
-				stringB.AppendLine("buildings (IList<Building>):");
-				foreach (var building in effect.buildings) {
-					stringB.Append(building.buildingName).Append(";");
-				}
+				StopEvent(customEvent);
+				EventTypeCustomEventPairs.Remove(receivedKey);
 			}
-
-			if (effect.vehicles == null) {
-				stringB.AppendLine("effect.vehicles ist null");
-			} else {
-				stringB.AppendLine("vehicles (IList<Vehicle>):");
-				foreach (var vehicle in effect.vehicles) {
-					stringB.Append(vehicle.vehicleName).Append(";");
-				}
-			}
-
-			if (effect.recipes == null) {
-				stringB.AppendLine("effect.recipes ist null");
-			} else {
-				stringB.AppendLine("recipes (IList<Recipe>):");
-				foreach (var recipe in effect.recipes) {
-					stringB.Append(recipe.Title).Append(";");
-				}
-			}
-		}
-
-		private void GetBuildingFilter(WorldEventBuildingFilter webf, StringBuilder sb) {
-			sb.AppendLine("----------------");
-			sb.AppendLine("BuildingFilter (WorldEventBuildingFilter): ")
-				.Append("fromAll (bool): ").Append(webf.fromAll).AppendLine(";")
-				.Append("Amound (Enum): ").Append(webf.amount).AppendLine(";");
-
-			if (webf.fromBuildings == null) {
-				Debug.Log("fromBuildings is null");
-			} else {
-				sb.AppendLine("fromBuildings (Building[]):");
-				foreach (var building in webf.fromBuildings) {
-					sb.Append(building.buildingName).Append(";");
-				}
-			}
-
-			if (webf.fromTags == null) {
-				Debug.Log("fromTags is null");
-			} else {
-				sb.AppendLine("fromTags (BuildingTag[]):");
-				foreach (var tag in webf.fromTags) {
-					sb.Append(tag.ToString()).Append(";");
-				}
-			}
-
-			if (webf.exceptBuildings == null) {
-				Debug.Log("exceptBuildings is null");
-			} else {
-				sb.AppendLine("exceptBuildings (Building[]):");
-				foreach (var building in webf.exceptBuildings) {
-					sb.Append(building.buildingName).Append(";");
-				}
-			}
-		}
-
-		private void GetRecipeFilter(WorldEventRecipeFilter werf, StringBuilder sb) {
-			sb.AppendLine("----------------");
-			sb.AppendLine("RecipeFilter (WorldEventRecipeFilter): ")
-				.Append("fromAll (bool): ").Append(werf.fromAll).AppendLine(";")
-				.Append("Amount (Enum): ").Append(werf.amount).AppendLine(";");
-
-			if (werf.fromRecipes == null) {
-				Debug.Log("fromRecipes is null");
-			} else {
-				sb.AppendLine("fromRecipes (Recipe[]):");
-				foreach (var recipe in werf.fromRecipes) {
-					sb.Append(recipe.Title).Append(";");
-				}
-			}
-
-			if (werf.resultProducts == null) {
-				Debug.Log("resultProducts is null");
-			} else {
-				sb.AppendLine("resultProducts (ProductDefinition[]):");
-				foreach (var product in werf.resultProducts) {
-					sb.Append(product.productName).Append(";");
-				}
-			}
-
-			if (werf.resultProductsTags == null) {
-				Debug.Log("resultProductsTags is null");
-			} else {
-				sb.AppendLine("resultProductsTags (ProductTag[]):");
-				foreach (var tag in werf.resultProductsTags) {
-					sb.Append(tag.ToString()).Append(";");
-				}
-			}
-		}
-
-		private void GetVehicleFilter(WorldEventVehicleFilter wevf, StringBuilder sb) {
-			sb.AppendLine("----------------");
-			sb.AppendLine("VehicleFilter (WorldEventVehicleFilter): ")
-				.Append("fromAll (bool): ").Append(wevf.fromAll).AppendLine(";")
-				.Append("Amount (Enum): ").Append(wevf.amount).AppendLine(";");
-
-			if (wevf.fromVehicles == null) {
-				Debug.Log("fromVehicles is null");
-			} else {
-				sb.AppendLine("fromVehicles (Vehicle[]):");
-				foreach (var vehicle in wevf.fromVehicles) {
-					sb.Append(vehicle.vehicleName).Append(";");
-				}
-			}
-		}
-
-		private void GetProductFilter(WorldEventProductFilter wepf, StringBuilder sb) {
-			sb.AppendLine("----------------");
-			sb.AppendLine("ProductFilter")
-				.Append("fromAll: ").Append(wepf.fromAll).AppendLine(";")
-				.Append("Amount (Enum): ").Append(wepf.amount).AppendLine(";");
-
-			if (wepf.fromProducts == null) {
-				Debug.Log("fromProducts is null");
-			} else {
-				sb.AppendLine("fromProducts (ProductDefinition[]):");
-				foreach (var pDef in wepf.fromProducts) {
-					sb.Append(pDef.productName).Append(";");
-				}
-			}
-
-			if (wepf.fromTags == null) {
-				Debug.Log("fromTags is null");
-			} else {
-				sb.AppendLine("Tags (ProductTag[]): ");
-				foreach (var tag in wepf.fromTags) {
-					sb.Append(tag.ToString()).Append(";");
-				}
-			}
-
-			if (wepf.categoryRestrictions == null) {
-				Debug.Log("categoryRestrictions is null");
-			} else {
-				sb.AppendLine("categoryRestrictions (DataCategory[]):");
-				foreach (var dCategory in wepf.categoryRestrictions) {
-					sb.Append(dCategory.categoryName);
-				}
-			}
-			if (wepf.producers == null) {
-				Debug.Log("producers is null");
-			} else {
-				sb.AppendLine("producers (Building[]):");
-				foreach (var producer in wepf.producers) {
-					sb.Append(producer.buildingName).Append(";");
-				}
-			}
-		}
+        }
 
 		private void SendData(GameDate _) {
 			SaveDataModel sdm = new SaveDataModel {

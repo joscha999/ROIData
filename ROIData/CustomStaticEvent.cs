@@ -13,6 +13,9 @@ namespace ROIData {
         private StaticWorldEventData StaticWorldEventData;
         private WorldEventCreationParams WorldEventCreationParams;
 
+        public string Name => StaticWorldEventData?.eventName ?? "N/A";
+        public bool OneTimeEvent { get; private set; }
+
         public CustomStaticEvent WithStaticWorldEventData(StaticWorldEventData staticWorldEventData)
         {
             StaticWorldEventData = staticWorldEventData;
@@ -22,6 +25,11 @@ namespace ROIData {
         public CustomStaticEvent WithWorldCreationParams(WorldEventCreationParams worldEventCreationParams)
         {
             WorldEventCreationParams = worldEventCreationParams;
+            return this;
+        }
+
+        public CustomStaticEvent IsOneTimeEvent() {
+            OneTimeEvent = true;
             return this;
         }
 
@@ -39,28 +47,171 @@ namespace ROIData {
             return wem != null && wem.TriggerStaticEvent(StaticWorldEventData, ROIDataMod.Player.worldEvents, WorldEventCreationParams);
         }
 
-        public static CustomStaticEvent CreateResearchEvent()
+        //TODO: Liste an laufenden Events
+        //TODO: TryEnd
+
+        public static CustomStaticEvent CreateResearchSpeedBoostEvent()
+        {
+            return new CustomStaticEvent()
+                .WithStaticWorldEventData(
+                    new CustomStaticEventData(
+                        new CustomDataDifficulty()
+                        //.SetMinDuration(0)
+                        //.SetMaxDuration(10)
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.ResearchSpeed, false, 10, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
+                            .Build())
+                        .Build())
+                    .WithName("ResearchBoostEvent")
+                    .WithDescription("Small research speed boost!")
+                    .WithTrigger(WorldEventTriggerMode.MANUAL)
+                    .WithWhen(-1)
+                    .Build())
+                .WithWorldCreationParams(
+                    new CustomCreationParams(false, true)
+                    .SetDifficulty(1)
+                    .SetDuration(10)
+                    .SetDurationMultiplier(1)
+                    .SetEffectMultiplier(1)
+                    .Build()
+                );
+        }
+        //Event: ResearchSpeed
+        //Event: Pollution (einer der werte)
+        //Event: Strafe für zu viel pollution
+        //Event: Grant & Fine für Zahlungen und Belohnungen
+        //Event: Upkeep
+        //Event: NetworkSpeed (bleibt bis ende erhalten), DispatchCost
+        //Event: Demand (Negativ), BuildingCost (Increase)
+        //Event: Demand (Positiv, außer auf Tiernahrung)
+
+        public static CustomStaticEvent CreateDecreasedDemandAndIncreasedBuildingCostsEvent() {
+            return new CustomStaticEvent()
+                .WithStaticWorldEventData(
+                    new CustomStaticEventData(
+                        new CustomDataDifficulty()
+                        .SetMinDuration(0)
+                        .SetMaxDuration(10)
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.Demand, false, -50, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
+                            .AddProductFilter(
+                                new CustomProductFilter(WorldEventEffectFilterAmount.All, true)
+                                .Build())
+                            .AddBuildingFilter(
+                                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, true)
+                                .Build())
+                            .Build())
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.BuildingCost, false, 50, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
+                            .AddBuildingFilter(
+                                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, true)
+                                .Build())
+                            .Build())
+                        .Build())
+                    .WithName("DecreasedDemandAndIncreasedBuildingCostsEvent")
+                    .WithDescription("Decreased demand and increased building costs!")
+                    .WithTrigger(WorldEventTriggerMode.MANUAL)
+                    .WithWhen(-1)
+                .Build())
+                .WithWorldCreationParams(
+                    new CustomCreationParams(true, true)
+                    .SetDifficulty(1)
+                    .SetDuration(1)
+                    .SetDurationMultiplier(1)
+                    .SetEffectMultiplier(1)
+                    .Build()
+                );
+        }
+
+        public static CustomStaticEvent CreateNetworkSpeedAndDispatchCostEvent()
         {
             return new CustomStaticEvent()
                 .WithStaticWorldEventData(
                     new CustomStaticEventData(
                         new CustomDataDifficulty()
                         .SetMinDuration(0)
-                        .SetMaxDuration(720)
+                        .SetMaxDuration(10)
                         .WithEffect(
-                            new CustomEffectData(WorldEventEffectType.ResearchSpeed, false, 10, 0, 0)
-                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+                            new CustomEffectData(WorldEventEffectType.NetworkSpeed, false, 50, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
+                            .Build())
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.DispatchCost, false, 50, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
                             .Build())
                         .Build())
-                    .WithName("Test")
-                    .WithDescription("Test")
+                    .WithName("NetworkSpeedAndDispatchCostEvent")
+                    .WithDescription("Increased Network Speed and Dispatch Costs!")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1)
                     .Build())
                 .WithWorldCreationParams(
                     new CustomCreationParams(true, true)
                     .SetDifficulty(1)
-                    .SetDuration(30)
+                    .SetDuration(1)
+                    .SetDurationMultiplier(1)
+                    .SetEffectMultiplier(1)
+                    .Build()
+                );
+        }
+
+
+        public static CustomStaticEvent CreateIncreasedPollutionRateEvent() {
+            return new CustomStaticEvent()
+                .WithStaticWorldEventData(
+                    new CustomStaticEventData(
+                        new CustomDataDifficulty()
+                        .SetMinDuration(0)
+                        .SetMaxDuration(10)
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.PollutionRate, false, 50, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
+                            .AddBuildingFilter(
+                                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, true)
+                                .Build())
+                            .Build())
+                        .Build())
+                    .WithName("PollutionEvent")
+                    .WithDescription("Increased pollution rate!")
+                    .WithTrigger(WorldEventTriggerMode.MANUAL)
+                    .WithWhen(-1)
+                    .Build())
+                .WithWorldCreationParams(
+                    //permanent and forceEvent
+                    new CustomCreationParams(true, true)
+                    .SetDifficulty(1)
+                    .SetDuration(1)
+                    .SetDurationMultiplier(1)
+                    .SetEffectMultiplier(1)
+                    .Build()
+                );
+        }
+        public static CustomStaticEvent CreatePollutionFineEvent() {
+            return new CustomStaticEvent()
+                .IsOneTimeEvent()
+                .WithStaticWorldEventData(
+                    new CustomStaticEventData(
+                        new CustomDataDifficulty()
+                        .SetMinDuration(0)
+                        .SetMaxDuration(10)
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.Fine, true, 1, 20000000, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
+                            .Build())
+                        .Build())
+                    .WithName("PollutionFineEvent")
+                    .WithDescription("Punished for pollution!")
+                    .WithTrigger(WorldEventTriggerMode.MANUAL)
+                    .WithWhen(-1) //-1
+                    .Build())
+                .WithWorldCreationParams(
+                    //permanent and forceEvent
+                    new CustomCreationParams(true, true)
+                    .SetDifficulty(1)
+                    .SetDuration(1)
                     .SetDurationMultiplier(1)
                     .SetEffectMultiplier(1)
                     .Build()

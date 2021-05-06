@@ -62,7 +62,7 @@ namespace ROIData.CustomFilters
             return new WorldEventBuildingFilter
             {
                 amount = Amount,
-                exceptBuildings = ExceptBuildings.ToArray(),
+                exceptBuildings = ExceptBuildings.Count == 0 ? null : ExceptBuildings.ToArray(),
                 fromAll = FromAll,
                 fromBuildings = FromBuildings.ToArray(),
                 fromTags = BuildingTags.ToArray()
