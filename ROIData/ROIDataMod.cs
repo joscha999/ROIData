@@ -137,12 +137,12 @@ namespace ROIData {
 		private void ActivateEvents() {
 			//AwaitAndExecuteActions();
 			CustomStaticEvent.CreateResearchSpeedBoostEvent().TryTrigger();
-			CustomStaticEvent.CreateResearchSpeedBoostEvent().TryTrigger();
+			//CustomStaticEvent.CreateResearchSpeedBoostEvent().TryTrigger();
 			//CustomStaticEvent.CreateResearchSpeedBoostEvent().TryTrigger();
 			//CustomStaticEvent.CreateDecreasedDemandAndIncreasedBuildingCostsEvent().TryTrigger();
 			//CustomStaticEvent.CreateNetworkSpeedAndDispatchCostEvent().TryTrigger();
 			//CustomStaticEvent.CreateIncreasedPollutionRateEvent().TryTrigger();
-			//CustomStaticEvent.CreatePollutionFineEvent().TryTrigger();
+			CustomStaticEvent.CreatePollutionFineEvent().TryTrigger();
 
 
 			//Auslösen und Stoppen von Events klappt wenn nicht IsOneTimeEvent.

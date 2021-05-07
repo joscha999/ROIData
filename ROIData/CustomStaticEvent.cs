@@ -56,26 +56,27 @@ namespace ROIData {
                 .WithStaticWorldEventData(
                     new CustomStaticEventData(
                         new CustomDataDifficulty()
-                        //.SetMinDuration(0)
+                        //.SetMinDuration(0) //min und max sind standardmäßig 30 tage (basically useless)
                         //.SetMaxDuration(10)
                         .WithEffect(
-                            new CustomEffectData(WorldEventEffectType.ResearchSpeed, false, 10, 0, 0)
-                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
+                            new CustomEffectData(WorldEventEffectType.ResearchSpeed, false, 100, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
                             .Build())
                         .Build())
                     .WithName("ResearchBoostEvent")
                     .WithDescription("Small research speed boost!")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
-                    .WithWhen(-1)
+                    .WithWhen(2) //in february?
                     .Build())
                 .WithWorldCreationParams(
-                    new CustomCreationParams(false, true)
+                    new CustomCreationParams(true, true)
                     .SetDifficulty(1)
-                    .SetDuration(10)
+                    //.SetDuration(60)
+                    .SetRegion(ROIDataMod.Player.hq.region)
                     .SetDurationMultiplier(1)
                     .SetEffectMultiplier(1)
                     .Build()
-                );
+                ); ;
         }
         //Event: ResearchSpeed
         //Event: Pollution (einer der werte)
@@ -195,8 +196,8 @@ namespace ROIData {
                 .WithStaticWorldEventData(
                     new CustomStaticEventData(
                         new CustomDataDifficulty()
-                        .SetMinDuration(0)
-                        .SetMaxDuration(10)
+                        //.SetMinDuration(0)
+                        //.SetMaxDuration(10)
                         .WithEffect(
                             new CustomEffectData(WorldEventEffectType.Fine, true, 1, 20000000, 0)
                             .SetApplyOption(WorldEventEffectApplyOption.OneTime)
@@ -205,13 +206,13 @@ namespace ROIData {
                     .WithName("PollutionFineEvent")
                     .WithDescription("Punished for pollution!")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
-                    .WithWhen(-1) //-1
+                    .WithWhen(1) //-1
                     .Build())
                 .WithWorldCreationParams(
-                    //permanent and forceEvent
-                    new CustomCreationParams(true, true)
+                    new CustomCreationParams(false, true)
                     .SetDifficulty(1)
-                    .SetDuration(1)
+                    .SetDuration(10)
+                    .SetRegion(ROIDataMod.Player.hq.region)
                     .SetDurationMultiplier(1)
                     .SetEffectMultiplier(1)
                     .Build()
