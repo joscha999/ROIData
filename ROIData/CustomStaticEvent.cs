@@ -301,6 +301,40 @@ namespace ROIData {
                 );
         }
 
+        //TODO: check if only Water dispatch costs are affected. Second filter might overwrite first.
+        public static CustomStaticEvent CreateDispactCostEvent(int modifier)
+        {
+            return new CustomStaticEvent()
+                .WithStaticWorldEventData(
+                    new CustomStaticEventData(
+                        new CustomDataDifficulty()
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.DispatchCost, false, modifier, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+                            .AddNetworkFilter(
+                                new CustomNetworkFilter(HelperClasses.CustomNetworkType.Rail)
+                                .Build())
+                            .AddNetworkFilter(
+                                new CustomNetworkFilter(HelperClasses.CustomNetworkType.Water)
+                                .Build())
+                            .Build())
+                        .Build())
+                    .WithName("DispatchCostEvent")
+                    .WithDescription("Adjusted dispatch costs for trains and ships.")
+                    .WithTrigger(WorldEventTriggerMode.MANUAL)
+                    .WithWhen(-1)
+                .Build())
+                .WithWorldCreationParams(
+                    new CustomCreationParams(true, true)
+                    .SetDifficulty(1)
+                    //.SetDuration(30)
+                    //.SetDurationMultiplier(1)
+                    .SetRegion(ROIDataMod.Player.hq.region)
+                    .SetEffectMultiplier(1)
+                    .Build()
+                );
+        }
+
 
         public static CustomStaticEvent CreateGrantEvent(int amount)
         {
@@ -314,8 +348,8 @@ namespace ROIData {
                             .SetApplyOption(WorldEventEffectApplyOption.OneTime)
                             .Build())
                         .Build())
-                    .WithName("PollutionFineEvent")
-                    .WithDescription("Punished for pollution!")
+                    .WithName("GrantEvent")
+                    .WithDescription("Granted some money!")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1) //1
                     .IsBad()
