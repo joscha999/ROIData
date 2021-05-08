@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace ROIData.HelperClasses {
     public enum CustomEventType {
-        IncreasedResearchSpeed = 1000,
+        ResearchSpeed = 1000,
         PollutionFine = 1001,
         Grant = 1002,
         Fine = 1003,
         Upkeep = 1004,
-        TrainShipNetworkSpeedIncrease = 1005,
+        TrainShipNetworkSpeed = 1005,
         TrainShipDispatchCost = 1006,
-        DemandDecrease = 1007,
-        DemandIncrease = 1008,
-        BuildingCostIncrease = 1009
+        Demand = 1007,
+        BuildingCost = 1008
     }
 }

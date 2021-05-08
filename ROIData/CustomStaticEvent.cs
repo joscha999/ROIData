@@ -47,56 +47,68 @@ namespace ROIData {
             return wem != null && wem.TriggerStaticEvent(StaticWorldEventData, ROIDataMod.Player.worldEvents, WorldEventCreationParams);
         }
 
-        //TODO: Liste an laufenden Events
-        //TODO: TryEnd
-
-        public static CustomStaticEvent CreateResearchSpeedBoostEvent()
+        public static CustomStaticEvent CreateEmptyEvent()
         {
             return new CustomStaticEvent()
                 .WithStaticWorldEventData(
                     new CustomStaticEventData(
                         new CustomDataDifficulty()
-                        //.SetMinDuration(0) //min und max sind standardmäßig 30 tage (basically useless)
-                        //.SetMaxDuration(10)
-                        .WithEffect(
-                            new CustomEffectData(WorldEventEffectType.ResearchSpeed, false, 100, 0, 0)
-                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
-                            .Build())
+                        //.WithEffect(
+                        //    new CustomEffectData(WorldEventEffectType.ResearchSpeed, false, 0, 0, 0)
+                        //    .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+                        //    .Build())
                         .Build())
-                    .WithName("ResearchBoostEvent")
-                    .WithDescription("Small research speed boost!")
+                    .WithName("EmptyEvent")
+                    .WithDescription("Task has begun!")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
-                    .WithWhen(2) //in february?
+                    .WithWhen(-1) //in february?
+                    .IsGood()
                     .Build())
                 .WithWorldCreationParams(
                     new CustomCreationParams(true, true)
                     .SetDifficulty(1)
-                    //.SetDuration(60)
+                    .SetDuration(60)
                     .SetRegion(ROIDataMod.Player.hq.region)
-                    .SetDurationMultiplier(1)
+                    //.SetDurationMultiplier(1)
                     .SetEffectMultiplier(1)
                     .Build()
                 ); ;
         }
-        //Event: ResearchSpeed
-        //Event: Pollution (einer der werte)
-        //Event: Strafe für zu viel pollution
-        //Event: Grant & Fine für Zahlungen und Belohnungen
-        //Event: Upkeep
-        //Event: NetworkSpeed (bleibt bis ende erhalten), DispatchCost
-        //Event: Demand (Negativ), BuildingCost (Increase)
-        //Event: Demand (Positiv, außer auf Tiernahrung)
 
-        public static CustomStaticEvent CreateDecreasedDemandAndIncreasedBuildingCostsEvent() {
+        public static CustomStaticEvent CreateResearchSpeedEvent(int modifier)
+        {
             return new CustomStaticEvent()
                 .WithStaticWorldEventData(
                     new CustomStaticEventData(
                         new CustomDataDifficulty()
-                        .SetMinDuration(0)
-                        .SetMaxDuration(10)
                         .WithEffect(
-                            new CustomEffectData(WorldEventEffectType.Demand, false, -50, 0, 0)
-                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
+                            new CustomEffectData(WorldEventEffectType.ResearchSpeed, false, modifier, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+                            .Build())
+                        .Build())
+                    .WithName("ResearchEvent")
+                    .WithDescription("Small research speed boost!")
+                    .WithTrigger(WorldEventTriggerMode.MANUAL)
+                    .WithWhen(-1) //in february?
+                    .Build())
+                .WithWorldCreationParams(
+                    new CustomCreationParams(true, true)
+                    .SetDifficulty(1)
+                    .SetRegion(ROIDataMod.Player.hq.region)
+                    //.SetDurationMultiplier(1)
+                    .SetEffectMultiplier(1)
+                    .Build()
+                ); ;
+        }
+
+        public static CustomStaticEvent CreateDemandEvent(int modifier) {
+            return new CustomStaticEvent()
+                .WithStaticWorldEventData(
+                    new CustomStaticEventData(
+                        new CustomDataDifficulty()
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.Demand, false, modifier, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
                             .AddProductFilter(
                                 new CustomProductFilter(WorldEventEffectFilterAmount.All, true)
                                 .Build())
@@ -104,114 +116,214 @@ namespace ROIData {
                                 new CustomBuildingFilter(WorldEventEffectFilterAmount.All, true)
                                 .Build())
                             .Build())
-                        .WithEffect(
-                            new CustomEffectData(WorldEventEffectType.BuildingCost, false, 50, 0, 0)
-                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
-                            .AddBuildingFilter(
-                                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, true)
-                                .Build())
-                            .Build())
                         .Build())
-                    .WithName("DecreasedDemandAndIncreasedBuildingCostsEvent")
-                    .WithDescription("Decreased demand and increased building costs!")
+                    .WithName("DemandEvent")
+                    .WithDescription("Adjusted Demand.")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1)
                 .Build())
                 .WithWorldCreationParams(
                     new CustomCreationParams(true, true)
                     .SetDifficulty(1)
-                    .SetDuration(1)
-                    .SetDurationMultiplier(1)
+                    //.SetDuration(1)
+                    //.SetDurationMultiplier(1)
+                    .SetRegion(ROIDataMod.Player.hq.region)
                     .SetEffectMultiplier(1)
                     .Build()
                 );
         }
 
-        public static CustomStaticEvent CreateNetworkSpeedAndDispatchCostEvent()
+        public static CustomStaticEvent CreateBuildingCostEvent(int modifier)
         {
             return new CustomStaticEvent()
                 .WithStaticWorldEventData(
                     new CustomStaticEventData(
                         new CustomDataDifficulty()
-                        .SetMinDuration(0)
-                        .SetMaxDuration(10)
                         .WithEffect(
-                            new CustomEffectData(WorldEventEffectType.NetworkSpeed, false, 50, 0, 0)
-                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
-                            .Build())
-                        .WithEffect(
-                            new CustomEffectData(WorldEventEffectType.DispatchCost, false, 50, 0, 0)
-                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
-                            .Build())
-                        .Build())
-                    .WithName("NetworkSpeedAndDispatchCostEvent")
-                    .WithDescription("Increased Network Speed and Dispatch Costs!")
-                    .WithTrigger(WorldEventTriggerMode.MANUAL)
-                    .WithWhen(-1)
-                    .Build())
-                .WithWorldCreationParams(
-                    new CustomCreationParams(true, true)
-                    .SetDifficulty(1)
-                    .SetDuration(1)
-                    .SetDurationMultiplier(1)
-                    .SetEffectMultiplier(1)
-                    .Build()
-                );
-        }
-
-
-        public static CustomStaticEvent CreateIncreasedPollutionRateEvent() {
-            return new CustomStaticEvent()
-                .WithStaticWorldEventData(
-                    new CustomStaticEventData(
-                        new CustomDataDifficulty()
-                        .SetMinDuration(0)
-                        .SetMaxDuration(10)
-                        .WithEffect(
-                            new CustomEffectData(WorldEventEffectType.PollutionRate, false, 50, 0, 0)
-                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
+                            new CustomEffectData(WorldEventEffectType.BuildingCost, false, modifier, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
                             .AddBuildingFilter(
                                 new CustomBuildingFilter(WorldEventEffectFilterAmount.All, true)
                                 .Build())
                             .Build())
                         .Build())
-                    .WithName("PollutionEvent")
-                    .WithDescription("Increased pollution rate!")
+                    .WithName("BuildingCostEvent")
+                    .WithDescription("Adjusted building costs.")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1)
-                    .Build())
+                .Build())
                 .WithWorldCreationParams(
-                    //permanent and forceEvent
                     new CustomCreationParams(true, true)
                     .SetDifficulty(1)
-                    .SetDuration(1)
-                    .SetDurationMultiplier(1)
+                    //.SetDuration(30)
+                    //.SetDurationMultiplier(1)
+                    .SetRegion(ROIDataMod.Player.hq.region)
                     .SetEffectMultiplier(1)
                     .Build()
                 );
         }
-        public static CustomStaticEvent CreatePollutionFineEvent() {
+
+        public static CustomStaticEvent CreateUpkeepEvent(int modifier)
+        {
+            return new CustomStaticEvent()
+                .WithStaticWorldEventData(
+                    new CustomStaticEventData(
+                        new CustomDataDifficulty()
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.Upkeep, false, modifier, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+                            .AddBuildingFilter(
+                                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, true)
+                                .Build())
+                            .Build())
+                        .Build())
+                    .WithName("UpkeepEvent")
+                    .WithDescription("Adjusted building upkeep.")
+                    .WithTrigger(WorldEventTriggerMode.MANUAL)
+                    .WithWhen(-1)
+                    .Build())
+                .WithWorldCreationParams(
+                    new CustomCreationParams(true, true)
+                    .SetDifficulty(1)
+                    //.SetDuration(30)
+                    //.SetDurationMultiplier(1)
+                    .SetRegion(ROIDataMod.Player.hq.region)
+                    .SetEffectMultiplier(1)
+                    .Build()
+                );
+        }
+
+        public static CustomStaticEvent CreatePollutionFineEvent(int amount) {
             return new CustomStaticEvent()
                 .IsOneTimeEvent()
                 .WithStaticWorldEventData(
                     new CustomStaticEventData(
                         new CustomDataDifficulty()
-                        //.SetMinDuration(0)
-                        //.SetMaxDuration(10)
                         .WithEffect(
-                            new CustomEffectData(WorldEventEffectType.Fine, true, 1, 20000000, 0)
+                            new CustomEffectData(WorldEventEffectType.Fine, true, 1, amount, 0)
                             .SetApplyOption(WorldEventEffectApplyOption.OneTime)
                             .Build())
                         .Build())
                     .WithName("PollutionFineEvent")
                     .WithDescription("Punished for pollution!")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
-                    .WithWhen(1) //-1
+                    .WithWhen(-1) //1
+                    .IsBad()
                     .Build())
                 .WithWorldCreationParams(
                     new CustomCreationParams(false, true)
                     .SetDifficulty(1)
-                    .SetDuration(10)
+                    .SetDuration(30)
+                    .SetRegion(ROIDataMod.Player.hq.region)
+                    .SetDurationMultiplier(1)
+                    .SetEffectMultiplier(1)
+                    .Build()
+                );
+        }
+
+        public static CustomStaticEvent CreateFineEvent(int amount)
+        {
+            return new CustomStaticEvent()
+                .IsOneTimeEvent()
+                .WithStaticWorldEventData(
+                    new CustomStaticEventData(
+                        new CustomDataDifficulty()
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.Fine, true, 1, amount, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
+                            .Build())
+                        .Build())
+                    .WithName("FineEvent")
+                    .WithDescription("Punished!")
+                    .WithTrigger(WorldEventTriggerMode.MANUAL)
+                    .WithWhen(-1) //1
+                    .IsBad()
+                    .Build())
+                .WithWorldCreationParams(
+                    new CustomCreationParams(false, true)
+                    .SetDifficulty(1)
+                    .SetDuration(30)
+                    .SetRegion(ROIDataMod.Player.hq.region)
+                    .SetDurationMultiplier(1)
+                    .SetEffectMultiplier(1)
+                    .Build()
+                );
+        }
+
+        public static CustomStaticEvent CreateNetworkSpeedEvent(int modifier)
+        {
+            return new CustomStaticEvent()
+                .WithStaticWorldEventData(
+                    new CustomStaticEventData(
+                        new CustomDataDifficulty()
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.NetworkSpeed, false, modifier, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+                            .AddNetworkFilter(
+                                new CustomNetworkFilter(HelperClasses.CustomNetworkType.Road)
+                                .Build())
+                            .Build())
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.NetworkSpeed, false, modifier, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+                            .AddNetworkFilter(
+                                new CustomNetworkFilter(HelperClasses.CustomNetworkType.Rail)
+                                .Build())
+                            .Build())
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.NetworkSpeed, false, modifier, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+                            .AddNetworkFilter(
+                                new CustomNetworkFilter(HelperClasses.CustomNetworkType.Water)
+                                .Build())
+                            .Build())
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.NetworkSpeed, false, modifier, 0, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+                            .AddNetworkFilter(
+                                new CustomNetworkFilter(HelperClasses.CustomNetworkType.Air)
+                                .Build())
+                            .Build())
+                        .Build())
+                    .WithName("NetworkSpeedEvent")
+                    .WithDescription("Adjusted network speed.")
+                    .WithTrigger(WorldEventTriggerMode.MANUAL)
+                    .WithWhen(-1)
+                .Build())
+                .WithWorldCreationParams(
+                    new CustomCreationParams(true, true)
+                    .SetDifficulty(1)
+                    //.SetDuration(30)
+                    //.SetDurationMultiplier(1)
+                    .SetRegion(ROIDataMod.Player.hq.region)
+                    .SetEffectMultiplier(1)
+                    .Build()
+                );
+        }
+
+
+        public static CustomStaticEvent CreateGrantEvent(int amount)
+        {
+            return new CustomStaticEvent()
+                .IsOneTimeEvent()
+                .WithStaticWorldEventData(
+                    new CustomStaticEventData(
+                        new CustomDataDifficulty()
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.Grant, true, 1, amount, 0)
+                            .SetApplyOption(WorldEventEffectApplyOption.OneTime)
+                            .Build())
+                        .Build())
+                    .WithName("PollutionFineEvent")
+                    .WithDescription("Punished for pollution!")
+                    .WithTrigger(WorldEventTriggerMode.MANUAL)
+                    .WithWhen(-1) //1
+                    .IsBad()
+                    .Build())
+                .WithWorldCreationParams(
+                    new CustomCreationParams(false, true)
+                    .SetDifficulty(1)
+                    .SetDuration(30)
                     .SetRegion(ROIDataMod.Player.hq.region)
                     .SetDurationMultiplier(1)
                     .SetEffectMultiplier(1)

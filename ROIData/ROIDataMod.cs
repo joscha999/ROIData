@@ -130,19 +130,22 @@ namespace ROIData {
 			}
 
 			ActivateEvents();
+			SettlementNameChanger.RenameAll();
 
 			return true;
 		}
 
 		private void ActivateEvents() {
 			//AwaitAndExecuteActions();
-			CustomStaticEvent.CreateResearchSpeedBoostEvent().TryTrigger();
+			CustomStaticEvent.CreateResearchSpeedEvent(100).TryTrigger();
 			//CustomStaticEvent.CreateResearchSpeedBoostEvent().TryTrigger();
 			//CustomStaticEvent.CreateResearchSpeedBoostEvent().TryTrigger();
 			//CustomStaticEvent.CreateDecreasedDemandAndIncreasedBuildingCostsEvent().TryTrigger();
 			//CustomStaticEvent.CreateNetworkSpeedAndDispatchCostEvent().TryTrigger();
 			//CustomStaticEvent.CreateIncreasedPollutionRateEvent().TryTrigger();
-			CustomStaticEvent.CreatePollutionFineEvent().TryTrigger();
+			CustomStaticEvent.CreatePollutionFineEvent(1_000).TryTrigger();
+			CustomStaticEvent.CreateEmptyEvent().TryTrigger();
+			CustomStaticEvent.CreateNetworkSpeedEvent(500).TryTrigger();
 
 
 			//Auslösen und Stoppen von Events klappt wenn nicht IsOneTimeEvent.
@@ -150,16 +153,15 @@ namespace ROIData {
 
 		private CustomStaticEvent RevolveEvent(CustomEventType type) {
             switch (type) {
-                case CustomEventType.IncreasedResearchSpeed: return CustomStaticEvent.CreateResearchSpeedBoostEvent();
-                case CustomEventType.PollutionFine: return CustomStaticEvent.CreatePollutionFineEvent();
-				case CustomEventType.Grant: //TODO: Add Other Event Creation Methods.
-                case CustomEventType.Fine: 
-                case CustomEventType.Upkeep: 
-                case CustomEventType.TrainShipNetworkSpeedIncrease: 
+                case CustomEventType.ResearchSpeed: return CustomStaticEvent.CreateResearchSpeedEvent(100);
+                case CustomEventType.PollutionFine: return CustomStaticEvent.CreatePollutionFineEvent(100_000);
+				case CustomEventType.Grant: return CustomStaticEvent.CreateGrantEvent(100_000);
+                case CustomEventType.Fine: return CustomStaticEvent.CreateFineEvent(100_000);
+                case CustomEventType.Upkeep: return CustomStaticEvent.CreateUpkeepEvent(50);
+                case CustomEventType.TrainShipNetworkSpeed: 
                 case CustomEventType.TrainShipDispatchCost: 
-                case CustomEventType.DemandDecrease: 
-                case CustomEventType.DemandIncrease: 
-                case CustomEventType.BuildingCostIncrease: 
+                case CustomEventType.Demand: return CustomStaticEvent.CreateDemandEvent(50);
+                case CustomEventType.BuildingCost: return CustomStaticEvent.CreateBuildingCostEvent(50);
                 default: return null;
             }
         }

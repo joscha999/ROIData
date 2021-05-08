@@ -14,12 +14,25 @@ namespace ROIData.CustomData
         private string Description;
         private int When;
         private WorldEventTriggerMode WorldEventTriggerMode;
+        private WorldEventType WorldEventType = WorldEventType.Neutral;
         private WorldEventDataDifficulty Easy;
         private List<Building> CatalystBuildings = new List<Building>();
 
         public CustomStaticEventData(WorldEventDataDifficulty easy)
         {
             Easy = easy;
+        }
+
+        public CustomStaticEventData IsGood()
+        {
+            WorldEventType = WorldEventType.Good;
+            return this;
+        }
+
+        public CustomStaticEventData IsBad()
+        {
+            WorldEventType = WorldEventType.Bad;
+            return this;
         }
 
         public CustomStaticEventData WithName(string name)
@@ -64,6 +77,7 @@ namespace ROIData.CustomData
 
             eventData.eventName = Name;
             eventData.description = Description;
+            eventData.type = WorldEventType;
             eventData.when = When;
             eventData.triggerMode = WorldEventTriggerMode;
             eventData.easy = Easy;

@@ -12,10 +12,12 @@ namespace ROIData.CustomData
         private WorldEventEffectApplyOption WorldEventEffectApplyOption;
         private WorldEventEffectWhereFilter WorldEventEffectWhereFilter;
         private WorldEventEffectType WorldEventEffectType;
+        
         private WorldEventBuildingFilter WorldEventBuildingFilter;
         private WorldEventProductFilter WorldEventProductFilter;
         private WorldEventRecipeFilter WorldEventRecipeFilter;
         private WorldEventVehicleFilter WorldEventVehicleFilter;
+        private WorldEventNetworkFilter WorldEventNetworkFilter;
         private bool Critical;
         private int Modifier;
         private int MoneyAmount;
@@ -28,6 +30,8 @@ namespace ROIData.CustomData
             MoneyAmount = moneyAmount;
             Range = range;
         }
+
+
 
         public CustomEffectData SetApplyOption(WorldEventEffectApplyOption applyOption)
         {
@@ -65,6 +69,12 @@ namespace ROIData.CustomData
             return this;
         }
 
+        public CustomEffectData AddNetworkFilter(WorldEventNetworkFilter networkFilter)
+        {
+            WorldEventNetworkFilter = networkFilter;
+            return this;
+        }
+
         public WorldEventEffectData Build()
         {
             return new WorldEventEffectData
@@ -73,7 +83,7 @@ namespace ROIData.CustomData
                 isCritical = Critical,
                 modifier = Modifier,
                 moneyAmount = MoneyAmount,
-                networkFilter = new WorldEventNetworkFilter(),
+                networkFilter = WorldEventNetworkFilter ?? new WorldEventNetworkFilter(),
                 productFilter = WorldEventProductFilter,
                 range = Range,
                 recipeFilter = WorldEventRecipeFilter,
