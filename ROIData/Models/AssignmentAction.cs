@@ -29,14 +29,14 @@ namespace ROIData.Models {
 		DisplayMessage = 6,
 
 		//Event Triggers 1000..
-		IncreasedResearchSpeed = 1000,
+		ResearchSpeed = 1000,
 		PollutionFine = 1001,
 		Grant = 1002,
 		Fine = 1003,
 		Upkeep = 1004,
-		TrainShipNetworkSpeedIncrease = 1005,
+		TrainShipNetworkSpeed = 1005,
 		TrainShipDispatchCost = 1006,
 		Demand = 1007, //Value is int modifier
-		BuildingCostIncrease = 1008,
+		BuildingCost = 1008,
 	}
 }

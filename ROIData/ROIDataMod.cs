@@ -87,7 +87,7 @@ namespace ROIData {
 				alreadySubscribed = true;
 			}
 
-			
+			//TODO: replace this with: WebConnectionHandler.Update();
 			if (!activatedEvent && TryActivateEvent(out var eventManager, out var eventAgent)) {
 				activatedEvent = true;
 			}
@@ -210,10 +210,6 @@ namespace ROIData {
 				EventTypeCustomEventPairs.Remove(receivedKey);
 			}
         }
-
-
-
-		
 
 		//private void UpdateCanAdvanceTime() {
 		//	TimeManager timeManager = ManagerBehaviour<TimeManager>.instance;
