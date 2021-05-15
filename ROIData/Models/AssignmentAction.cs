@@ -38,5 +38,6 @@ namespace ROIData.Models {
 		TrainShipDispatchCost = 1006,
 		Demand = 1007, //Value is int modifier
 		BuildingCost = 1008,
+		END_EVENT_BLOCK = 1009
 	}
 }

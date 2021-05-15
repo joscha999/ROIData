@@ -150,14 +150,15 @@ namespace ROIData {
 			//CustomStaticEvent.CreateNetworkSpeedAndDispatchCostEvent().TryTrigger();
 			//CustomStaticEvent.CreateIncreasedPollutionRateEvent().TryTrigger();
 			//CustomStaticEvent.CreatePollutionFineEvent(1_000).TryTrigger();
-			CustomStaticEvent.CreateEmptyEvent().TryTrigger();
-			CustomStaticEvent.CreateNetworkSpeedEvent(500).TryTrigger();
-			CustomStaticEvent.CreateDispactCostEvent(5000).TryTrigger();
-			//new
-			CustomStaticEvent.CreateGrantEvent(150_000).TryTrigger();
-			CustomStaticEvent.CreateFineEvent(100_000).TryTrigger();
-			CustomStaticEvent.CreateUpkeepEvent(500).TryTrigger();
-			CustomStaticEvent.CreateBuildingCostEvent(500).TryTrigger();
+			CustomStaticEvent.CreateMessageEvent("Hello World").TryTrigger();
+			CustomStaticEvent.CreateDemandEvent(new EventParams.DemandEventParameters("-50,Potato,Marbles")).TryTrigger();
+			//CustomStaticEvent.CreateNetworkSpeedEvent(500).TryTrigger();
+			//CustomStaticEvent.CreateDispactCostEvent(5000).TryTrigger();
+			////new
+			//CustomStaticEvent.CreateGrantEvent(150_000).TryTrigger();
+			//CustomStaticEvent.CreateFineEvent(100_000).TryTrigger();
+			//CustomStaticEvent.CreateUpkeepEvent(500).TryTrigger();
+			//CustomStaticEvent.CreateBuildingCostEvent(500).TryTrigger();
 
 
 			//Auslösen und Stoppen von Events klappt wenn nicht IsOneTimeEvent.
@@ -172,7 +173,7 @@ namespace ROIData {
                 case CustomEventType.Upkeep: return CustomStaticEvent.CreateUpkeepEvent(50);
                 case CustomEventType.TrainShipNetworkSpeed: return CustomStaticEvent.CreateNetworkSpeedEvent(500);
                 case CustomEventType.TrainShipDispatchCost: return CustomStaticEvent.CreateDispactCostEvent(500);
-                case CustomEventType.Demand: return CustomStaticEvent.CreateDemandEvent(50);
+                case CustomEventType.Demand: return CustomStaticEvent.CreateDemandEvent(new EventParams.DemandEventParameters("-50,Potato,Marbles"));
                 case CustomEventType.BuildingCost: return CustomStaticEvent.CreateBuildingCostEvent(50);
                 default: return null;
             }

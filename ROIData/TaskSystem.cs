@@ -11,75 +11,94 @@ namespace ROIData
 {
     public static class TaskSystem
     {
-        //RealTimeSinceTaskStart Field (float)
-        private static float RealTimeSinceTaskStart;
         //CurrentTaskID field (aktuell laufenden aufgabe)
         private static AssignmentTask CurrentTask;
         //Übergeordnete Liste an Aufgaben
-        private static List<AssignmentTask> TotalTasks = new List<AssignmentTask>();
+        private static Dictionary<int, AssignmentTask> AllTasks = new Dictionary<int, AssignmentTask>();
 
-        public static Dictionary<AssignmentActionType, CustomStaticEvent> EventTypeCustomEventPairs
+        private static Dictionary<AssignmentActionType, CustomStaticEvent> EventTypeCustomEventPairs
             = new Dictionary<AssignmentActionType, CustomStaticEvent>();
 
         public static void ReceiveTasks(List<AssignmentTask> tasks)
         {
-            //Liste mit Daten füllen (ist da ein neuer task drin)
-            foreach (var task in tasks) {
-                if (!TotalTasks.Contains(task)) {
-                    TotalTasks.Add(task);
-                } else { //Tasks aus tasks ist in TotalTasks enthalten
-                    foreach (var action in task.Actions) {
-                        if (!task.Actions.Contains(action)) {
-                            //TODO: ist in der task selbst eine neue action enthalten? ist die action id bereits vorhanden?
-                        }
-                    }
+            foreach (var task in tasks)
+            {
+                if (AllTasks.TryGetValue(task.ID, out var existingTask))
+                {
+                    UpdateTask(existingTask, task);
+                } else
+                {
+                    AllTasks.Add(task.ID, task);
                 }
-            } 
+            }
+        }
+
+        private static void UpdateTask(AssignmentTask existing, AssignmentTask received)
+        {
+            foreach (var item in received.Actions)
+            {
+                if (!existing.Actions.Any(e => e.ID == item.ID))
+                {
+                    existing.Actions.Add(item);
+                }
+            }
         }
 
         //TODO: Methode aufrufen. Wo? Logik so korrekt?
         public static void Update() {
-            //- realtimesincetaskstart += time.unscaleddeltatime (um sachen in der aufgabe zeitlich zu steuern)
-            RealTimeSinceTaskStart += Time.unscaledDeltaTime; //TODO: richtig so?
+            UpdateTasks();
+            UpdateActions();
+        }
 
-            foreach (var task in TotalTasks) {
+        private static void UpdateTasks()
+        {
+            foreach (var task in AllTasks.Values)
+            {
                 //wurde die utc starttime überschritten wenn kein task läuft -> task starten (id setzen, bzw task speichern)
-                if (task.Started == false && RealTimeSinceTaskStart > task.UTCStart.Second) {
+                if (!task.Started && DateTimeOffset.UtcNow >= task.UTCStart)
+                {
                     //Task starten
                     CurrentTask = task;
                     task.Started = true;
-                    
-                    if (CurrentTask.ID != 0) {
-                        //wenn current task id nicht 0 -> actions prüfen (noch nicht ausgeführt aber schon über die zeit, dann ausführen)
-                        foreach (var action in CurrentTask.Actions) {
-                            if (action.Started == false && RealTimeSinceTaskStart > action.SecondsFromStart) { //TODO: hier ohne unscaled?
-                                HandleAction(action);
-                                action.Started = true;
-                            }
-                        }
-                    }
+                    task.UnscaledTimeStart = Time.realtimeSinceStartup;
+                }
+            }
+        }
+
+        private static void UpdateActions()
+        {
+            if (CurrentTask == null) 
+                return;
+
+            //wenn current task id nicht 0 -> actions prüfen (noch nicht ausgeführt aber schon über die zeit, dann ausführen)
+            foreach (var action in CurrentTask.Actions)
+            {
+                if (!action.Started && CurrentTask.TimeSinceStart >= action.SecondsFromStart)
+                { //TODO: hier ohne unscaled?
+                    HandleAction(action);
+                    action.Started = true;
                 }
             }
         }
 
         //TODO: ist das so okay?
         public static void HandleAction(AssignmentAction action) {
-            AssignmentActionType receivedKey = action.Type;
-            var number = (int)receivedKey;
-
-            //from 1 - 6: call HandleControl
-            if (number >= 1 && number <= 99) {
-                HandleControl(receivedKey);
-            //from 1000 - 1008: call HandleEvent
-            } else if (number >= 1000 && number <= 1008) {
-                HandleEvent(receivedKey);
-            }  
+            if (action.Type > AssignmentActionType.None 
+                && action.Type <= AssignmentActionType.DisplayMessage)
+            {
+                HandleControl(action.Type, action.Value);
+            }
+            else if (action.Type >= AssignmentActionType.ResearchSpeed 
+                && action.Type < AssignmentActionType.END_EVENT_BLOCK)
+            {
+                HandleEvent(action.Type, action.Value);
+            } 
         }
 
         //Methode HandleEvent (von drüben hierhier kopieren)
-        private static void HandleEvent(AssignmentActionType type) {
+        private static void HandleEvent(AssignmentActionType type, string value) {
             if (!EventTypeCustomEventPairs.TryGetValue(type, out CustomStaticEvent customEvent)) {
-                customEvent = RevolveEvent(type);
+                customEvent = RevolveEvent(type, value);
                 customEvent?.TryTrigger();
 
                 //only add to list when not null and not onetimevent, i.e., a Fine or Grant will not be added to the list.
@@ -93,22 +112,42 @@ namespace ROIData
         }
 
         //Method HandleControl
-        private static void HandleControl(AssignmentActionType type) {
-            //do something
+        private static void HandleControl(AssignmentActionType type, string value) {
+            switch (type)
+            {
+                case AssignmentActionType.None:
+                    break;
+                case AssignmentActionType.TaskStart:
+                    break;
+                case AssignmentActionType.TaskEnd:
+                    break;
+                case AssignmentActionType.Pause:
+                    break;
+                case AssignmentActionType.Unpause:
+                    break;
+                case AssignmentActionType.CreateSave:
+                    break;
+                case AssignmentActionType.DisplayMessage: //TODO: MessageEventParameters (zwei Strings)
+                    HandleEvent(type, value);
+                    break;
+                default:
+                    break;
+            }
         }
 
         //TODO: Add Value conversion.
-        private static CustomStaticEvent RevolveEvent(AssignmentActionType type) {
+        private static CustomStaticEvent RevolveEvent(AssignmentActionType type, string value) {
             switch (type) {
-                case AssignmentActionType.ResearchSpeed: return CustomStaticEvent.CreateResearchSpeedEvent(100);
-                case AssignmentActionType.PollutionFine: return CustomStaticEvent.CreatePollutionFineEvent(100_000);
-                case AssignmentActionType.Grant: return CustomStaticEvent.CreateGrantEvent(100_000);
-                case AssignmentActionType.Fine: return CustomStaticEvent.CreateFineEvent(100_000);
-                case AssignmentActionType.Upkeep: return CustomStaticEvent.CreateUpkeepEvent(50);
-                case AssignmentActionType.TrainShipNetworkSpeed: return CustomStaticEvent.CreateNetworkSpeedEvent(500);
-                case AssignmentActionType.TrainShipDispatchCost: return CustomStaticEvent.CreateDispactCostEvent(500);
-                case AssignmentActionType.Demand: return CustomStaticEvent.CreateDemandEvent(50);
-                case AssignmentActionType.BuildingCost: return CustomStaticEvent.CreateBuildingCostEvent(50);
+                case AssignmentActionType.ResearchSpeed: return CustomStaticEvent.CreateResearchSpeedEvent(int.Parse(value));
+                case AssignmentActionType.PollutionFine: return CustomStaticEvent.CreatePollutionFineEvent(int.Parse(value));
+                case AssignmentActionType.Grant: return CustomStaticEvent.CreateGrantEvent(int.Parse(value));
+                case AssignmentActionType.Fine: return CustomStaticEvent.CreateFineEvent(int.Parse(value)); //TODO: IntStringEventParameter? (Grant, Fine)
+                case AssignmentActionType.Upkeep: return CustomStaticEvent.CreateUpkeepEvent(int.Parse(value));
+                case AssignmentActionType.TrainShipNetworkSpeed: return CustomStaticEvent.CreateNetworkSpeedEvent(int.Parse(value));
+                case AssignmentActionType.TrainShipDispatchCost: return CustomStaticEvent.CreateDispactCostEvent(int.Parse(value));
+                case AssignmentActionType.Demand: return CustomStaticEvent.CreateDemandEvent(new EventParams.DemandEventParameters(value));
+                case AssignmentActionType.BuildingCost: return CustomStaticEvent.CreateBuildingCostEvent(int.Parse(value));
+                case AssignmentActionType.DisplayMessage: return CustomStaticEvent.CreateMessageEvent(value);
                 default: return null;
             }
         }

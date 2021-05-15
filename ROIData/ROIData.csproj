@@ -78,6 +78,8 @@
     <Compile Include="CustomFilters\CustomVehicleFilter.cs" />
     <Compile Include="DemandSatisfactionCalculator.cs" />
     <Compile Include="Date.cs" />
+    <Compile Include="EventParams\DemandEventParameters.cs" />
+    <Compile Include="EventParams\EventParameters.cs" />
     <Compile Include="HelperClasses\CustomEventType.cs" />
     <Compile Include="HelperClasses\CustomNetworkType.cs" />
     <Compile Include="HelperClasses\CustomProductDefiniton.cs" />

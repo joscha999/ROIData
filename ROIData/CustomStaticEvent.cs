@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ProjectAutomata;
 using ROIData.CustomData;
 using ROIData.CustomFilters;
+using ROIData.EventParams;
 using UnityEngine;
 
 namespace ROIData {
@@ -47,25 +48,21 @@ namespace ROIData {
             return wem != null && wem.TriggerStaticEvent(StaticWorldEventData, ROIDataMod.Player.worldEvents, WorldEventCreationParams);
         }
 
-        public static CustomStaticEvent CreateEmptyEvent()
+        public static CustomStaticEvent CreateMessageEvent(string message)
         {
             return new CustomStaticEvent()
                 .WithStaticWorldEventData(
                     new CustomStaticEventData(
                         new CustomDataDifficulty()
-                        //.WithEffect(
-                        //    new CustomEffectData(WorldEventEffectType.ResearchSpeed, false, 0, 0, 0)
-                        //    .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
-                        //    .Build())
                         .Build())
-                    .WithName("EmptyEvent")
-                    .WithDescription("Task has begun!")
+                    .WithName("Nachtricht")
+                    .WithDescription(message)
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1) //in february?
                     .IsGood()
                     .Build())
                 .WithWorldCreationParams(
-                    new CustomCreationParams(true, true)
+                    new CustomCreationParams(false, true)
                     .SetDifficulty(1)
                     .SetDuration(60)
                     .SetRegion(ROIDataMod.Player.hq.region)
@@ -86,8 +83,8 @@ namespace ROIData {
                             .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
                             .Build())
                         .Build())
-                    .WithName("ResearchEvent")
-                    .WithDescription("Small research speed boost!")
+                    .WithName("Veränderte Forschungsgeschwindigkeit")
+                    .WithDescription(modifier >= 0 ? "Forschungsgeschwindigkeit erhöht." : "Forschungsgeschwindigkeit verringert.")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1) //in february?
                     .Build())
@@ -101,13 +98,13 @@ namespace ROIData {
                 ); ;
         }
 
-        public static CustomStaticEvent CreateDemandEvent(int modifier) {
+        public static CustomStaticEvent CreateDemandEvent(DemandEventParameters parameter) {
             return new CustomStaticEvent()
                 .WithStaticWorldEventData(
                     new CustomStaticEventData(
                         new CustomDataDifficulty()
                         .WithEffect(
-                            new CustomEffectData(WorldEventEffectType.Demand, false, modifier, 0, 0)
+                            new CustomEffectData(WorldEventEffectType.Demand, false, parameter.Modifier, 0, 0)
                             .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
                             .AddProductFilter(
                                 new CustomProductFilter(WorldEventEffectFilterAmount.All, true)
@@ -117,13 +114,17 @@ namespace ROIData {
                                 .Build())
                             .Build())
                         .Build())
-                    .WithName("DemandEvent")
-                    .WithDescription("Adjusted Demand.")
+                    .WithName("Veränderte Nachfrage")
+                    .WithDescription(parameter.Modifier >= 0 ? "Produktnachfrage erhöht." : "Produktnachfrage verringert.")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1)
                 .Build())
                 .WithWorldCreationParams(
                     new CustomCreationParams(true, true)
+                    .WithBuildSetting(
+                        new CustomBuildSettings()
+                        .WithProducts(parameter.Products)
+                        .Build())
                     .SetDifficulty(1)
                     //.SetDuration(1)
                     //.SetDurationMultiplier(1)
@@ -147,8 +148,8 @@ namespace ROIData {
                                 .Build())
                             .Build())
                         .Build())
-                    .WithName("BuildingCostEvent")
-                    .WithDescription("Adjusted building costs.")
+                    .WithName("Veränderte Gebäudekosten")
+                    .WithDescription(modifier >= 0 ? "Gebäudekosten erhöht." : "Gebäudekosten verringert.")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1)
                 .Build())
@@ -177,8 +178,8 @@ namespace ROIData {
                                 .Build())
                             .Build())
                         .Build())
-                    .WithName("UpkeepEvent")
-                    .WithDescription("Adjusted building upkeep.")
+                    .WithName("Veränderte Instandhaltungskosten")
+                    .WithDescription(modifier >= 0 ? "Instandhaltungskosten erhöht." : "Instandhaltungskosten verringert.")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1)
                     .Build())
@@ -204,8 +205,8 @@ namespace ROIData {
                             .SetApplyOption(WorldEventEffectApplyOption.OneTime)
                             .Build())
                         .Build())
-                    .WithName("PollutionFineEvent")
-                    .WithDescription("Punished for pollution!")
+                    .WithName("[Strafe] Umweltverschmutzung")
+                    .WithDescription("Strafe aufgrund erhöhter Emissionswerte.")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1) //1
                     .IsBad()
@@ -233,8 +234,8 @@ namespace ROIData {
                             .SetApplyOption(WorldEventEffectApplyOption.OneTime)
                             .Build())
                         .Build())
-                    .WithName("FineEvent")
-                    .WithDescription("Punished!")
+                    .WithName("[Strafe] Personalisierte Strafe")
+                    .WithDescription("Sie haben gegen eine Regel verstoßen.")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1) //1
                     .IsBad()
@@ -285,8 +286,8 @@ namespace ROIData {
                                 .Build())
                             .Build())
                         .Build())
-                    .WithName("NetworkSpeedEvent")
-                    .WithDescription("Adjusted network speed.")
+                    .WithName("Veränderte Fahrzeuggeschwindigkeit")
+                    .WithDescription(modifier >= 0 ? "Fahrzeuggeschwindigkeit erhöht." : "Fahrzeuggeschwindigkeit verringert")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1)
                 .Build())
@@ -319,8 +320,8 @@ namespace ROIData {
                                 .Build())
                             .Build())
                         .Build())
-                    .WithName("DispatchCostEvent")
-                    .WithDescription("Adjusted dispatch costs for trains and ships.")
+                    .WithName("Veränderte Fahrtkosten")
+                    .WithDescription(modifier >= 0? "Fahrtkosten erhöht." : "Fahrtkosten verringert.")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1)
                 .Build())
@@ -335,7 +336,6 @@ namespace ROIData {
                 );
         }
 
-
         public static CustomStaticEvent CreateGrantEvent(int amount)
         {
             return new CustomStaticEvent()
@@ -348,8 +348,8 @@ namespace ROIData {
                             .SetApplyOption(WorldEventEffectApplyOption.OneTime)
                             .Build())
                         .Build())
-                    .WithName("GrantEvent")
-                    .WithDescription("Granted some money!")
+                    .WithName("[Belohnung] Finanzieller Zuschuss")
+                    .WithDescription("Finanziellen Zuschuss erhalten.")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1) //1
                     .IsBad()
@@ -368,15 +368,8 @@ namespace ROIData {
         public static void CreateEvent() {
             StaticWorldEvent swe = new StaticWorldEvent();
             WorldEventEffect wee = new WorldEventEffect();
-            //StaticWorldEventData staticWorldEventData = ScriptableObject.CreateInstance<StaticWorldEventData>();
             WorldEventEffectData weed = new WorldEventEffectData();
-            
 
-            //var listOfProducts = new List<ProductDefinition>();
-            //var listOfBuildings = new List<Building>();
-            //var listOfVehicles = new List<Vehicle>();
-            //var listOfRecipes = new List<Recipe>();
-            //var listOfDataCategories = new List<DataCategory>();
             var listOfBuildingTags = new List<BuildingTag> {
                 GameData.instance.GetAsset<BuildingTag>("Factory")
             };
