@@ -97,6 +97,7 @@ namespace ROIData
             //do something
         }
 
+        //TODO: Add Value conversion.
         private static CustomStaticEvent RevolveEvent(AssignmentActionType type) {
             switch (type) {
                 case AssignmentActionType.ResearchSpeed: return CustomStaticEvent.CreateResearchSpeedEvent(100);
