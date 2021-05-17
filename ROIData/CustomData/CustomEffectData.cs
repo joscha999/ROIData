@@ -31,8 +31,6 @@ namespace ROIData.CustomData
             Range = range;
         }
 
-
-
         public CustomEffectData SetApplyOption(WorldEventEffectApplyOption applyOption)
         {
             WorldEventEffectApplyOption = applyOption;

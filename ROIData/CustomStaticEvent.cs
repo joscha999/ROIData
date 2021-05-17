@@ -17,6 +17,40 @@ namespace ROIData {
         public string Name => StaticWorldEventData?.eventName ?? "N/A";
         public bool OneTimeEvent { get; private set; }
 
+        public static IntProductEventParameters ProductPriceEventData = new IntProductEventParameters("100,Telephone,Marbles,Burgers");
+        public static IntProductEventParameters ProductDemandEventData = new IntProductEventParameters("100,Telephone,Marbles,Burgers");
+        public static int ResearchSpeedBoost = 100;
+
+        public static WorldEventEffectData ResearchBoostEvent = new CustomEffectData(WorldEventEffectType.ResearchSpeed, false, ResearchSpeedBoost, 0, 0)
+            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+            .Build();
+
+        public static WorldEventEffectData ProductPriceEvent = new CustomEffectData(WorldEventEffectType.ProductPrice, false, ProductPriceEventData.Modifier, 0, 0)
+            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+            .AddProductFilter(
+                new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
+                .WithProducts(ProductPriceEventData.Products)
+                .Build())
+            .AddBuildingFilter(
+                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
+                .Build())
+            .Build();
+
+        public static WorldEventEffectData ProductDemandEvent = new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData.Modifier, 0, 0)
+            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+            .AddProductFilter(
+                new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
+                .WithProducts(ProductDemandEventData.Products)
+                .Build())
+            .AddBuildingFilter(
+                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
+                .Build())
+            .Build();
+
+        public static List<WorldEventEffectData> WorldEventEffects = new List<WorldEventEffectData> {
+            ResearchBoostEvent, ProductPriceEvent, ProductDemandEvent
+        };
+
         public CustomStaticEvent WithStaticWorldEventData(StaticWorldEventData staticWorldEventData)
         {
             StaticWorldEventData = staticWorldEventData;
@@ -48,15 +82,37 @@ namespace ROIData {
             return wem != null && wem.TriggerStaticEvent(StaticWorldEventData, ROIDataMod.Player.worldEvents, WorldEventCreationParams);
         }
 
-        public static CustomStaticEvent CreateMessageEvent(string message)
+        public static CustomStaticEvent CreateLongTermEvent() {
+            return new CustomStaticEvent()
+                .WithStaticWorldEventData(
+                    new CustomStaticEventData(
+                        new CustomDataDifficulty()
+                        .WithEffects(
+                            WorldEventEffects)
+                        .Build())
+                    .WithName("Einstellungen")
+                    .WithDescription("Für die Gesamtdauer der Aufgaben ist die Forschungsgeschwindigkeit erhöht. Weiterhin sind Nachfrage und Preise für einige Produkte angepasst.")
+                    .WithTrigger(WorldEventTriggerMode.MANUAL)
+                    .WithWhen(-1)
+                    .Build())
+                .WithWorldCreationParams(
+                    new CustomCreationParams(true, true)
+                    .SetDifficulty(1)
+                    .SetRegion(ROIDataMod.Player.hq.region)
+                    .SetEffectMultiplier(1)
+                    .Build()
+                );
+        }
+
+        public static CustomStaticEvent CreateMessageEvent(MessageEventParameters parameters)
         {
             return new CustomStaticEvent()
                 .WithStaticWorldEventData(
                     new CustomStaticEventData(
                         new CustomDataDifficulty()
                         .Build())
-                    .WithName("Nachtricht")
-                    .WithDescription(message)
+                    .WithName(parameters.Title)
+                    .WithDescription(parameters.Description)
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1) //in february?
                     .IsGood()
@@ -69,7 +125,7 @@ namespace ROIData {
                     //.SetDurationMultiplier(1)
                     .SetEffectMultiplier(1)
                     .Build()
-                ); ;
+                );
         }
 
         public static CustomStaticEvent CreateResearchSpeedEvent(int modifier)
@@ -93,42 +149,6 @@ namespace ROIData {
                     .SetDifficulty(1)
                     .SetRegion(ROIDataMod.Player.hq.region)
                     //.SetDurationMultiplier(1)
-                    .SetEffectMultiplier(1)
-                    .Build()
-                ); ;
-        }
-
-        public static CustomStaticEvent CreateDemandEvent(DemandEventParameters parameter) {
-            return new CustomStaticEvent()
-                .WithStaticWorldEventData(
-                    new CustomStaticEventData(
-                        new CustomDataDifficulty()
-                        .WithEffect(
-                            new CustomEffectData(WorldEventEffectType.Demand, false, parameter.Modifier, 0, 0)
-                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
-                            .AddProductFilter(
-                                new CustomProductFilter(WorldEventEffectFilterAmount.All, true)
-                                .Build())
-                            .AddBuildingFilter(
-                                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, true)
-                                .Build())
-                            .Build())
-                        .Build())
-                    .WithName("Veränderte Nachfrage")
-                    .WithDescription(parameter.Modifier >= 0 ? "Produktnachfrage erhöht." : "Produktnachfrage verringert.")
-                    .WithTrigger(WorldEventTriggerMode.MANUAL)
-                    .WithWhen(-1)
-                .Build())
-                .WithWorldCreationParams(
-                    new CustomCreationParams(true, true)
-                    .WithBuildSetting(
-                        new CustomBuildSettings()
-                        .WithProducts(parameter.Products)
-                        .Build())
-                    .SetDifficulty(1)
-                    //.SetDuration(1)
-                    //.SetDurationMultiplier(1)
-                    .SetRegion(ROIDataMod.Player.hq.region)
                     .SetEffectMultiplier(1)
                     .Build()
                 );
@@ -222,7 +242,7 @@ namespace ROIData {
                 );
         }
 
-        public static CustomStaticEvent CreateFineEvent(int amount)
+        public static CustomStaticEvent CreateFineEvent(IntStringEventParameters parameters)
         {
             return new CustomStaticEvent()
                 .IsOneTimeEvent()
@@ -230,12 +250,12 @@ namespace ROIData {
                     new CustomStaticEventData(
                         new CustomDataDifficulty()
                         .WithEffect(
-                            new CustomEffectData(WorldEventEffectType.Fine, true, 1, amount, 0)
+                            new CustomEffectData(WorldEventEffectType.Fine, true, 1, parameters.Amount, 0)
                             .SetApplyOption(WorldEventEffectApplyOption.OneTime)
                             .Build())
                         .Build())
                     .WithName("[Strafe] Personalisierte Strafe")
-                    .WithDescription("Sie haben gegen eine Regel verstoßen.")
+                    .WithDescription(parameters.Message)
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1) //1
                     .IsBad()
@@ -336,7 +356,7 @@ namespace ROIData {
                 );
         }
 
-        public static CustomStaticEvent CreateGrantEvent(int amount)
+        public static CustomStaticEvent CreateGrantEvent(IntStringEventParameters parameters)
         {
             return new CustomStaticEvent()
                 .IsOneTimeEvent()
@@ -344,12 +364,12 @@ namespace ROIData {
                     new CustomStaticEventData(
                         new CustomDataDifficulty()
                         .WithEffect(
-                            new CustomEffectData(WorldEventEffectType.Grant, true, 1, amount, 0)
+                            new CustomEffectData(WorldEventEffectType.Grant, true, 1, parameters.Amount, 0)
                             .SetApplyOption(WorldEventEffectApplyOption.OneTime)
                             .Build())
                         .Build())
                     .WithName("[Belohnung] Finanzieller Zuschuss")
-                    .WithDescription("Finanziellen Zuschuss erhalten.")
+                    .WithDescription(parameters.Message)
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1) //1
                     .IsBad()
@@ -360,6 +380,82 @@ namespace ROIData {
                     .SetDuration(30)
                     .SetRegion(ROIDataMod.Player.hq.region)
                     .SetDurationMultiplier(1)
+                    .SetEffectMultiplier(1)
+                    .Build()
+                );
+        }
+
+        public static CustomStaticEvent CreateProductPriceEvent(IntProductEventParameters parameters) {
+            return new CustomStaticEvent()
+                .WithStaticWorldEventData(
+                    new CustomStaticEventData(
+                        new CustomDataDifficulty()
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.ProductPrice, false, parameters.Modifier, 0, 0)
+                            //.AddWhereFilter(WorldEventEffectWhereFilter.World)
+                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+                            .AddProductFilter(
+                                new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
+                                .WithProducts(parameters.Products)
+                                .Build())
+                            .AddBuildingFilter(
+                                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
+                                .Build())
+                            .Build())
+                        .Build())
+                    .WithName("Veränderter Preis")
+                    .WithDescription(parameters.Modifier >= 0 ? "Preis erhöht." : "Preis verringert.")
+                    .WithTrigger(WorldEventTriggerMode.MANUAL)
+                    .WithWhen(-1)
+                .Build())
+                .WithWorldCreationParams(
+                    new CustomCreationParams(true, true)
+                    .WithBuildSetting(
+                        new CustomBuildSettings()
+                        .WithProducts(parameters.Products)
+                        .Build())
+                    .SetDifficulty(1)
+                    //.SetDuration(1)
+                    //.SetDurationMultiplier(1)
+                    .SetRegion(ROIDataMod.Player.hq.region)
+                    .SetEffectMultiplier(1)
+                    .Build()
+                );
+        }
+
+        public static CustomStaticEvent CreateDemandEvent(IntProductEventParameters parameters) {
+            return new CustomStaticEvent()
+                .WithStaticWorldEventData(
+                    new CustomStaticEventData(
+                        new CustomDataDifficulty()
+                        .WithEffect(
+                            new CustomEffectData(WorldEventEffectType.Demand, false, parameters.Modifier, 0, 0)
+                            //.AddWhereFilter(WorldEventEffectWhereFilter.World)
+                            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+                            .AddProductFilter(
+                                new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
+                                .WithProducts(parameters.Products)
+                                .Build())
+                            .AddBuildingFilter(
+                                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
+                                .Build())
+                            .Build())
+                        .Build())
+                    .WithName("Veränderte Nachfrage")
+                    .WithDescription(parameters.Modifier >= 0 ? "Produktnachfrage erhöht." : "Produktnachfrage verringert.")
+                    .WithTrigger(WorldEventTriggerMode.MANUAL)
+                    .WithWhen(-1)
+                .Build())
+                .WithWorldCreationParams(
+                    new CustomCreationParams(true, true)
+                    .WithBuildSetting(
+                        new CustomBuildSettings()
+                        .WithProducts(parameters.Products)
+                        .Build())
+                    .SetDifficulty(1)
+                    //.SetDuration(1)
+                    //.SetDurationMultiplier(1)
+                    .SetRegion(ROIDataMod.Player.hq.region)
                     .SetEffectMultiplier(1)
                     .Build()
                 );

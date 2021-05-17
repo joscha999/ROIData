@@ -92,21 +92,12 @@ namespace ROIData {
 				activatedEvent = true;
 			}
 
-			WebConnectionHandler.Update();
+			//WebConnectionHandler.Update();
 
 			//Unpause time
 			//UpdateCanAdvanceTime();
 		}
 
-        private void GetRequest()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        //Update -> 
-        //PrintEventData 
-        //-> ActivateEvent -> AppendEventData
         private bool TryActivateEvent(out WorldEventManager wem, out WorldEventAgent wea) {
 			wea = null;
 			wem = ManagerBehaviour<WorldEventManager>.instance;
@@ -135,45 +126,32 @@ namespace ROIData {
 				return false;
 			}
 
-			ActivateEvents();
-			SettlementNameChanger.RenameAll();
+            ActivateEvents();
+			SettlementModifier.ForceGrowth(Player.hq.region.settlement, 100000);
+			SettlementModifier.GetInfo(Player.hq.region.settlement);
+            //SettlementModifier.RenameAll();
 
 			return true;
 		}
 
 		private void ActivateEvents() {
-			//AwaitAndExecuteActions();
-			CustomStaticEvent.CreateResearchSpeedEvent(100).TryTrigger();
-			//CustomStaticEvent.CreateResearchSpeedBoostEvent().TryTrigger();
-			//CustomStaticEvent.CreateResearchSpeedBoostEvent().TryTrigger();
-			//CustomStaticEvent.CreateDecreasedDemandAndIncreasedBuildingCostsEvent().TryTrigger();
-			//CustomStaticEvent.CreateNetworkSpeedAndDispatchCostEvent().TryTrigger();
-			//CustomStaticEvent.CreateIncreasedPollutionRateEvent().TryTrigger();
-			//CustomStaticEvent.CreatePollutionFineEvent(1_000).TryTrigger();
-			CustomStaticEvent.CreateMessageEvent("Hello World").TryTrigger();
-			CustomStaticEvent.CreateDemandEvent(new EventParams.DemandEventParameters("-50,Potato,Marbles")).TryTrigger();
-			//CustomStaticEvent.CreateNetworkSpeedEvent(500).TryTrigger();
-			//CustomStaticEvent.CreateDispactCostEvent(5000).TryTrigger();
-			////new
-			//CustomStaticEvent.CreateGrantEvent(150_000).TryTrigger();
-			//CustomStaticEvent.CreateFineEvent(100_000).TryTrigger();
-			//CustomStaticEvent.CreateUpkeepEvent(500).TryTrigger();
-			//CustomStaticEvent.CreateBuildingCostEvent(500).TryTrigger();
-
-
-			//Auslösen und Stoppen von Events klappt wenn nicht IsOneTimeEvent.
+			CustomStaticEvent.CreateLongTermEvent().TryTrigger();
+			//CustomStaticEvent.CreateResearchSpeedEvent(100).TryTrigger();
+			//CustomStaticEvent.CreateMessageEvent(new EventParams.MessageEventParameters("Hallo Welt,Hallo Welt")).TryTrigger();
+			//CustomStaticEvent.CreateDemandEvent(new EventParams.IntProductEventParameters("-50,Potato,Marbles")).TryTrigger();
+			//CustomStaticEvent.CreateProductPriceEvent(new EventParams.IntProductEventParameters("100,Fish,Marbles")).TryTrigger(); //Fish $3,82k
 		}
 
 		private CustomStaticEvent RevolveEvent(CustomEventType type) {
             switch (type) {
                 case CustomEventType.ResearchSpeed: return CustomStaticEvent.CreateResearchSpeedEvent(100);
                 case CustomEventType.PollutionFine: return CustomStaticEvent.CreatePollutionFineEvent(100_000);
-				case CustomEventType.Grant: return CustomStaticEvent.CreateGrantEvent(100_000);
-                case CustomEventType.Fine: return CustomStaticEvent.CreateFineEvent(100_000);
+				case CustomEventType.Grant: return CustomStaticEvent.CreateGrantEvent(new EventParams.IntStringEventParameters("100000,Sie erhalten eine Belohnung."));
+                case CustomEventType.Fine: return CustomStaticEvent.CreateFineEvent(new EventParams.IntStringEventParameters("100000,Sie erhalten eine Strafe."));
                 case CustomEventType.Upkeep: return CustomStaticEvent.CreateUpkeepEvent(50);
                 case CustomEventType.TrainShipNetworkSpeed: return CustomStaticEvent.CreateNetworkSpeedEvent(500);
                 case CustomEventType.TrainShipDispatchCost: return CustomStaticEvent.CreateDispactCostEvent(500);
-                case CustomEventType.Demand: return CustomStaticEvent.CreateDemandEvent(new EventParams.DemandEventParameters("-50,Potato,Marbles"));
+                case CustomEventType.Demand: return CustomStaticEvent.CreateDemandEvent(new EventParams.IntProductEventParameters("-50,Potato,Marbles"));
                 case CustomEventType.BuildingCost: return CustomStaticEvent.CreateBuildingCostEvent(50);
                 default: return null;
             }

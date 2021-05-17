@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace ROIData.EventParams
 {
-    public class DemandEventParameters : EventParameters
+    public class IntProductEventParameters : EventParameters
     {
         public int Modifier { get; set; }
         public ProductDefinition[] Products { get; set; }
 
-        public DemandEventParameters(string value) : base(value)
+        public IntProductEventParameters(string value) : base(value)
         {
         }
 

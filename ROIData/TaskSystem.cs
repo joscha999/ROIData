@@ -140,14 +140,14 @@ namespace ROIData
             switch (type) {
                 case AssignmentActionType.ResearchSpeed: return CustomStaticEvent.CreateResearchSpeedEvent(int.Parse(value));
                 case AssignmentActionType.PollutionFine: return CustomStaticEvent.CreatePollutionFineEvent(int.Parse(value));
-                case AssignmentActionType.Grant: return CustomStaticEvent.CreateGrantEvent(int.Parse(value));
-                case AssignmentActionType.Fine: return CustomStaticEvent.CreateFineEvent(int.Parse(value)); //TODO: IntStringEventParameter? (Grant, Fine)
+                case AssignmentActionType.Grant: return CustomStaticEvent.CreateGrantEvent(new EventParams.IntStringEventParameters(value));
+                case AssignmentActionType.Fine: return CustomStaticEvent.CreateFineEvent(new EventParams.IntStringEventParameters(value)); //TODO: IntStringEventParameter? (Grant, Fine)
                 case AssignmentActionType.Upkeep: return CustomStaticEvent.CreateUpkeepEvent(int.Parse(value));
                 case AssignmentActionType.TrainShipNetworkSpeed: return CustomStaticEvent.CreateNetworkSpeedEvent(int.Parse(value));
                 case AssignmentActionType.TrainShipDispatchCost: return CustomStaticEvent.CreateDispactCostEvent(int.Parse(value));
-                case AssignmentActionType.Demand: return CustomStaticEvent.CreateDemandEvent(new EventParams.DemandEventParameters(value));
+                case AssignmentActionType.Demand: return CustomStaticEvent.CreateDemandEvent(new EventParams.IntProductEventParameters(value));
                 case AssignmentActionType.BuildingCost: return CustomStaticEvent.CreateBuildingCostEvent(int.Parse(value));
-                case AssignmentActionType.DisplayMessage: return CustomStaticEvent.CreateMessageEvent(value);
+                case AssignmentActionType.DisplayMessage: return CustomStaticEvent.CreateMessageEvent(new EventParams.MessageEventParameters(value));
                 default: return null;
             }
         }

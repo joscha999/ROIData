@@ -5,10 +5,11 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using ProjectAutomata;
+using UnityEngine;
 
 namespace ROIData.HelperClasses
 {
-    public static class SettlementNameChanger
+    public static class SettlementModifier
     {
         //TODO: Create actual map -> look at names -> rename keys in dictionary.
         private static Dictionary<string, string> oldNewSettlementNames = new Dictionary<string, string>()
@@ -31,6 +32,20 @@ namespace ROIData.HelperClasses
                     ChangeName(settlement, newName);
                 }
             }
+        }
+
+        public static void ForceGrowth(SettlementBase settlement, int people) {
+
+            typeof(Settlement).GetField("_population", BindingFlags.NonPublic | BindingFlags.Instance)
+                .SetValue(settlement, settlement.population + people);
+        }
+
+        public static void GetInfo(SettlementBase settlement) {
+            Debug.Log(typeof(Settlement).GetField("_type", BindingFlags.NonPublic | BindingFlags.Instance).ToString());
+        }
+
+        public static void ForceAdvancement(SettlementBase settlement) {
+            var bla = ManagerBehaviour<SettlementManager>.instance.GetComponent<SettlementAdvancement>();
         }
     }
 }
