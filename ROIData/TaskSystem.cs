@@ -19,6 +19,8 @@ namespace ROIData
         private static Dictionary<AssignmentActionType, CustomStaticEvent> EventTypeCustomEventPairs
             = new Dictionary<AssignmentActionType, CustomStaticEvent>();
 
+        private static TimeManager TimeManager = ManagerBehaviour<TimeManager>.instance;
+
         public static void ReceiveTasks(List<AssignmentTask> tasks)
         {
             foreach (var task in tasks)
@@ -121,13 +123,13 @@ namespace ROIData
                     break;
                 case AssignmentActionType.TaskEnd:
                     break;
-                case AssignmentActionType.Pause:
+                case AssignmentActionType.Pause: PauseGame();
                     break;
-                case AssignmentActionType.Unpause:
+                case AssignmentActionType.Unpause: UnpauseGame();
                     break;
-                case AssignmentActionType.CreateSave:
+                case AssignmentActionType.CreateSave: TryForceAutoSave(value);
                     break;
-                case AssignmentActionType.DisplayMessage: //TODO: MessageEventParameters (zwei Strings)
+                case AssignmentActionType.DisplayMessage:
                     HandleEvent(type, value);
                     break;
                 default:
@@ -135,7 +137,6 @@ namespace ROIData
             }
         }
 
-        //TODO: Add Value conversion.
         private static CustomStaticEvent RevolveEvent(AssignmentActionType type, string value) {
             switch (type) {
                 case AssignmentActionType.ResearchSpeed: return CustomStaticEvent.CreateResearchSpeedEvent(int.Parse(value));
@@ -198,6 +199,25 @@ namespace ROIData
             //SettlementNameChanger.RenameAll();
 
             return true;
+        }
+
+        private static void TryForceAutoSave(string name) {
+            try {
+                SavegameStorage.SaveSavegame(name, ManagerBehaviour<SavegameManager>.instance.CreateSavegame(), SavegameHeader.Create(name));
+            } catch (Exception exception) {
+                Debug.LogError("Savegame exception on autosave!");
+                Debug.LogException(exception);
+            }
+        }
+
+        private static void UnpauseGame() {
+            
+            TimeManager.canAdvanceTime = true;
+            TimeManager.canPauseTime = false;
+        }
+
+        private static void PauseGame() {
+            TimeManager.canAdvanceTime = false;
         }
     }
 }

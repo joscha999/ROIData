@@ -20,8 +20,8 @@ namespace ROIData {
 		public static HumanPlayer Player => ManagerBehaviour<ActorManager>.instance.actors.FirstOrDefault(a => a is HumanPlayer) as HumanPlayer;
 		public static Dictionary<CustomEventType, CustomStaticEvent> EventTypeCustomEventPairs
 			= new Dictionary<CustomEventType, CustomStaticEvent>();
+		public static SpeedControls SpeedControls = ManagerBehaviour<SpeedControls>.instance;
 
-		
 		private bool alreadySubscribed;
 		private bool activatedEvent;
 
@@ -126,13 +126,44 @@ namespace ROIData {
 				return false;
 			}
 
-            ActivateEvents();
+
+			//DebugGameSpeed();
+			ActivateEvents();
 			SettlementModifier.ForceGrowth(Player.hq.region.settlement, 100000);
-			SettlementModifier.GetInfo(Player.hq.region.settlement);
+			
+			//SettlementModifier.GetInfo(Player.hq.region.settlement);
             //SettlementModifier.RenameAll();
 
 			return true;
 		}
+
+		//private void SetLevel() {
+		//	SpeedControls.SetLevel(20);
+		//	Debug.Log("SetLevel called.");
+		//}
+
+		//private void ForceTimeScale() {
+		//	SpeedControls.ForceTimeScale(20);
+		//	Debug.Log("ForceTimeScale called.");
+		//}
+
+		//private void PrintGameSpeed() {
+		//	StringBuilder sb = new StringBuilder();
+  //          SpeedControls sc = ManagerBehaviour<SpeedControls>.instance;
+
+		//	sb.AppendLine("Level: " + sc.level)
+		//		.AppendLine("BeforePause: " + sc.levelBeforePause);
+
+		//	Debug.Log(sb.ToString());
+  //      }
+
+		//private void DebugGameSpeed() {
+		//	PrintGameSpeed();
+		//	//SetLevel();
+		//	//ForceTimeScale();
+		//	SpeedControls.speedLevels[0] = 4;
+		//	PrintGameSpeed();
+		//}
 
 		private void ActivateEvents() {
 			CustomStaticEvent.CreateLongTermEvent().TryTrigger();
