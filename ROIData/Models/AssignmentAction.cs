@@ -34,7 +34,7 @@ namespace ROIData.Models {
 		Grant = 1002,
 		Fine = 1003,
 		Upkeep = 1004,
-		TrainShipNetworkSpeed = 1005,
+        TrainShipNetworkSpeed = 1005,
 		TrainShipDispatchCost = 1006,
 		Demand = 1007, //Value is int modifier
 		BuildingCost = 1008,
