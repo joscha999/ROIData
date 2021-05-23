@@ -83,7 +83,7 @@ namespace ROIData {
 			//Add it to onDayEnd's list of "Event Handlers"
 
 			if (!alreadySubscribed) {
-				timeManager.onDayEnd += new TimeManager.TimeManagerCallback(WebConnectionHandler.SendData);
+                timeManager.onDayEnd += TimeManager_onDayEnd;
 				alreadySubscribed = true;
 			}
 
@@ -92,11 +92,17 @@ namespace ROIData {
 				activatedEvent = true;
 			}
 
-			//WebConnectionHandler.Update();
+			WebConnectionHandler.Update(this);
+			TaskSystem.Update();
 
 			//Unpause time
 			//UpdateCanAdvanceTime();
 		}
+
+        private void TimeManager_onDayEnd(GameDate gd)
+        {
+            WebConnectionHandler.SendData(this);
+        }
 
         private bool TryActivateEvent(out WorldEventManager wem, out WorldEventAgent wea) {
 			wea = null;
@@ -126,46 +132,28 @@ namespace ROIData {
 				return false;
 			}
 
-
-			//DebugGameSpeed();
 			ActivateEvents();
 			SettlementModifier.ForceGrowth(Player.hq.region.settlement, 100000);
-			
+			SpeedyBoi.Register();
+
 			//SettlementModifier.GetInfo(Player.hq.region.settlement);
-            //SettlementModifier.RenameAll();
+			//SettlementModifier.RenameAll();
 
 			return true;
 		}
 
-		//private void SetLevel() {
-		//	SpeedControls.SetLevel(20);
-		//	Debug.Log("SetLevel called.");
-		//}
+        private void PrintGameSpeed()
+        {
+            StringBuilder sb = new StringBuilder();
+            SpeedControls sc = ManagerBehaviour<SpeedControls>.instance;
 
-		//private void ForceTimeScale() {
-		//	SpeedControls.ForceTimeScale(20);
-		//	Debug.Log("ForceTimeScale called.");
-		//}
+            sb.AppendLine("Level: " + sc.level)
+                .AppendLine("BeforePause: " + sc.levelBeforePause);
 
-		//private void PrintGameSpeed() {
-		//	StringBuilder sb = new StringBuilder();
-  //          SpeedControls sc = ManagerBehaviour<SpeedControls>.instance;
+            Debug.Log(sb.ToString());
+        }
 
-		//	sb.AppendLine("Level: " + sc.level)
-		//		.AppendLine("BeforePause: " + sc.levelBeforePause);
-
-		//	Debug.Log(sb.ToString());
-  //      }
-
-		//private void DebugGameSpeed() {
-		//	PrintGameSpeed();
-		//	//SetLevel();
-		//	//ForceTimeScale();
-		//	SpeedControls.speedLevels[0] = 4;
-		//	PrintGameSpeed();
-		//}
-
-		private void ActivateEvents() {
+        private void ActivateEvents() {
 			CustomStaticEvent.CreateLongTermEvent().TryTrigger();
 			//CustomStaticEvent.CreateResearchSpeedEvent(100).TryTrigger();
 			//CustomStaticEvent.CreateMessageEvent(new EventParams.MessageEventParameters("Hallo Welt,Hallo Welt")).TryTrigger();

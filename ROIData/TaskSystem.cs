@@ -62,6 +62,7 @@ namespace ROIData
                     //Task starten
                     CurrentTask = task;
                     task.Started = true;
+                    Debug.Log($"Started task: {task.Name}, UTC Time: {DateTime.UtcNow}.");
                     task.UnscaledTimeStart = Time.realtimeSinceStartup;
                 }
             }
@@ -203,7 +204,8 @@ namespace ROIData
 
         private static void TryForceAutoSave(string name) {
             try {
-                SavegameStorage.SaveSavegame(name, ManagerBehaviour<SavegameManager>.instance.CreateSavegame(), SavegameHeader.Create(name));
+                SavegameStorage.SaveSavegame(name, ManagerBehaviour<SavegameManager>
+                    .instance.CreateSavegame(), SavegameHeader.Create(name));
             } catch (Exception exception) {
                 Debug.LogError("Savegame exception on autosave!");
                 Debug.LogException(exception);

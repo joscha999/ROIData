@@ -11,6 +11,7 @@ namespace ROIData.EventParams
     {
         public int Modifier { get; set; }
         public ProductDefinition[] Products { get; set; }
+        //public bool FromAll { get; set; }
 
         public IntProductEventParameters(string value) : base(value)
         {
@@ -19,6 +20,13 @@ namespace ROIData.EventParams
         protected override void Parse()
         {
             Modifier = int.Parse(Data[0]);
+
+            //if (Data[1] == "*")
+            //{
+            //    Products = new ProductDefinition[0];
+            //    FromAll = true;
+            //    return;
+            //}
 
             Products = new ProductDefinition[Data.Count - 1];
 

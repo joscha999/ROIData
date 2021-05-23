@@ -107,6 +107,7 @@ namespace ROIData {
         public static CustomStaticEvent CreateMessageEvent(MessageEventParameters parameters)
         {
             return new CustomStaticEvent()
+                .IsOneTimeEvent()
                 .WithStaticWorldEventData(
                     new CustomStaticEventData(
                         new CustomDataDifficulty()

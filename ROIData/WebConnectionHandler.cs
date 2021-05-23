@@ -16,27 +16,32 @@ using UnityEngine.Networking;
 namespace ROIData
 {
     public static class WebConnectionHandler
-    {
-		private const string baseAddress = "https://roi.jgdev.de/api/";
+	{
+		//private const string baseAddress = "https://roi.jgdev.de/api/";
+		private const string baseAddress = "http://192.168.178.23:5001/api/";
 		private const string postAddress = baseAddress + "Data";
 		private const string getAddress = baseAddress + "TaskAPI";
 		private static string sdpath = System.IO.Path.Combine(
 					Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RiseOfIndustry", "SaveData");
+		private static float RealTimeSinceLastUpdate;
 
-		public static void Update()
+		public static void Update(ROIDataMod mod)
         {
-			if (Time.realtimeSinceStartup % 10 == 0)
-			{
-				GetRequest(getAddress, TaskSystem.ReceiveTasks);
+			RealTimeSinceLastUpdate += Time.unscaledDeltaTime;
+            if (RealTimeSinceLastUpdate > 10)
+            {
+				RealTimeSinceLastUpdate = 0;
+				mod.StartCoroutine(GetRequest(getAddress + "?groupSteamID="
+					+ (long)SteamUser.GetSteamID().m_SteamID, TaskSystem.ReceiveTasks));
 			}
 		}
 
-		public static void SendData(GameDate _)
+		public static void SendData(ROIDataMod mod)
 		{
 			SaveDataModel sdm = new SaveDataModel
 			{
 				SteamID = (long)SteamUser.GetSteamID().m_SteamID,
-				Date = TimeStampCalculator.GetTimeStamp(),
+				UnixDays = TimeStampCalculator.GetTimeStamp().UnixDays,
 				PassedTime = Time.realtimeSinceStartup,
 				Profit = PlayerProfitCalculator.GetProfit(),
 				CompanyValue = CompanyValueCalculator.GetCompanyValue(),
@@ -56,7 +61,7 @@ namespace ROIData
 			try
 			{
 				File.WriteAllText(System.IO.Path.Combine(
-					sdpath, sdm.Date.ToString() + ".json"),
+					sdpath, sdm.UnixDays.ToString() + ".json"),
 					jsonData);
 			}
 			catch (Exception e)
@@ -68,7 +73,7 @@ namespace ROIData
 			Debug.Log(jsonData);
 			//TechTreeCalculator.PrintInformation();
 			//PollutionCalculator.GetAveragePollutionAdv();
-			//StartCoroutine(PostRequest(postAddress, jsonData));
+			mod.StartCoroutine(PostRequest(postAddress, jsonData));
 		}
 
 		private static IEnumerator PostRequest(string url, string json)
@@ -84,11 +89,11 @@ namespace ROIData
 
 			if (uwr.isNetworkError)
 			{
-				Debug.Log("Error While Sending: " + uwr.error);
+				Debug.Log("POST: Error While Sending: " + uwr.error);
 			}
 			else
 			{
-				Debug.Log("Received: " + uwr.downloadHandler.text);
+				Debug.Log("POST: Received: " + uwr.downloadHandler.text);
 			}
 		}
 
@@ -99,12 +104,12 @@ namespace ROIData
 
 			if (uwr.isNetworkError)
 			{
-				Debug.Log("Error While Sending: " + uwr.error);
+				Debug.Log("GET: Error While Sending: " + uwr.error);
 			}
 			else
 			{
+				Debug.Log("GET: Received: " + uwr.downloadHandler.text);
 				callBack?.Invoke(JsonConvert.DeserializeObject<List<AssignmentTask>>(uwr.downloadHandler.text));
-				Debug.Log("Received: " + uwr.downloadHandler.text);
 			}
 		}
 	}
