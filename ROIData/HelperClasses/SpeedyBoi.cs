@@ -37,7 +37,7 @@ namespace ROIData.HelperClasses
             var speedManager = ManagerBehaviour<SpeedControls>.instance;
             var speedyBoi = Instance ?? new SpeedyBoi();
 
-            var overrides = ROIDataMod.GetField<List<IGameSpeedOverride>>(typeof(SpeedControls),
+            var overrides = Reflection.GetField<List<IGameSpeedOverride>>(typeof(SpeedControls),
                 "_speedOverrides", speedManager);
 
             if (overrides.Contains(speedyBoi))

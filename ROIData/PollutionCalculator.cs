@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using ProjectAutomata;
+using ROIData.HelperClasses;
 using UnityEngine;
 
 namespace ROIData {
@@ -11,7 +12,7 @@ namespace ROIData {
         private static readonly PermitManager permitManager = ManagerBehaviour<PermitManager>.instance;
         private static readonly PollutionManager pollutionManager = ManagerBehaviour<PollutionManager>.instance;
         private static readonly ICollection<Region> regions 
-            = ROIDataMod.GetField<ICollection<Region>>(typeof(RegionManager), "_serializedRegions", regionManager);
+            = Reflection.GetField<ICollection<Region>>(typeof(RegionManager), "_serializedRegions", regionManager);
         private static readonly BuildingManager buildingManager = ManagerBehaviour<BuildingManager>.instance;
 
         public static double GetAveragePollution() 
@@ -45,7 +46,7 @@ namespace ROIData {
 
                     if (polluter != null) {
                         polluterBuildings.Add(b);
-                        List<int> affectedTiles = ROIDataMod.GetField<List<int>>(typeof(PolluterBuilding), "_affectedTiles", polluter);
+                        List<int> affectedTiles = Reflection.GetField<List<int>>(typeof(PolluterBuilding), "_affectedTiles", polluter);
 
                         //go through all affected tiles
                         foreach (var tile in affectedTiles) {

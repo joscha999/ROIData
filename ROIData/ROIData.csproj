@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Videospiele\steamapps\common\RiseOfIndustry\Rise of Industry_Data\Managed\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Assembly-CSharp.dll</HintPath>
@@ -86,6 +90,7 @@
     <Compile Include="HelperClasses\CustomNetworkType.cs" />
     <Compile Include="HelperClasses\CustomProductDefiniton.cs" />
     <Compile Include="HelperClasses\CustomEventDebug.cs" />
+    <Compile Include="HelperClasses\Reflection.cs" />
     <Compile Include="HelperClasses\SettlementModifier.cs" />
     <Compile Include="HelperClasses\SpeedyBoi.cs" />
     <Compile Include="LoanCalculator.cs" />
@@ -93,6 +98,8 @@
     <Compile Include="MachineUptimeCalculator.cs" />
     <Compile Include="Models\AssignmentAction.cs" />
     <Compile Include="Models\AssignmentTask.cs" />
+    <Compile Include="Patching\SettlementGenerationPatcher.cs" />
+    <Compile Include="Patching\ShopProductPatcher.cs" />
     <Compile Include="PlayerBalance.cs" />
     <Compile Include="PlayerProfitCalculator.cs" />
     <Compile Include="PollutionCalculator.cs" />

@@ -1,4 +1,5 @@
 ﻿using ProjectAutomata;
+using ROIData.HelperClasses;
 using ROIData.Models;
 using System;
 using System.Collections.Generic;
@@ -156,7 +157,7 @@ namespace ROIData
 
         private static void StopEvent(CustomStaticEvent customEvent) {
 
-            foreach (IWorldEventAgent worldEventAgent in ROIDataMod.GetField<List<IWorldEventAgent>>(typeof(WorldEventManager),
+            foreach (IWorldEventAgent worldEventAgent in Reflection.GetField<List<IWorldEventAgent>>(typeof(WorldEventManager),
                 "_worldEventAgents", ManagerBehaviour<WorldEventManager>.instance)) {
                 foreach (StaticWorldEvent item in new List<StaticWorldEvent>(worldEventAgent.GetActiveStaticEvents())) {
                     if (item.data.eventName == customEvent.Name) {
@@ -186,7 +187,7 @@ namespace ROIData
                 return false;
             }
 
-            var staticEvents = ROIDataMod.GetField<StaticWorldEventsTrigger>(typeof(WorldEventManager), "_staticEvents", wem);
+            var staticEvents = Reflection.GetField<StaticWorldEventsTrigger>(typeof(WorldEventManager), "_staticEvents", wem);
 
             if (staticEvents == null) {
                 return false;

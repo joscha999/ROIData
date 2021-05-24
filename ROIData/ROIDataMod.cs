@@ -13,6 +13,8 @@ using ROIData.HelperClasses;
 using Steamworks;
 using UnityEngine;
 using UnityEngine.Networking;
+using Harmony;
+using ROIData.Patching;
 
 namespace ROIData {
     public class ROIDataMod : Mod {
@@ -21,35 +23,16 @@ namespace ROIData {
 		public static Dictionary<CustomEventType, CustomStaticEvent> EventTypeCustomEventPairs
 			= new Dictionary<CustomEventType, CustomStaticEvent>();
 		public static SpeedControls SpeedControls = ManagerBehaviour<SpeedControls>.instance;
+		public static AnalyticsManager AnalyticsManager => CachedManagerBehaviour<AnalyticsManager>.instance;
 
 		private bool alreadySubscribed;
 		private bool activatedEvent;
 
-		//GameDate Format: Year Month Day
-		//public List<GameDate> taskStartTimes = new List<GameDate> {
-		//		//Aufgabe 1 - Scenario1 / Kartoffeln
-		//		new GameDate(1,4,1),
-		//		//Aufgabe 2 - Scenario3 / Holzzüge
-		//		new GameDate(2,4,1),
-		//		//Aufgabe 3 - Scenario5 / Murmeln
-		//		new GameDate(5,9,1),
-		//		//Aufgabe 4 - Scenario7 / Spielzeugzüge
-		//		new GameDate(7,9,1),
-		//		//Aufgabe 5 - Scenario11 / Eisenwaren
-		//		new GameDate(13,9,1)
-		//	};
-		//public List<GameDate> taskEndTimes = new List<GameDate> {
-		//		//Aufgabe 1 - Ende
-		//		new GameDate(2,3,30),
-		//		//Aufgabe 2 - Ende
-		//		new GameDate(3,9,30),
-		//		//Aufgabe 3 - Ende
-		//		new GameDate(7,8,30),
-		//		//Aufgabe 4 - Ende
-		//		new GameDate(9,8,30),
-		//		//Aufgabe 5 - Ende
-		//		new GameDate(15,8,30)
-		//	};
+		public void Awake() {
+			Debug.Log("Patching");
+			var harmony = HarmonyInstance.Create("ROIData.SettlementPatch");
+			harmony.PatchAll(Assembly.GetExecutingAssembly());
+		}
 
 		public void Update() {
 			var actorManager = ManagerBehaviour<ActorManager>.instance;
@@ -87,16 +70,17 @@ namespace ROIData {
 				alreadySubscribed = true;
 			}
 
-			//TODO: replace this with: WebConnectionHandler.Update();
+			//var gameMode = Reflection.GetField<DifficultyScreenViewModel.GameMode>(typeof(AnalyticsManager), "_currentGameMode", AnalyticsManager);
+
+			//TODO: remove this or change
+            //if (gameMode != DifficultyScreenViewModel.GameMode.CAREER) {
 			if (!activatedEvent && TryActivateEvent(out var eventManager, out var eventAgent)) {
 				activatedEvent = true;
 			}
 
 			WebConnectionHandler.Update(this);
 			TaskSystem.Update();
-
-			//Unpause time
-			//UpdateCanAdvanceTime();
+			//}
 		}
 
         private void TimeManager_onDayEnd(GameDate gd)
@@ -122,7 +106,7 @@ namespace ROIData {
 				return false;
 			}
 
-			var staticEvents = GetField<StaticWorldEventsTrigger>(typeof(WorldEventManager), "_staticEvents", wem);
+			var staticEvents = Reflection.GetField<StaticWorldEventsTrigger>(typeof(WorldEventManager), "_staticEvents", wem);
 
 			if (staticEvents == null) {
 				return false;
@@ -133,11 +117,9 @@ namespace ROIData {
 			}
 
 			ActivateEvents();
-			SettlementModifier.ForceGrowth(Player.hq.region.settlement, 100000);
+			//SettlementModifier.ForceGrowth(Player.hq.region.settlement, 100000);
+			ShopProductPatcher.PrintShopData();
 			SpeedyBoi.Register();
-
-			//SettlementModifier.GetInfo(Player.hq.region.settlement);
-			//SettlementModifier.RenameAll();
 
 			return true;
 		}
@@ -178,7 +160,7 @@ namespace ROIData {
 
 		private void StopEvent(CustomStaticEvent customEvent) {
 
-			foreach (IWorldEventAgent worldEventAgent in GetField<List<IWorldEventAgent>>(typeof(WorldEventManager), 
+			foreach (IWorldEventAgent worldEventAgent in Reflection.GetField<List<IWorldEventAgent>>(typeof(WorldEventManager), 
 				"_worldEventAgents", ManagerBehaviour<WorldEventManager>.instance)) {
 				foreach (StaticWorldEvent item in new List<StaticWorldEvent>(worldEventAgent.GetActiveStaticEvents())) {
                     if (item.data.eventName == customEvent.Name) {
@@ -219,26 +201,5 @@ namespace ROIData {
 		//		timeManager.canAdvanceTime = false;
 		//	}
 		//}
-
-		public static T GetField<T>(Type t, string field, object instance, bool isstatic = false) where T : class {
-			if (t == null)
-				throw new ArgumentNullException(nameof(t));
-			if (string.IsNullOrEmpty(field))
-				throw new ArgumentNullException(nameof(field));
-			if (instance == null)
-				throw new ArgumentNullException(nameof(instance));
-
-			var fieldInfo = t.GetField(field, BindingFlags.NonPublic | BindingFlags.Instance);
-
-			if (fieldInfo == null)
-				throw new ArgumentException($"Could not find field {field} on instance {instance}.");
-
-			var returnVal = fieldInfo.GetValue(instance) as T;
-
-			if (returnVal == null)
-				throw new ArgumentException($"Could not convert {fieldInfo.FieldType} to {typeof(T)}.");
-
-			return returnVal;
-		}
 	}
 }

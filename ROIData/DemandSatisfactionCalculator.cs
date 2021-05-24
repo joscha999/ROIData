@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ProjectAutomata;
+using ROIData.HelperClasses;
 using UnityEngine;
 
 namespace ROIData {
@@ -17,7 +18,7 @@ namespace ROIData {
             StringBuilder sb = new StringBuilder();
 
             foreach (Shop shop in Shops) {
-                foreach (KeyValuePair<ProductDefinition, int> shopDemand in ROIDataMod.GetField<Dictionary<ProductDefinition, int>>(typeof(Shop), "_demand", shop)) {
+                foreach (KeyValuePair<ProductDefinition, int> shopDemand in Reflection.GetField<Dictionary<ProductDefinition, int>>(typeof(Shop), "_demand", shop)) {
                     ProductDefinition product = shopDemand.Key;
                     int demand = shopDemand.Value * 2;
                     int sales = shop.GetSoldCount(ROIDataMod.Player, product, new GamePeriod(0, 0, 29));
@@ -42,7 +43,7 @@ namespace ROIData {
             List<ProductInfo> listOfRemainingDemands = new List<ProductInfo>();
 
             foreach (Shop shop in Shops) {
-                foreach (KeyValuePair<ProductDefinition, int> shopDemand in ROIDataMod.GetField<Dictionary<ProductDefinition, int>>(typeof(Shop), "_demand", shop)) {
+                foreach (KeyValuePair<ProductDefinition, int> shopDemand in Reflection.GetField<Dictionary<ProductDefinition, int>>(typeof(Shop), "_demand", shop)) {
                     ProductDefinition product = shopDemand.Key;
                     int demand = shopDemand.Value * 2;
                     int sales = shop.GetSoldCount(ROIDataMod.Player, product, new GamePeriod(0, 0, 29));
