@@ -70,15 +70,15 @@ namespace ROIData {
 				alreadySubscribed = true;
 			}
 
-			//TODO: Einkommentieren
+            //TODO: Einkommentieren
 
-			//if (!activatedEvent && TryActivateEvent(out var eventManager, out var eventAgent)) {
-			//	activatedEvent = true;
-			//}
+            //if (!activatedEvent && TryActivateEvent(out var eventManager, out var eventAgent)) {
+            //    activatedEvent = true;
+            //}
 
-			//WebConnectionHandler.Update(this);
-			//TaskSystem.Update();
-		}
+            //WebConnectionHandler.Update(this);
+            //TaskSystem.Update();
+        }
 
         private void TimeManager_onDayEnd(GameDate gd)
         {
@@ -115,7 +115,7 @@ namespace ROIData {
 
 			ActivateEvents();
 			//SettlementModifier.ForceGrowth(Player.hq.region.settlement, 100000);
-			ShopProductPatcher.PrintShopData();
+			//ShopProductPatcher.PrintShopData();
 			SpeedyBoi.Register();
 
 			return true;

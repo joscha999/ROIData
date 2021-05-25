@@ -15,31 +15,36 @@ namespace ROIData.Patching {
         private static SettlementManager SettlementManager = ManagerBehaviour<SettlementManager>.instance;
         private static List<SettlementBase> Settlements = SettlementManager.settlements;
 
-        //Zuckerrost
-
-        //Lokal: Pizza -> Burgers
-        //BAUTEIL-GESCHÄFT RubberTubes -> InteriorBody
-        //Lebensmittelgeschäft: CannedFish -> Flour
-
-        //Irmgardshausen
-
-        //Spielzeugladen: Toy Train Set -> Toy Furniture
-        //Lokal: Burgers -> Pizza
-
-        //Magdalenenhütte
-
-        //Lebensmittelgeschäft: Flour -> CannedFish
-
-        //Leutingen
-
-        //Lebensmittelgeschäft: BagOfChips -> CannedFish
-
         private static readonly List<ReplaceInformation> ReplaceInfo = new List<ReplaceInformation>() {
             new ReplaceInformation {
-                Settlement = "Neumorsum",
-                Shop = "Spielzeugladen",
-                OldProduct = "Marbles",
-                NewProduct = "Burgers"
+                Settlement = "Zuckerrost", Shop = "Lokal", OldProduct = "Pizza", NewProduct = "Burgers"
+            },
+            new ReplaceInformation {
+                Settlement = "Zuckerrost", Shop = "BAUTEIL-GESCHÄFT", OldProduct = "RubberTubes", NewProduct = "InteriorBody"
+            },
+            new ReplaceInformation {
+                Settlement = "Zuckerrost", Shop = "Lebensmittelgeschäft", OldProduct = "CannedFish", NewProduct = "Flour"
+            },
+            new ReplaceInformation {
+                Settlement = "Irmgardshausen", Shop = "Spielzeugladen", OldProduct = "Toy Train Set", NewProduct = "Toy Furniture"
+            },
+            new ReplaceInformation {
+                Settlement = "Irmgardshausen", Shop = "Lokal", OldProduct = "Burgers", NewProduct = "BerrySmoothie"
+            },
+            new ReplaceInformation {
+                Settlement = "Irmgardshausen", Shop = "BAUTEIL-GESCHÄFT", OldProduct = "InteriorBody", NewProduct = "Headlights"
+            },
+            new ReplaceInformation {
+                Settlement = "Magdalenenhütte", Shop = "Lebensmittelgeschäft", OldProduct = "Flour", NewProduct = "CannedFish"
+            },
+            new ReplaceInformation {
+                Settlement = "Magdalenenhütte", Shop = "Spielzeugladen", OldProduct = "Marbles", NewProduct = "Fluff"
+            },
+            new ReplaceInformation {
+                Settlement = "Leutingen", Shop = "Lebensmittelgeschäft", OldProduct = "BagOfChips", NewProduct = "CannedFish"
+            },
+            new ReplaceInformation {
+                Settlement = "Leutingen", Shop = "Spielzeugladen", OldProduct = "Marbles", NewProduct = "Fluff"
             }
         };
 
@@ -73,13 +78,9 @@ namespace ROIData.Patching {
         }
 
         static bool Prefix(Shop __instance) => false;
-            //var b = !ReplaceInfo.Any(ri => ri.Settlement == __instance.settlement.settlementName && ri.Shop == __instance.name);
-            //Debug.Log($"Prefix:: Settlement: {__instance.settlement.settlementName}, Shop: {__instance.name}, B: {b}");
 
         static void Postfix(Shop __instance) {
             Debug.Log($"Postfix:: Settlement: {__instance.settlement.settlementName}, Shop: {__instance.name}");
-            //if (Reflection.GetField<bool>(typeof(Shop), "initialized", __instance))
-            //    return;
 
             __instance.sold = __instance.GetValidProducts(__instance.settlement, new List<ProductDefinition>())
                 .Take(__instance.maxProducts).ToList();

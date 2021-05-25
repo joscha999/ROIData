@@ -17,8 +17,12 @@ namespace ROIData {
         public string Name => StaticWorldEventData?.eventName ?? "N/A";
         public bool OneTimeEvent { get; private set; }
 
-        public static IntProductEventParameters ProductPriceEventData = new IntProductEventParameters("100,Telephone,Marbles,Burgers");
-        public static IntProductEventParameters ProductDemandEventData = new IntProductEventParameters("100,Telephone,Marbles,Burgers");
+        public static IntProductEventParameters ProductPriceEventData = new IntProductEventParameters("100,Marbles");
+        public static IntProductEventParameters ProductDemandEventData = new IntProductEventParameters("100,OrangeSoda,Headlights,CannedFish,Telephone,Burgers");
+        //new
+        public static IntProductEventParameters ProductDemandEventData33 = new IntProductEventParameters("33,Marbles,Beer");
+        public static IntProductEventParameters ProductDemandEventData300 = new IntProductEventParameters("300,Toy Train Set");
+        //
         public static int ResearchSpeedBoost = 100;
 
         public static WorldEventEffectData ResearchBoostEvent = new CustomEffectData(WorldEventEffectType.ResearchSpeed, false, ResearchSpeedBoost, 0, 0)
@@ -47,8 +51,32 @@ namespace ROIData {
                 .Build())
             .Build();
 
+        //new
+        public static WorldEventEffectData ProductDemandEvent33 = new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData33.Modifier, 0, 0)
+            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+            .AddProductFilter(
+                new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
+                .WithProducts(ProductDemandEventData33.Products)
+                .Build())
+            .AddBuildingFilter(
+                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
+                .Build())
+            .Build();
+
+        //new
+        public static WorldEventEffectData ProductDemandEvent300 = new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData300.Modifier, 0, 0)
+            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+            .AddProductFilter(
+                new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
+                .WithProducts(ProductDemandEventData300.Products)
+                .Build())
+            .AddBuildingFilter(
+                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
+                .Build())
+            .Build();
+
         public static List<WorldEventEffectData> WorldEventEffects = new List<WorldEventEffectData> {
-            ResearchBoostEvent, ProductPriceEvent, ProductDemandEvent
+            ResearchBoostEvent, ProductPriceEvent, ProductDemandEvent, ProductDemandEvent33, ProductDemandEvent300
         };
 
         public CustomStaticEvent WithStaticWorldEventData(StaticWorldEventData staticWorldEventData)

@@ -23,10 +23,8 @@ namespace ROIData.Patching {
             {"Chula Vista", "Fuchsfeste"}, {"Apple Canyon Lake", "Magdalenenhütte"}, {"Caballo", "Irmgardshausen"}
         };
 
-        //Prefix
         static bool Prefix() => false;
 
-        //postfix
         static void Postfix(ref Region region, ref SettlementType settlementType, ref SettlementBase __result, SettlementsWGOperation __instance) {
             Debug.Log("Patching region: " + region.regionName);
 
