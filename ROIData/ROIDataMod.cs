@@ -70,17 +70,14 @@ namespace ROIData {
 				alreadySubscribed = true;
 			}
 
-			//var gameMode = Reflection.GetField<DifficultyScreenViewModel.GameMode>(typeof(AnalyticsManager), "_currentGameMode", AnalyticsManager);
+			//TODO: Einkommentieren
 
-			//TODO: remove this or change
-            //if (gameMode != DifficultyScreenViewModel.GameMode.CAREER) {
-			if (!activatedEvent && TryActivateEvent(out var eventManager, out var eventAgent)) {
-				activatedEvent = true;
-			}
-
-			WebConnectionHandler.Update(this);
-			TaskSystem.Update();
+			//if (!activatedEvent && TryActivateEvent(out var eventManager, out var eventAgent)) {
+			//	activatedEvent = true;
 			//}
+
+			//WebConnectionHandler.Update(this);
+			//TaskSystem.Update();
 		}
 
         private void TimeManager_onDayEnd(GameDate gd)

@@ -1,5 +1,6 @@
 ﻿using Harmony;
 using ProjectAutomata;
+using ROIData.HelperClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,32 @@ namespace ROIData.Patching {
         private static SettlementManager SettlementManager = ManagerBehaviour<SettlementManager>.instance;
         private static List<SettlementBase> Settlements = SettlementManager.settlements;
 
-        private static Dictionary<string, string[]> SettlementShopProducts = new Dictionary<string, string[]>() {
-            {"Neumorsum", new string[3]{"Baumarkt", "Sand", "Coal"} }
+        //Zuckerrost
+
+        //Lokal: Pizza -> Burgers
+        //BAUTEIL-GESCHÄFT RubberTubes -> InteriorBody
+        //Lebensmittelgeschäft: CannedFish -> Flour
+
+        //Irmgardshausen
+
+        //Spielzeugladen: Toy Train Set -> Toy Furniture
+        //Lokal: Burgers -> Pizza
+
+        //Magdalenenhütte
+
+        //Lebensmittelgeschäft: Flour -> CannedFish
+
+        //Leutingen
+
+        //Lebensmittelgeschäft: BagOfChips -> CannedFish
+
+        private static readonly List<ReplaceInformation> ReplaceInfo = new List<ReplaceInformation>() {
+            new ReplaceInformation {
+                Settlement = "Neumorsum",
+                Shop = "Spielzeugladen",
+                OldProduct = "Marbles",
+                NewProduct = "Burgers"
+            }
         };
 
         public static void PrintShopData() {
@@ -47,27 +72,49 @@ namespace ROIData.Patching {
             Debug.Log(sb.ToString());
         }
 
-        static bool Prefix() => false;
+        static bool Prefix(Shop __instance) => false;
+            //var b = !ReplaceInfo.Any(ri => ri.Settlement == __instance.settlement.settlementName && ri.Shop == __instance.name);
+            //Debug.Log($"Prefix:: Settlement: {__instance.settlement.settlementName}, Shop: {__instance.name}, B: {b}");
 
-        static void Postfix(ref List<ProductDefinition> __result, Shop __instance) {
-            Debug.Log("ShopProductPatcher executed.");
+        static void Postfix(Shop __instance) {
+            Debug.Log($"Postfix:: Settlement: {__instance.settlement.settlementName}, Shop: {__instance.name}");
+            //if (Reflection.GetField<bool>(typeof(Shop), "initialized", __instance))
+            //    return;
 
-            foreach (var settlement in Settlements) {
-                if (!SettlementShopProducts.TryGetValue(settlement.settlementName, out string[] shopChangeArray)) {
-                    Debug.Log("Settlement not found: " + settlement.settlementName);
-                }
+            __instance.sold = __instance.GetValidProducts(__instance.settlement, new List<ProductDefinition>())
+                .Take(__instance.maxProducts).ToList();
 
-                if (shopChangeArray[0] == __instance.name) {
-                    List<ProductDefinition> products = __instance.sold;
-                    products[products.FindIndex(i => i.Equals(GetProductDefinition(shopChangeArray[1])))] = GetProductDefinition(shopChangeArray[2]);
-                    __result = products;
-                }
-            } 
+            var b = false;
+            foreach (var ri in ReplaceInfo) {
+                if (ri.Settlement != __instance.settlement.settlementName || ri.Shop != __instance.name)
+                    continue;
+
+                __instance.sold.RemoveAll(pd => pd.name == ri.OldProduct);
+                __instance.sold.Insert(0, ri.NewProductDef);
+                b = true;
+                Debug.Log($"Product {ri.OldProduct} replaced with {ri.NewProduct} in Shop {__instance.name} in Settlement {__instance.settlement.settlementName}.");
+            }
+
+            __instance.UpdateDemand();
+            Reflection.ExecuteMethod(typeof(Shop), "UpdatePriceModifiers", __instance);
+            Reflection.SetField(typeof(Shop), "initialized", __instance, true);
+
+            if (!b)
+                Debug.Log($"Settlement: {__instance.settlement.settlementName}, Shop: {__instance.name}. No replacementinfo found.");
         }
 
         private static ProductDefinition GetProductDefinition(string name) {
             return GameData.instance.GetAssetsRO(typeof(ProductDefinition))
                     .FirstOrDefault(p => p.name == name) as ProductDefinition;
+        }
+
+        private class ReplaceInformation {
+            public string Settlement { get; set; }
+            public string Shop { get; set; }
+            public string OldProduct { get; set; }
+            public string NewProduct { get; set; }
+
+            public ProductDefinition NewProductDef => GetProductDefinition(NewProduct);
         }
     }
 }
