@@ -18,7 +18,6 @@ using ROIData.Patching;
 
 namespace ROIData {
     public class ROIDataMod : Mod {
-		
 		public static HumanPlayer Player => ManagerBehaviour<ActorManager>.instance.actors.FirstOrDefault(a => a is HumanPlayer) as HumanPlayer;
 		public static Dictionary<CustomEventType, CustomStaticEvent> EventTypeCustomEventPairs
 			= new Dictionary<CustomEventType, CustomStaticEvent>();
@@ -70,15 +69,12 @@ namespace ROIData {
 				alreadySubscribed = true;
 			}
 
-            //TODO: Einkommentieren
+			if (!activatedEvent && TryActivateEvent(out var eventManager, out var eventAgent))
+				activatedEvent = true;
 
-            //if (!activatedEvent && TryActivateEvent(out var eventManager, out var eventAgent)) {
-            //    activatedEvent = true;
-            //}
-
-            //WebConnectionHandler.Update(this);
-            //TaskSystem.Update();
-        }
+			WebConnectionHandler.Update(this);
+			TaskSystem.Update();
+		}
 
         private void TimeManager_onDayEnd(GameDate gd)
         {
@@ -88,7 +84,7 @@ namespace ROIData {
         private bool TryActivateEvent(out WorldEventManager wem, out WorldEventAgent wea) {
 			wea = null;
 			wem = ManagerBehaviour<WorldEventManager>.instance;
-			
+
 			if (Player == null) {
 				return false;
 			}
@@ -96,7 +92,7 @@ namespace ROIData {
 			if (wem == null) {
 				return false;
 			}
-			
+
 			wea = Player.GetComponent<WorldEventAgent>();
 
 			if (wea == null) {
@@ -126,8 +122,8 @@ namespace ROIData {
             StringBuilder sb = new StringBuilder();
             SpeedControls sc = ManagerBehaviour<SpeedControls>.instance;
 
-            sb.AppendLine("Level: " + sc.level)
-                .AppendLine("BeforePause: " + sc.levelBeforePause);
+			sb.Append("Level: ").Append(sc.level).AppendLine()
+				.Append("BeforePause: ").Append(sc.levelBeforePause).AppendLine();
 
             Debug.Log(sb.ToString());
         }
@@ -156,8 +152,7 @@ namespace ROIData {
         }
 
 		private void StopEvent(CustomStaticEvent customEvent) {
-
-			foreach (IWorldEventAgent worldEventAgent in Reflection.GetField<List<IWorldEventAgent>>(typeof(WorldEventManager), 
+			foreach (IWorldEventAgent worldEventAgent in Reflection.GetField<List<IWorldEventAgent>>(typeof(WorldEventManager),
 				"_worldEventAgents", ManagerBehaviour<WorldEventManager>.instance)) {
 				foreach (StaticWorldEvent item in new List<StaticWorldEvent>(worldEventAgent.GetActiveStaticEvents())) {
                     if (item.data.eventName == customEvent.Name) {
@@ -172,7 +167,7 @@ namespace ROIData {
 			//Trigger
 			var receivedTrigger = 1000; //ResearchBoost
 			CustomEventType receivedKey = (CustomEventType)receivedTrigger;
-			
+
 			if (!EventTypeCustomEventPairs.TryGetValue(receivedKey, out CustomStaticEvent customEvent)) {
 				customEvent = RevolveEvent(receivedKey);
 				customEvent?.TryTrigger();
@@ -190,7 +185,7 @@ namespace ROIData {
 
 		//private void UpdateCanAdvanceTime() {
 		//	TimeManager timeManager = ManagerBehaviour<TimeManager>.instance;
-			
+
 		//	if (taskStartTimes.Contains(timeManager.today)) {
 		//		//timeManager.canAdvanceTime = true;
 		//		timeManager.canPauseTime = false;
