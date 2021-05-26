@@ -17,8 +17,8 @@ namespace ROIData
 {
     public static class WebConnectionHandler
 	{
-		//private const string baseAddress = "https://roi.jgdev.de/api/";
-		private const string baseAddress = "http://192.168.178.23:5001/api/";
+		private const string baseAddress = "https://roi.jgdev.de/api/";
+		//private const string baseAddress = "http://192.168.178.23:5001/api/";
 		private const string postAddress = baseAddress + "Data";
 		private const string getAddress = baseAddress + "TaskAPI";
 		private static string sdpath = System.IO.Path.Combine(

@@ -17,19 +17,28 @@ namespace ROIData {
         public string Name => StaticWorldEventData?.eventName ?? "N/A";
         public bool OneTimeEvent { get; private set; }
 
-        public static IntProductEventParameters ProductPriceEventData = new IntProductEventParameters("100,Marbles");
-        public static IntProductEventParameters ProductDemandEventData = new IntProductEventParameters("100,OrangeSoda,Headlights,CannedFish,Telephone,Burgers");
+        public static IntProductEventParameters ProductPriceEventData
+			= new IntProductEventParameters("100,Marbles");
+        public static IntProductEventParameters ProductDemandEventData
+			= new IntProductEventParameters("100,OrangeSoda,Headlights,CannedFish,Telephone,Burgers");
         //new
-        public static IntProductEventParameters ProductDemandEventData33 = new IntProductEventParameters("33,Marbles,Beer");
-        public static IntProductEventParameters ProductDemandEventData300 = new IntProductEventParameters("300,Toy Train Set");
-        //
+        public static IntProductEventParameters ProductDemandEventData33
+			= new IntProductEventParameters("33,Marbles,Beer");
+        public static IntProductEventParameters ProductDemandEventData300
+			= new IntProductEventParameters("300,Toy Train Set");
+
+		//price modifiers to adjust map-generated prices to task-expected prices
+
+
         public static int ResearchSpeedBoost = 100;
 
-        public static WorldEventEffectData ResearchBoostEvent = new CustomEffectData(WorldEventEffectType.ResearchSpeed, false, ResearchSpeedBoost, 0, 0)
+        public static WorldEventEffectData ResearchBoostEvent
+			= new CustomEffectData(WorldEventEffectType.ResearchSpeed, false, ResearchSpeedBoost, 0, 0)
             .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
             .Build();
 
-        public static WorldEventEffectData ProductPriceEvent = new CustomEffectData(WorldEventEffectType.ProductPrice, false, ProductPriceEventData.Modifier, 0, 0)
+        public static WorldEventEffectData ProductPriceEvent
+			= new CustomEffectData(WorldEventEffectType.ProductPrice, false, ProductPriceEventData.Modifier, 0, 0)
             .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
             .AddProductFilter(
                 new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
@@ -40,7 +49,8 @@ namespace ROIData {
                 .Build())
             .Build();
 
-        public static WorldEventEffectData ProductDemandEvent = new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData.Modifier, 0, 0)
+        public static WorldEventEffectData ProductDemandEvent
+			= new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData.Modifier, 0, 0)
             .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
             .AddProductFilter(
                 new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
@@ -52,7 +62,8 @@ namespace ROIData {
             .Build();
 
         //new
-        public static WorldEventEffectData ProductDemandEvent33 = new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData33.Modifier, 0, 0)
+        public static WorldEventEffectData ProductDemandEvent33
+			= new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData33.Modifier, 0, 0)
             .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
             .AddProductFilter(
                 new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
@@ -64,7 +75,8 @@ namespace ROIData {
             .Build();
 
         //new
-        public static WorldEventEffectData ProductDemandEvent300 = new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData300.Modifier, 0, 0)
+        public static WorldEventEffectData ProductDemandEvent300
+			= new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData300.Modifier, 0, 0)
             .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
             .AddProductFilter(
                 new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
@@ -76,8 +88,27 @@ namespace ROIData {
             .Build();
 
         public static List<WorldEventEffectData> WorldEventEffects = new List<WorldEventEffectData> {
-            ResearchBoostEvent, ProductPriceEvent, ProductDemandEvent, ProductDemandEvent33, ProductDemandEvent300
+            ResearchBoostEvent, ProductPriceEvent, ProductDemandEvent, ProductDemandEvent33, ProductDemandEvent300,
+			MakeEffectForProduct(7, "OrangeSoda"), MakeEffectForProduct(-9, "Headlights"), MakeEffectForProduct(9, "Marbles"),
+			MakeEffectForProduct(85, "Telephone"), MakeEffectForProduct(87, "CannedFish"), MakeEffectForProduct(25, "Toy Train Set"),
+			MakeEffectForProduct(-6, "Beer"), MakeEffectForProduct(-6, "Burgers"), MakeEffectForProduct(-20, "InteriorBody")
         };
+
+		private static WorldEventEffectData MakeEffectForProduct(int modifier, string product) {
+			var productInfo = new ProductDefinition[]{ GameData.instance.GetAssetsRO(typeof(ProductDefinition))
+					.FirstOrDefault(p => p.name == product) as ProductDefinition };
+
+			return new CustomEffectData(WorldEventEffectType.ProductPrice, false, modifier, 0, 0)
+				.SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+				.AddProductFilter(
+					new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
+					.WithProducts(productInfo)
+					.Build())
+				.AddBuildingFilter(
+					new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
+					.Build())
+				.Build();
+	}
 
         public CustomStaticEvent WithStaticWorldEventData(StaticWorldEventData staticWorldEventData)
         {
