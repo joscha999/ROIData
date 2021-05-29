@@ -84,6 +84,7 @@
     <Compile Include="EventParams\EventParameters.cs" />
     <Compile Include="EventParams\IntStringEventParameters.cs" />
     <Compile Include="EventParams\MessageEventParameters.cs" />
+    <Compile Include="EventParams\ResearchControlParameters.cs" />
     <Compile Include="HelperClasses\CustomEventType.cs" />
     <Compile Include="HelperClasses\CustomNetworkType.cs" />
     <Compile Include="HelperClasses\CustomProductDefiniton.cs" />

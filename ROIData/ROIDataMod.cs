@@ -18,7 +18,8 @@ using ROIData.Patching;
 
 namespace ROIData {
     public class ROIDataMod : Mod {
-		public static HumanPlayer Player => ManagerBehaviour<ActorManager>.instance.actors.FirstOrDefault(a => a is HumanPlayer) as HumanPlayer;
+		public static HumanPlayer Player => ManagerBehaviour<ActorManager>.instance.actors
+			.FirstOrDefault(a => a is HumanPlayer) as HumanPlayer;
 		public static Dictionary<CustomEventType, CustomStaticEvent> EventTypeCustomEventPairs
 			= new Dictionary<CustomEventType, CustomStaticEvent>();
 		public static SpeedControls SpeedControls = ManagerBehaviour<SpeedControls>.instance;

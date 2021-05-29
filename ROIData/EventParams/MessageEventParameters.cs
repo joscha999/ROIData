@@ -9,8 +9,7 @@ namespace ROIData.EventParams {
         public string Title { get; set; }
         public string Description { get; set; }
 
-        public MessageEventParameters(string value) : base(value) {
-        }
+        public MessageEventParameters(string value) : base(value) { }
 
         protected override void Parse() {
             Title = Data[0];

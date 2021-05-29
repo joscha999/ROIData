@@ -1,4 +1,5 @@
 ﻿using ProjectAutomata;
+using ROIData.EventParams;
 using ROIData.HelperClasses;
 using ROIData.Models;
 using System;
@@ -87,22 +88,22 @@ namespace ROIData
 
         //TODO: ist das so okay?
         public static void HandleAction(AssignmentAction action) {
-            if (action.Type > AssignmentActionType.None 
-                && action.Type <= AssignmentActionType.DisplayMessage)
+            if (action.Type > AssignmentActionType.None
+                && action.Type < AssignmentActionType.END_CONTROL_BLOCK)
             {
                 HandleControl(action.Type, action.Value);
             }
-            else if (action.Type >= AssignmentActionType.ResearchSpeed 
+            else if (action.Type >= AssignmentActionType.ResearchSpeed
                 && action.Type < AssignmentActionType.END_EVENT_BLOCK)
             {
                 HandleEvent(action.Type, action.Value);
-            } 
+            }
         }
 
         //Methode HandleEvent (von drüben hierhier kopieren)
         private static void HandleEvent(AssignmentActionType type, string value) {
             if (!EventTypeCustomEventPairs.TryGetValue(type, out CustomStaticEvent customEvent)) {
-                customEvent = RevolveEvent(type, value);
+                customEvent = ResolveEvent(type, value);
                 customEvent?.TryTrigger();
 
                 //only add to list when not null and not onetimevent, i.e., a Fine or Grant will not be added to the list.
@@ -125,38 +126,42 @@ namespace ROIData
                     break;
                 case AssignmentActionType.TaskEnd:
                     break;
-                case AssignmentActionType.Pause: PauseGame();
+                case AssignmentActionType.Pause:
+					PauseGame();
                     break;
-                case AssignmentActionType.Unpause: UnpauseGame();
+                case AssignmentActionType.Unpause:
+					UnpauseGame();
                     break;
-                case AssignmentActionType.CreateSave: TryForceAutoSave(value);
+                case AssignmentActionType.CreateSave:
+					TryForceAutoSave(value);
                     break;
                 case AssignmentActionType.DisplayMessage:
                     HandleEvent(type, value);
                     break;
-                default:
-                    break;
+				case AssignmentActionType.Research:
+					Research(new ResearchControlParameters(value));
+					break;
             }
         }
 
-        private static CustomStaticEvent RevolveEvent(AssignmentActionType type, string value) {
+        private static CustomStaticEvent ResolveEvent(AssignmentActionType type, string value) {
             switch (type) {
                 case AssignmentActionType.ResearchSpeed: return CustomStaticEvent.CreateResearchSpeedEvent(int.Parse(value));
                 case AssignmentActionType.PollutionFine: return CustomStaticEvent.CreatePollutionFineEvent(int.Parse(value));
-                case AssignmentActionType.Grant: return CustomStaticEvent.CreateGrantEvent(new EventParams.IntStringEventParameters(value));
-                case AssignmentActionType.Fine: return CustomStaticEvent.CreateFineEvent(new EventParams.IntStringEventParameters(value)); //TODO: IntStringEventParameter? (Grant, Fine)
+                case AssignmentActionType.Grant: return CustomStaticEvent.CreateGrantEvent(new IntStringEventParameters(value));
+				//TODO: IntStringEventParameter? (Grant, Fine)
+				case AssignmentActionType.Fine: return CustomStaticEvent.CreateFineEvent(new IntStringEventParameters(value));
                 case AssignmentActionType.Upkeep: return CustomStaticEvent.CreateUpkeepEvent(int.Parse(value));
                 case AssignmentActionType.TrainShipNetworkSpeed: return CustomStaticEvent.CreateNetworkSpeedEvent(int.Parse(value));
                 case AssignmentActionType.TrainShipDispatchCost: return CustomStaticEvent.CreateDispactCostEvent(int.Parse(value));
-                case AssignmentActionType.Demand: return CustomStaticEvent.CreateDemandEvent(new EventParams.IntProductEventParameters(value));
+                case AssignmentActionType.Demand: return CustomStaticEvent.CreateDemandEvent(new IntProductEventParameters(value));
                 case AssignmentActionType.BuildingCost: return CustomStaticEvent.CreateBuildingCostEvent(int.Parse(value));
-                case AssignmentActionType.DisplayMessage: return CustomStaticEvent.CreateMessageEvent(new EventParams.MessageEventParameters(value));
+                case AssignmentActionType.DisplayMessage: return CustomStaticEvent.CreateMessageEvent(new MessageEventParameters(value));
                 default: return null;
             }
         }
 
         private static void StopEvent(CustomStaticEvent customEvent) {
-
             foreach (IWorldEventAgent worldEventAgent in Reflection.GetField<List<IWorldEventAgent>>(typeof(WorldEventManager),
                 "_worldEventAgents", ManagerBehaviour<WorldEventManager>.instance)) {
                 foreach (StaticWorldEvent item in new List<StaticWorldEvent>(worldEventAgent.GetActiveStaticEvents())) {
@@ -214,7 +219,6 @@ namespace ROIData
         }
 
         private static void UnpauseGame() {
-            
             TimeManager.canAdvanceTime = true;
             TimeManager.canPauseTime = false;
         }
@@ -222,5 +226,25 @@ namespace ROIData
         private static void PauseGame() {
             TimeManager.canAdvanceTime = false;
         }
+
+		public static void Research(ResearchControlParameters parameters) {
+			if (parameters.Unlock == null) {
+				Debug.Log("ERROR: TaskSystem.Research: Unlock is null!");
+				return;
+			}
+
+			Debug.Log("Unlocking " + parameters.Unlock.name);
+			ResearchRecursive(parameters.Unlock);
+		}
+
+		private static void ResearchRecursive(TechTreeUnlock unlock) {
+			foreach (var u in unlock.requiredUnlocks)
+				ResearchRecursive(u);
+
+			foreach (var i in unlock.includedUnlocks)
+				ResearchRecursive(i);
+
+			ROIDataMod.Player.techTree.Unlock(unlock);
+		}
     }
 }
