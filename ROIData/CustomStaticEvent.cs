@@ -27,7 +27,7 @@ namespace ROIData {
         public static IntProductEventParameters ProductDemandEventData300
 			= new IntProductEventParameters("300,Toy Train Set");
 
-        public static int ResearchSpeedBoost = 100;
+        public static int ResearchSpeedBoost = 1000;
 
         public static WorldEventEffectData ResearchBoostEvent
 			= new CustomEffectData(WorldEventEffectType.ResearchSpeed, false, ResearchSpeedBoost, 0, 0)
