@@ -13,7 +13,6 @@ namespace ROIData {
     public class CustomStaticEvent {
         private StaticWorldEventData StaticWorldEventData;
         private WorldEventCreationParams WorldEventCreationParams;
-
         public string Name => StaticWorldEventData?.eventName ?? "N/A";
         public bool OneTimeEvent { get; private set; }
 
@@ -85,10 +84,10 @@ namespace ROIData {
             .Build();
 
         public static List<WorldEventEffectData> WorldEventEffects = new List<WorldEventEffectData> {
-            ResearchBoostEvent, /*ProductPriceEvent, ProductDemandEvent, ProductDemandEvent33, ProductDemandEvent300,*/
-			MakeEffectForProduct(7, "OrangeSoda"), MakeEffectForProduct(-9, "Headlights"), MakeEffectForProduct(9, "Marbles"),
+            ResearchBoostEvent /*ProductPriceEvent, ProductDemandEvent, ProductDemandEvent33, ProductDemandEvent300,*/
+			/*MakeEffectForProduct(7, "OrangeSoda"), MakeEffectForProduct(-9, "Headlights"), MakeEffectForProduct(9, "Marbles"),
 			MakeEffectForProduct(85, "Telephone"), MakeEffectForProduct(87, "CannedFish"), MakeEffectForProduct(25, "Toy Train Set"),
-			MakeEffectForProduct(-6, "Beer"), MakeEffectForProduct(-6, "Burgers"), MakeEffectForProduct(-20, "InteriorBody")
+			MakeEffectForProduct(-6, "Beer"), MakeEffectForProduct(-6, "Burgers"), MakeEffectForProduct(-20, "InteriorBody")*/
         };
 
 		private static WorldEventEffectData MakeEffectForProduct(int modifier, string product) {
@@ -147,7 +146,8 @@ namespace ROIData {
                             WorldEventEffects)
                         .Build())
                     .WithName("Einstellungen")
-                    .WithDescription("Für die Gesamtdauer der Aufgaben ist die Forschungsgeschwindigkeit erhöht. Weiterhin sind Nachfrage und Preise für einige Produkte angepasst.")
+                    .WithDescription("Für die Gesamtdauer der Aufgaben ist die Forschungsgeschwindigkeit erhöht. " +
+                    "Weiterhin sind Nachfrage und Preise für einige Produkte angepasst.")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1)
                     .Build())
@@ -171,7 +171,7 @@ namespace ROIData {
                     .WithName(parameters.Title)
                     .WithDescription(parameters.Description)
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
-                    .WithWhen(-1) //in february?
+                    .WithWhen(-1)
                     .IsGood()
                     .Build())
                 .WithWorldCreationParams(
@@ -179,7 +179,6 @@ namespace ROIData {
                     .SetDifficulty(1)
                     .SetDuration(60)
                     .SetRegion(ROIDataMod.Player.hq.region)
-                    //.SetDurationMultiplier(1)
                     .SetEffectMultiplier(1)
                     .Build()
                 );
@@ -199,13 +198,12 @@ namespace ROIData {
                     .WithName("Veränderte Forschungsgeschwindigkeit")
                     .WithDescription(modifier >= 0 ? "Forschungsgeschwindigkeit erhöht." : "Forschungsgeschwindigkeit verringert.")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
-                    .WithWhen(-1) //in february?
+                    .WithWhen(-1)
                     .Build())
                 .WithWorldCreationParams(
                     new CustomCreationParams(true, true)
                     .SetDifficulty(1)
                     .SetRegion(ROIDataMod.Player.hq.region)
-                    //.SetDurationMultiplier(1)
                     .SetEffectMultiplier(1)
                     .Build()
                 );
@@ -233,8 +231,6 @@ namespace ROIData {
                 .WithWorldCreationParams(
                     new CustomCreationParams(true, true)
                     .SetDifficulty(1)
-                    //.SetDuration(30)
-                    //.SetDurationMultiplier(1)
                     .SetRegion(ROIDataMod.Player.hq.region)
                     .SetEffectMultiplier(1)
                     .Build()
@@ -263,8 +259,6 @@ namespace ROIData {
                 .WithWorldCreationParams(
                     new CustomCreationParams(true, true)
                     .SetDifficulty(1)
-                    //.SetDuration(30)
-                    //.SetDurationMultiplier(1)
                     .SetRegion(ROIDataMod.Player.hq.region)
                     .SetEffectMultiplier(1)
                     .Build()
@@ -371,8 +365,6 @@ namespace ROIData {
                 .WithWorldCreationParams(
                     new CustomCreationParams(true, true)
                     .SetDifficulty(1)
-                    //.SetDuration(30)
-                    //.SetDurationMultiplier(1)
                     .SetRegion(ROIDataMod.Player.hq.region)
                     .SetEffectMultiplier(1)
                     .Build()
@@ -405,8 +397,6 @@ namespace ROIData {
                 .WithWorldCreationParams(
                     new CustomCreationParams(true, true)
                     .SetDifficulty(1)
-                    //.SetDuration(30)
-                    //.SetDurationMultiplier(1)
                     .SetRegion(ROIDataMod.Player.hq.region)
                     .SetEffectMultiplier(1)
                     .Build()
@@ -428,7 +418,7 @@ namespace ROIData {
                     .WithName("[Belohnung] Finanzieller Zuschuss")
                     .WithDescription(parameters.Message)
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
-                    .WithWhen(-1) //1
+                    .WithWhen(-1)
                     .IsBad()
                     .Build())
                 .WithWorldCreationParams(
@@ -449,7 +439,6 @@ namespace ROIData {
                         new CustomDataDifficulty()
                         .WithEffect(
                             new CustomEffectData(WorldEventEffectType.ProductPrice, false, parameters.Modifier, 0, 0)
-                            //.AddWhereFilter(WorldEventEffectWhereFilter.World)
                             .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
                             .AddProductFilter(
                                 new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
@@ -472,8 +461,6 @@ namespace ROIData {
                         .WithProducts(parameters.Products)
                         .Build())
                     .SetDifficulty(1)
-                    //.SetDuration(1)
-                    //.SetDurationMultiplier(1)
                     .SetRegion(ROIDataMod.Player.hq.region)
                     .SetEffectMultiplier(1)
                     .Build()
@@ -487,7 +474,6 @@ namespace ROIData {
                         new CustomDataDifficulty()
                         .WithEffect(
                             new CustomEffectData(WorldEventEffectType.Demand, false, parameters.Modifier, 0, 0)
-                            //.AddWhereFilter(WorldEventEffectWhereFilter.World)
                             .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
                             .AddProductFilter(
                                 new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
@@ -510,8 +496,6 @@ namespace ROIData {
                         .WithProducts(parameters.Products)
                         .Build())
                     .SetDifficulty(1)
-                    //.SetDuration(1)
-                    //.SetDurationMultiplier(1)
                     .SetRegion(ROIDataMod.Player.hq.region)
                     .SetEffectMultiplier(1)
                     .Build()

@@ -89,6 +89,7 @@
     <Compile Include="HelperClasses\CustomProductDefiniton.cs" />
     <Compile Include="HelperClasses\CustomEventDebug.cs" />
     <Compile Include="HelperClasses\Reflection.cs" />
+    <Compile Include="HelperClasses\ReplaceInformation.cs" />
     <Compile Include="HelperClasses\SettlementModifier.cs" />
     <Compile Include="HelperClasses\SpeedyBoi.cs" />
     <Compile Include="LoanCalculator.cs" />
@@ -97,6 +98,8 @@
     <Compile Include="Models\AssignmentAction.cs" />
     <Compile Include="Models\AssignmentTask.cs" />
     <Compile Include="Patching\SettlementGenerationPatcher.cs" />
+    <Compile Include="Patching\ShopDemandPatcher.cs" />
+    <Compile Include="Patching\ShopPricePatcher.cs" />
     <Compile Include="Patching\ShopProductPatcher.cs" />
     <Compile Include="PlayerBalance.cs" />
     <Compile Include="PlayerProfitCalculator.cs" />

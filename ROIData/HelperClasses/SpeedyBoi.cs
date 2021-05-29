@@ -27,8 +27,8 @@ namespace ROIData.HelperClasses
             }
             
             var speedManager = ManagerBehaviour<SpeedControls>.instance;
-            speedManager.ForceTimeScale(2);
-            speedLevel = 2;
+            speedManager.ForceTimeScale(10);
+            speedLevel = 10;
             return true;
         }
 

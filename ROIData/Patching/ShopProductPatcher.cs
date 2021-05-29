@@ -48,6 +48,12 @@ namespace ROIData.Patching {
             },
             new ReplaceInformation {
                 Settlement = "Leutingen", Shop = "Spielzeugladen", OldProduct = "Marbles", NewProduct = "Fluff"
+            },
+            new ReplaceInformation {
+                Settlement = "Zuckerrost", Shop = "Baumarkt", OldProduct = "Gas", NewProduct = "Marbles"
+            },
+            new ReplaceInformation {
+                Settlement = "Zuckerrost", Shop = "BAUTEIL-GESCHÄFT", OldProduct = "Axles", NewProduct = "Headlights"
             }
         };
 
@@ -70,6 +76,12 @@ namespace ROIData.Patching {
                         sb.Append(tag.ToString());
                     }
 
+                    //
+                    var bla = Reflection.GetField<Dictionary<ProductDefinition, int>>(typeof(Shop), "_demand", shop);
+                    foreach (var item in bla) {
+                        sb.AppendLine($"{item.Value} units demanded of {item.Key.productName}");
+                    }
+
                     sb.AppendLine();
                 }
 
@@ -78,6 +90,21 @@ namespace ROIData.Patching {
             }
 
             Debug.Log(sb.ToString());
+        }
+
+        public static void AdjustDemand() {
+            foreach (var settlement in Settlements) {
+                foreach (var shop in settlement.buildings.shops) {
+                    var dictionary = new Dictionary<ProductDefinition, int>();
+                    var demandDict = Reflection.GetField<Dictionary<ProductDefinition, int>>(typeof(Shop), "_demand", shop);
+
+                    foreach (var item in demandDict) {
+                        dictionary[item.Key] = 10;
+                    }
+
+                    Reflection.SetField(typeof(Shop), "_demand", shop, dictionary);
+                }
+            }
         }
 
         static bool Prefix(Shop __instance) => false;
@@ -105,20 +132,6 @@ namespace ROIData.Patching {
 
             if (!b)
                 Debug.Log($"Settlement: {__instance.settlement.settlementName}, Shop: {__instance.name}. No replacementinfo found.");
-        }
-
-        private static ProductDefinition GetProductDefinition(string name) {
-            return GameData.instance.GetAssetsRO(typeof(ProductDefinition))
-                    .FirstOrDefault(p => p.name == name) as ProductDefinition;
-        }
-
-        private class ReplaceInformation {
-            public string Settlement { get; set; }
-            public string Shop { get; set; }
-            public string OldProduct { get; set; }
-            public string NewProduct { get; set; }
-
-            public ProductDefinition NewProductDef => GetProductDefinition(NewProduct);
         }
     }
 }

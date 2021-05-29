@@ -110,30 +110,11 @@ namespace ROIData {
 			}
 
 			ActivateEvents();
-			//SettlementModifier.ForceGrowth(Player.hq.region.settlement, 100000);
-			//ShopProductPatcher.PrintShopData();
-			//SpeedyBoi.Register();
-
 			return true;
 		}
 
-        private void PrintGameSpeed()
-        {
-            StringBuilder sb = new StringBuilder();
-            SpeedControls sc = ManagerBehaviour<SpeedControls>.instance;
-
-			sb.Append("Level: ").Append(sc.level).AppendLine()
-				.Append("BeforePause: ").Append(sc.levelBeforePause).AppendLine();
-
-            Debug.Log(sb.ToString());
-        }
-
         private void ActivateEvents() {
 			CustomStaticEvent.CreateLongTermEvent().TryTrigger();
-			//CustomStaticEvent.CreateResearchSpeedEvent(100).TryTrigger();
-			//CustomStaticEvent.CreateMessageEvent(new EventParams.MessageEventParameters("Hallo Welt,Hallo Welt")).TryTrigger();
-			//CustomStaticEvent.CreateDemandEvent(new EventParams.IntProductEventParameters("-50,Potato,Marbles")).TryTrigger();
-			//CustomStaticEvent.CreateProductPriceEvent(new EventParams.IntProductEventParameters("100,Fish,Marbles")).TryTrigger(); //Fish $3,82k
 		}
 
 		private CustomStaticEvent RevolveEvent(CustomEventType type) {
@@ -182,16 +163,5 @@ namespace ROIData {
 				EventTypeCustomEventPairs.Remove(receivedKey);
 			}
         }
-
-		//private void UpdateCanAdvanceTime() {
-		//	TimeManager timeManager = ManagerBehaviour<TimeManager>.instance;
-
-		//	if (taskStartTimes.Contains(timeManager.today)) {
-		//		//timeManager.canAdvanceTime = true;
-		//		timeManager.canPauseTime = false;
-		//	} else if (taskEndTimes.Contains(timeManager.today)) {
-		//		timeManager.canAdvanceTime = false;
-		//	}
-		//}
 	}
 }
