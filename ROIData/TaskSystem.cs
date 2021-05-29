@@ -2,6 +2,7 @@
 using ROIData.EventParams;
 using ROIData.HelperClasses;
 using ROIData.Models;
+using ROIData.Patching;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -129,6 +130,9 @@ namespace ROIData {
 					break;
 				case AssignmentActionType.Research:
 					Research(new ResearchControlParameters(value));
+					break;
+				case AssignmentActionType.SetCanConstructBuildings:
+					BuildingManagerCanBuildIndexPatcher.PlacementEnabled = bool.Parse(value);
 					break;
 			}
 		}

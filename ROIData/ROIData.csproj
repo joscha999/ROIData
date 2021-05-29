@@ -97,6 +97,7 @@
     <Compile Include="MachineUptimeCalculator.cs" />
     <Compile Include="Models\AssignmentAction.cs" />
     <Compile Include="Models\AssignmentTask.cs" />
+    <Compile Include="Patching\BuildingManagerCanBuildPatcher.cs" />
     <Compile Include="Patching\SettlementGenerationPatcher.cs" />
     <Compile Include="Patching\ShopProductPatcher.cs" />
     <Compile Include="PlayerBalance.cs" />
