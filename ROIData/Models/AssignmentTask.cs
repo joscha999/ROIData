@@ -18,5 +18,26 @@ namespace ROIData.Models
 		public List<AssignmentAction> Actions { get; set; }
 
 		public float TimeSinceStart => Time.realtimeSinceStartup - UnscaledTimeStart;
+
+		public bool CanBeStartedNow => DateTimeOffset.UtcNow >= UTCStart
+			&& !Started && UnixDayEnd > Date.Now.UnixDays;
+
+		private int? _unixDayEnd;
+
+		public int UnixDayEnd {
+			get {
+				if (_unixDayEnd != null)
+					return _unixDayEnd.Value;
+
+				foreach (var act in Actions) {
+					if (act.Type == AssignmentActionType.TaskEnd) {
+						_unixDayEnd = int.Parse(act.Value);
+						break;
+					}
+				}
+
+				return _unixDayEnd.Value;
+			}
+		}
 	}
 }

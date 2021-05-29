@@ -18,7 +18,8 @@ using ROIData.Patching;
 
 namespace ROIData {
     public class ROIDataMod : Mod {
-		public static HumanPlayer Player => ManagerBehaviour<ActorManager>.instance.actors.FirstOrDefault(a => a is HumanPlayer) as HumanPlayer;
+		public static HumanPlayer Player => ManagerBehaviour<ActorManager>.instance.actors
+			.FirstOrDefault(a => a is HumanPlayer) as HumanPlayer;
 		public static Dictionary<CustomEventType, CustomStaticEvent> EventTypeCustomEventPairs
 			= new Dictionary<CustomEventType, CustomStaticEvent>();
 		public static SpeedControls SpeedControls = ManagerBehaviour<SpeedControls>.instance;
@@ -79,7 +80,8 @@ namespace ROIData {
         private void TimeManager_onDayEnd(GameDate gd)
         {
             WebConnectionHandler.SendData(this);
-        }
+			Debug.Log("Date.Now: " + Date.Now + ", UnixDays: " + Date.Now.UnixDays);
+		}
 
         private bool TryActivateEvent(out WorldEventManager wem, out WorldEventAgent wea) {
 			wea = null;
@@ -110,11 +112,20 @@ namespace ROIData {
 			}
 
 			ActivateEvents();
+
 			return true;
 		}
 
         private void ActivateEvents() {
 			CustomStaticEvent.CreateLongTermEvent().TryTrigger();
+
+			//pause at start - tasks take it from here
+			TaskSystem.TimeManager.canAdvanceTime = false;
+
+			//CustomStaticEvent.CreateResearchSpeedEvent(100).TryTrigger();
+			//CustomStaticEvent.CreateMessageEvent(new EventParams.MessageEventParameters("Hallo Welt,Hallo Welt")).TryTrigger();
+			//CustomStaticEvent.CreateDemandEvent(new EventParams.IntProductEventParameters("-50,Potato,Marbles")).TryTrigger();
+			//CustomStaticEvent.CreateProductPriceEvent(new EventParams.IntProductEventParameters("100,Fish,Marbles")).TryTrigger(); //Fish $3,82k
 		}
 
 		private CustomStaticEvent RevolveEvent(CustomEventType type) {

@@ -84,6 +84,7 @@
     <Compile Include="EventParams\EventParameters.cs" />
     <Compile Include="EventParams\IntStringEventParameters.cs" />
     <Compile Include="EventParams\MessageEventParameters.cs" />
+    <Compile Include="EventParams\ResearchControlParameters.cs" />
     <Compile Include="HelperClasses\CustomEventType.cs" />
     <Compile Include="HelperClasses\CustomNetworkType.cs" />
     <Compile Include="HelperClasses\CustomProductDefiniton.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="MachineUptimeCalculator.cs" />
     <Compile Include="Models\AssignmentAction.cs" />
     <Compile Include="Models\AssignmentTask.cs" />
+    <Compile Include="Patching\BuildingManagerCanBuildPatcher.cs" />
     <Compile Include="Patching\SettlementGenerationPatcher.cs" />
     <Compile Include="Patching\ShopDemandPatcher.cs" />
     <Compile Include="Patching\ShopPricePatcher.cs" />

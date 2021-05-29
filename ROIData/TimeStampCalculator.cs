@@ -8,9 +8,6 @@ using UnityEngine;
 
 namespace ROIData {
     public static class TimeStampCalculator {
-        public static Date GetTimeStamp() {
-            TimeManager timeManager = ManagerBehaviour<TimeManager>.instance;
-            return new Date(timeManager.today.Day, timeManager.today.Month, timeManager.today.Year);
-        }
+		public static Date GetTimeStamp() => Date.Now;
     }
 }

@@ -27,6 +27,9 @@ namespace ROIData.Models {
 		Unpause = 4,
 		CreateSave = 5,
 		DisplayMessage = 6,
+		Research = 7,
+		SetCanConstructBuildings = 8,
+		END_CONTROL_BLOCK = 9,
 
 		//Event Triggers 1000..
 		ResearchSpeed = 1000,

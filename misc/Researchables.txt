@@ -1,0 +1,243 @@
+Unlock.name: Boat Speed +25%, Unlock.unlockName: +25% Bootsgeschwindigkeit, Unlock.description Gibt Booten +25% Geschwindigkeit.
+Unlock.name: BoatCapacity, Unlock.unlockName: +5 Bootskapazität, Unlock.description Gibt den Booten 5 Kapazität
+Unlock.name: Train Speed +25%, Unlock.unlockName: +25% Zuggeschwindigkeit, Unlock.description Gibt Zügen +25% Geschwindigkeit.
+Unlock.name: TrainCapacity, Unlock.unlockName: +4 Zugkapazität, Unlock.description Gibt Zügen +4 Kapazität
+Unlock.name: Zeppelin Speed +25%, Unlock.unlockName: +25% Zeppelingeschwindigkeit, Unlock.description Gibt Zeppelinen +25% Geschwindigkeit.
+Unlock.name: ZeppelinCapacity, Unlock.unlockName: +3 Zeppelinkapazität, Unlock.description Gibt Zeppelinen 6 Kapazität.
+Unlock.name: TruckCapacity, Unlock.unlockName: +1 Truckkapazität, Unlock.description Erhöht die Kapazität der Lagerhaustrucks um +1
+Unlock.name: WarehouseCollectionRadiusA, Unlock.unlockName: +5 Felder Sammelreichweite, Unlock.description Füge 5 Felder zur Sammelreichweite der Lagerhäuser hinzu
+Unlock.name: WarehouseCollectionRadiusB, Unlock.unlockName: +5 Felder Sammelreichweite, Unlock.description Füge 5 Felder zur Sammelreichweite der Lagerhäuser hinzu
+Unlock.name: WarehouseStorageA, Unlock.unlockName: Gibt Lagerhäusern +10 Kapazität., Unlock.description +10 Lagerhaus-Lager
+Unlock.name: WarehouseStorageB, Unlock.unlockName: Gibt Lagerhäusern +15 Kapazität., Unlock.description +15 Lagerhaus-Lager
+Unlock.name: CleanerEfficiencyL3_L5, Unlock.unlockName: Hauptquartier der Luftverschmutzungsreiniger, Unlock.description Kann das Gehalt der Luftverschmutzungsreiniger zwischen 75% und 125% festlegen.
+Unlock.name: CleanerEfficiencyL6, Unlock.unlockName: Hauptquartier der Luftverschmutzungsreiniger, Unlock.description Kann das Gehalt der Luftverschmutzungsreiniger zwischen 50% und 150% festlegen.
+Unlock.name: CleanerEfficiencyL7, Unlock.unlockName: Hauptquartier der Luftverschmutzungsreiniger, Unlock.description Kann das Gehalt der Luftverschmutzungsreiniger zwischen 25% und 200% festlegen.
+Unlock.name: FactoryEfficiencyL1, Unlock.unlockName: Hauptquartier der Fabriken, Unlock.description Ermöglicht es, das Gehalt der Fabriken auf 25% einzustellen.
+Unlock.name: FactoryEfficiencyL2, Unlock.unlockName: Hauptquartier der Fabriken, Unlock.description Ermöglicht es, das Gehalt der Fabriken auf 50% einzustellen.
+Unlock.name: FactoryEfficiencyL3_L5, Unlock.unlockName: Hauptquartier der Fabriken, Unlock.description Ermöglicht es, das Gehalt der Fabriken auf 75% und 125% einzustellen.
+Unlock.name: FactoryEfficiencyL6, Unlock.unlockName: Hauptquartier der Fabriken, Unlock.description Ermöglicht es, das Gehalt der Fabriken auf 50% und 150% einzustellen.
+Unlock.name: FactoryEfficiencyL7, Unlock.unlockName: Hauptquartier der Fabriken, Unlock.description Ermöglicht es, das Gehalt der Fabriken auf 25% und 200% einzustellen.
+Unlock.name: FarmEfficiencyL1, Unlock.unlockName: Hauptquartier der Farmen, Unlock.description Ermöglicht es, das Gehalt der Farmen auf 25% einzustellen.
+Unlock.name: FarmEfficiencyL2, Unlock.unlockName: Hauptquartier der Farmen, Unlock.description Ermöglicht es, das Gehalt der Farmen auf 50% einzustellen.
+Unlock.name: FarmEfficiencyL3_L5, Unlock.unlockName: Hauptquartier der Farmen, Unlock.description Ermöglicht es, das Gehalt der Farmen auf 75% und 125% einzustellen.
+Unlock.name: FarmEfficiencyL6, Unlock.unlockName: Hauptquartier der Farmen, Unlock.description Ermöglicht es, das Gehalt der Farmen auf 50% und 150% einzustellen.
+Unlock.name: FarmEfficiencyL7, Unlock.unlockName: Hauptquartier der Farmen, Unlock.description Ermöglicht es, das Gehalt der Farmen auf 25% und 200% einzustellen.
+Unlock.name: GathererEfficiencyL1, Unlock.unlockName: Hauptquartier der Sammler, Unlock.description Ermöglicht es, das Gehalt der Sammler auf 25% einzustellen.
+Unlock.name: GathererEfficiencyL2, Unlock.unlockName: Hauptquartier der Sammler, Unlock.description Ermöglicht es, das Gehalt der Sammler auf 50% einzustellen.
+Unlock.name: GathererEfficiencyL3_L5, Unlock.unlockName: Hauptquartier der Sammler, Unlock.description Ermöglicht es, das Gehalt der Sammler auf 75% und 125% einzustellen.
+Unlock.name: GathererEfficiencyL6, Unlock.unlockName: Hauptquartier der Sammler, Unlock.description Ermöglicht es, das Gehalt der Sammler auf 50% und 150% einzustellen.
+Unlock.name: GathererEfficiencyL7, Unlock.unlockName: Hauptquartier der Sammler, Unlock.description Ermöglicht es, das Gehalt der Sammler auf 25% und 200% einzustellen.
+Unlock.name: ResearchEfficiencyL2, Unlock.unlockName: Monatliche Forschungskosten, Unlock.description Ermöglicht es, monatliche Forschungskosten auf $250k einzustellen.
+Unlock.name: ResearchEfficiencyL3, Unlock.unlockName: Monatliche Forschungskosten, Unlock.description Ermöglicht es, monatliche Forschungskosten auf $1M einzustellen.
+Unlock.name: ResearchEfficiencyL4, Unlock.unlockName: Monatliche Forschungskosten, Unlock.description Ermöglicht es, monatliche Forschungskosten auf $2,5M einzustellen.
+Unlock.name: ResearchEfficiencyL5, Unlock.unlockName: Monatliche Forschungskosten, Unlock.description Ermöglicht es, monatliche Forschungskosten auf $5M einzustellen.
+Unlock.name: +2 Coastal Harvesters, Unlock.unlockName: +2 Küstenernter, Unlock.description Kann 2 zusätzliche Küsten-basierte Ernter platzieren
+Unlock.name: +2 Land Harvesters, Unlock.unlockName: +2 Landernter, Unlock.description Kann 2 zusätzliche Land-basierte Ernter platzieren
+Unlock.name: +10 Factory Storage, Unlock.unlockName: +10 Fabriklager, Unlock.description Gibt Fabriken 10 zusätzliche Lagereinheiten.
+Unlock.name: +10 Farm Storage, Unlock.unlockName: +10 Farmlager, Unlock.description Gibt Farmen 10 zusätzliche Lagereinheiten.
+Unlock.name: +10 Gatherer Storage, Unlock.unlockName: +10 Sammlerlager, Unlock.description Gibt Sammlern 10 zusätzliche Lagereinheiten.
+Unlock.name: +25% Speed Tunnels and Bridges, Unlock.unlockName: +25% Tunnel- und Brückengeschwindigkeit, Unlock.description 25% erhöhte Geschwindigkeit in Tunnels und auf Brücken
+Unlock.name: +25% Urban Road Speed, Unlock.unlockName: +25% Stadtstraßengeschwindigkeit, Unlock.description 25% erhöhte Geschwindigkeit auf Stadtstraßen
+Unlock.name: -25% Tunnels and Bridges Cost, Unlock.unlockName: -25% Tunnel- und Brückenkosten, Unlock.description Reduziert die Kosten von Tunnels und Brücken um 25%
+Unlock.name: Destinations +3 A, Unlock.unlockName: +3 Zielslots, Unlock.description Schaltet 3 zusätzliche Zielslots für Farmen, Sammler und Fabriken frei.
+Unlock.name: Destinations +3 B, Unlock.unlockName: +3 Zielslots, Unlock.description Schaltet 3 zusätzliche Zielslots für Farmen, Sammler und Fabriken frei.
+Unlock.name: Dirt Roads, Unlock.unlockName: Feldwegbau, Unlock.description Kann Feldwege bauen
+Unlock.name: One Way Roads, Unlock.unlockName: Einbahnstraße, Unlock.description Kann Einbahnstraßen bauen
+Unlock.name: Tunnels & Bridges, Unlock.unlockName: Tunnels und Brücken, Unlock.description Kann Tunnels und Brücken bauen
+Unlock.name: Urban Roads, Unlock.unlockName: Stadtstraßenbau, Unlock.description Kann Stadtstraßen bauen
+Unlock.name: Headquarters, Unlock.unlockName: , Unlock.description 
+Unlock.name: Warehouse, Unlock.unlockName: Lagerhaus, Unlock.description Kann Lagerhäuser bauen
+Unlock.name: Boat Depot, Unlock.unlockName: Bootdepot, Unlock.description Kann Bootdepots bauen
+Unlock.name: Zeppelin Field, Unlock.unlockName: Zeppelinfeld, Unlock.description Kann Zeppelinfelder bauen
+Unlock.name: Train Terminal, Unlock.unlockName: Zugterminal, Unlock.description Kann Zugterminals und Schienen bauen
+Unlock.name: WarehouseMirrored, Unlock.unlockName: , Unlock.description 
+Unlock.name: Rails, Unlock.unlockName: Schienen, Unlock.description Kann Schienen bauen
+Unlock.name: Commercial Buildings, Unlock.unlockName: , Unlock.description 
+Unlock.name: AirPurifier, Unlock.unlockName: Luftreiniger, Unlock.description Kann Luftreiniger bauen
+Unlock.name: Brewery & Distillery, Unlock.unlockName: BRAUEREI & BRENNEREI, Unlock.description 
+Unlock.name: Car Prototype Facility, Unlock.unlockName: AUTOPROTOTYPANLAGE, Unlock.description Kann eine Autoprototypanlage bauen
+Unlock.name: Carpentry, Unlock.unlockName: Schreinerei, Unlock.description 
+Unlock.name: ChemicalScrubber, Unlock.unlockName: Chemisches Reinigungssystem, Unlock.description Kann Chemisches Reinigungssystem bauen
+Unlock.name: Coal Mine, Unlock.unlockName: KOHLENGRUBE, Unlock.description 
+Unlock.name: ComputerFactory, Unlock.unlockName: , Unlock.description 
+Unlock.name: Copper Mine, Unlock.unlockName: KUPFERMINE, Unlock.description 
+Unlock.name: Crop Farm, Unlock.unlockName: FELDFRUCHTFARM, Unlock.description 
+Unlock.name: Drinks Factory, Unlock.unlockName: GETRÄNKEFABRIK, Unlock.description 
+Unlock.name: Electro-mechanical Factory, Unlock.unlockName: Elektromechanische Fabrik, Unlock.description Kann eine elektromechanische Fabrik bauen
+Unlock.name: Fisherman Pier, Unlock.unlockName: FISCHERPIER, Unlock.description 
+Unlock.name: Food Factory, Unlock.unlockName: ESSENSFABRIK, Unlock.description 
+Unlock.name: Gas Pump, Unlock.unlockName: Erdgaspumpe, Unlock.description 
+Unlock.name: Glassworks & Smelter, Unlock.unlockName: GLASSFABRIK & SCHMELZEREI, Unlock.description 
+Unlock.name: Home Goods Factory, Unlock.unlockName: Haushaltsgut-Fabrik, Unlock.description 
+Unlock.name: Iron Mine, Unlock.unlockName: EISENMINE, Unlock.description 
+Unlock.name: Livestock Farm, Unlock.unlockName: NUTZTIERFARM, Unlock.description 
+Unlock.name: Lumberyard, Unlock.unlockName: Holzlager, Unlock.description 
+Unlock.name: Offshore Oil Drill, Unlock.unlockName: OFFSHORE-ÖLBOHRER, Unlock.description 
+Unlock.name: Oil Drill, Unlock.unlockName: ÖLBOHRER, Unlock.description 
+Unlock.name: Orchard, Unlock.unlockName: Obstgarten, Unlock.description 
+Unlock.name: Papermill, Unlock.unlockName: Papierfabrik, Unlock.description 
+Unlock.name: Petrochemical Plant, Unlock.unlockName: PETROCHEMISCHE ANLAGE, Unlock.description 
+Unlock.name: Plantation, Unlock.unlockName: Plantage, Unlock.description 
+Unlock.name: PremadeDinnerFactory, Unlock.unlockName: , Unlock.description 
+Unlock.name: Preservation Factory, Unlock.unlockName: PRESERVATIONSFABRIK, Unlock.description 
+Unlock.name: Sand Collector, Unlock.unlockName: SANDSAMMLER, Unlock.description 
+Unlock.name: Textile Factory, Unlock.unlockName: TEXTILFABRIK, Unlock.description 
+Unlock.name: Toy Factory, Unlock.unlockName: Spielzeugfabrik, Unlock.description 
+Unlock.name: Water Tower, Unlock.unlockName: Bewässerungsturm, Unlock.description Kann Bewässerungsturm bauen
+Unlock.name: Water Well, Unlock.unlockName: Brunnen, Unlock.description 
+Unlock.name: WaterTreatmentPlant, Unlock.unlockName: Kläranlage, Unlock.description Kann Kläranlagen bauen
+Unlock.name: Wholesaler, Unlock.unlockName: , Unlock.description 
+Unlock.name: Adhesive, Unlock.unlockName: Klebstoff, Unlock.description Kann Klebstoffe in der petrochemischen Anlage herstellen.
+Unlock.name: Apple Smoothie, Unlock.unlockName: Apfelsmoothie, Unlock.description Kann Apfelsmoothies in der Getränkefabrik herstellen.
+Unlock.name: Apples, Unlock.unlockName: Äpfel, Unlock.description Kann Äpfel im Obstgarten produzieren.
+Unlock.name: Bag of Chips, Unlock.unlockName: Chipstüte, Unlock.description Kann Chipstüten in der Preservationsfabrik produzieren.
+Unlock.name: Beef Stew, Unlock.unlockName: Gekochtes Rind, Unlock.description Kann Rindereintopf in der Essensfabrik herstellen.
+Unlock.name: Beer, Unlock.unlockName: Bier, Unlock.description Kann Bier in der Brauerei & Brennerei herstellen.
+Unlock.name: Berries, Unlock.unlockName: Beeren, Unlock.description Kann Beeren auf der Plantage produzieren.
+Unlock.name: Berry Smoothie, Unlock.unlockName: Beerensmoothie, Unlock.description Kann Beerensmoothies in der Getränkefabrik herstellen.
+Unlock.name: Biofuel, Unlock.unlockName: Biokraftstoff, Unlock.description Kann Biokraftstoff in der Brauerei & Brennerei herstellen.
+Unlock.name: Books, Unlock.unlockName: Bücher, Unlock.description Kann Bücher in der Papierfabrik produzieren.
+Unlock.name: Bottles, Unlock.unlockName: Flaschen, Unlock.description Kann Flaschen in der Glasfabrik & Schmelzerei produzieren.
+Unlock.name: Brandy, Unlock.unlockName: Brandy, Unlock.description Kann Brandy in der Brauerei & Brennerei herstellen.
+Unlock.name: Bricks, Unlock.unlockName: Ziegelsteine, Unlock.description Kann Ziegelsteine in Glashütte & Schmelze herstellen.
+Unlock.name: Burgers, Unlock.unlockName: Burger, Unlock.description Kann Burger in der Essensfabrik herstellen.
+Unlock.name: Canned Fish, Unlock.unlockName: Dosenfisch, Unlock.description Kann Dosenfisch in der Preservationsfabrik produzieren.
+Unlock.name: Canned Mutton, Unlock.unlockName: Dosenhammelfleisch, Unlock.description Kann Dosenhammelfleisch in der Preservationsfabrik produzieren.
+Unlock.name: Cans, Unlock.unlockName: Dosen, Unlock.description Kann Dosen in der Glasfabrik & Schmelzerei produzieren.
+Unlock.name: Car Seat, Unlock.unlockName: Autositz, Unlock.description Kann einen Autositz in der Schreinerei herstellen.
+Unlock.name: Cardboard, Unlock.unlockName: Karton, Unlock.description Kann Karton in der Papierfabrik produzieren.
+Unlock.name: Ceramics, Unlock.unlockName: Keramik, Unlock.description Kann Keramik in der Glasfabrik & Schmelzerei produzieren.
+Unlock.name: Cheese, Unlock.unlockName: Käse, Unlock.description Kann Käse in der Essensfabrik herstellen.
+Unlock.name: Chemicals, Unlock.unlockName: Chemikalien, Unlock.description Kann Chemikalien in der petrochemischen Anlage herstellen.
+Unlock.name: Chicken Soup, Unlock.unlockName: Hühnersuppe, Unlock.description Kann Hühnersuppe in der Preservationsfabrik produzieren.
+Unlock.name: Chickens, Unlock.unlockName: Hühner, Unlock.description Kann Hühnerfleisch und Eier auf der Nutztierfarm produzieren.
+Unlock.name: Chocolate Bar, Unlock.unlockName: Schokoriegel, Unlock.description Kann Schokoriegel in der Essensfabrik herstellen.
+Unlock.name: Chocolate Cake, Unlock.unlockName: Schokoladenkuchen, Unlock.description Kann Schokoladenkuchen in der Essensfabrik herstellen.
+Unlock.name: Coal, Unlock.unlockName: KOHLENGRUBE, Unlock.description Kann Kohle in der Kohlegrube produzieren.
+Unlock.name: Cocoa, Unlock.unlockName: Kakaos, Unlock.description Kann Kakao auf der Plantage produzieren.
+Unlock.name: Concrete, Unlock.unlockName: Beton, Unlock.description Kann Ziegelsteine in Glashütte & Schmelze herstellen.
+Unlock.name: Copper, Unlock.unlockName: Kupfer, Unlock.description Kann Kupfer in der Kupfermine produzieren.
+Unlock.name: Copper Tubing, Unlock.unlockName: Kupferrohr, Unlock.description Kann Kupferrohre der Glasfabrik & Schmelzerei produzieren.
+Unlock.name: Copper Wire, Unlock.unlockName: Kupferdrähte, Unlock.description Kann Kupferdrähte in der Glasfabrik & Schmelzerei produzieren.
+Unlock.name: Cotton, Unlock.unlockName: BAUMWOLLFELD, Unlock.description Kann Baumwolle auf der Plantage produzieren.
+Unlock.name: Cows, Unlock.unlockName: Kühe, Unlock.description Kann Rindfleisch, Leder und Milch auf der Nutztierfarm produzieren.
+Unlock.name: Deluxe Books, Unlock.unlockName: Luxusbücher, Unlock.description Kann Luxusbücher in der Papierfabrik produzieren.
+Unlock.name: Diodes, Unlock.unlockName: Dioden, Unlock.description Kann eine Diode in der Haushaltsgutfabrik herstellen.
+Unlock.name: Doll, Unlock.unlockName: Puppe, Unlock.description Kann Spielzeugpuppe in der Spielzeugfabrik herstellen.
+Unlock.name: Dollhouse, Unlock.unlockName: Puppenhaus, Unlock.description Kann Puppenhaus in der Spielzeugfabrik herstellen.
+Unlock.name: Dough, Unlock.unlockName: Teig, Unlock.description Kann Teig in der Essensfabrik herstellen.
+Unlock.name: Dye, Unlock.unlockName: Farbstoff, Unlock.description Kann Farbstoff in der Textilfabrik herstellen.
+Unlock.name: Fibers, Unlock.unlockName: Faserstoffe, Unlock.description Kann Faserstoffe in der Textilfabrik herstellen.
+Unlock.name: Fish, Unlock.unlockName: Fischernter, Unlock.description Kann Fische am Fischerpier produzieren.
+Unlock.name: Fish and Chips, Unlock.unlockName: Fish and Chips, Unlock.description Kann Fish and Chips in der Lebensmittelfabrik produzieren.
+Unlock.name: Flour, Unlock.unlockName: Mehl, Unlock.description Kann Mehl in der Essensfabrik herstellen.
+Unlock.name: Fluff, Unlock.unlockName: Füllmaterial, Unlock.description Kann Füllmaterial in der Spielzeugfabrik herstellen.
+Unlock.name: FurnitureBase(L), Unlock.unlockName: Möbelbasis (L), Unlock.description Kann Möbelbasen (L) in der Schreinerei herstellen.
+Unlock.name: FurnitureBases(S), Unlock.unlockName: Möbelbasen (S), Unlock.description Kann Möbelbasen (S) in der Schreinerei herstellen.
+Unlock.name: Gas, Unlock.unlockName: Erdgas, Unlock.description Kann Erdgas über die Erdgaspumpe produzieren.
+Unlock.name: Glass, Unlock.unlockName: Glas, Unlock.description Kann Glas in der Glasfabrik & Schmelzerei produzieren.
+Unlock.name: GrainWhiskey, Unlock.unlockName: Getreide-Whiskey, Unlock.description Kann Getreide-Whiskey in der Brauerei & Brennerei herstellen.
+Unlock.name: Grape Juice, Unlock.unlockName: Traubensaft, Unlock.description Kann Traubensaft in der Getränkefabrik herstellen.
+Unlock.name: Grapes, Unlock.unlockName: Trauben, Unlock.description Kann Trauben im Obstgarten produzieren.
+Unlock.name: Hard Cider, Unlock.unlockName: Apfelwein, Unlock.description Kann Apfelwein in der Brauerei & Brennerei herstellen.
+Unlock.name: Headlights, Unlock.unlockName: Scheinwerfer, Unlock.description Kann Scheinwerfer in der Haushaltsgutfabrik herstellen.
+Unlock.name: Heavy Fabric, Unlock.unlockName: Schwerer Stoff, Unlock.description Kann schweren Stoff in der Textilfabrik herstellen.
+Unlock.name: Heavy Pulp, Unlock.unlockName: Schwerer Zellstoff, Unlock.description Kann schweren Zellstoff in der Papierfabrik produzieren.
+Unlock.name: Hops, Unlock.unlockName: Hopfen, Unlock.description Kann Hopfen auf der Feldfruchtfarm produzieren.
+Unlock.name: Ink, Unlock.unlockName: Tinte, Unlock.description Kann Tinte in der Papierfabrik produzieren.
+Unlock.name: Interior Lining, Unlock.unlockName: Innenverkleidung, Unlock.description Kann Innenverkleidung in der Textilfabrik herstellen.
+Unlock.name: Iron, Unlock.unlockName: Eisen, Unlock.description Kann Eisen in der Eisenmine produzieren.
+Unlock.name: Leather Furniture, Unlock.unlockName: Ledermöbel, Unlock.description Kann Ledermöbel in der Schreinerei herstellen.
+Unlock.name: Light Bulb, Unlock.unlockName: Glühbirnen, Unlock.description Kann Glühbirnen in der Haushaltsgutfabrik herstellen.
+Unlock.name: Light Fabric, Unlock.unlockName: Leichter Stoff, Unlock.description Kann leichten Stoff in der Textilfabrik herstellen.
+Unlock.name: Marbles, Unlock.unlockName: Murmeln, Unlock.description Kann Murmeln in der Spielzeugfabrik herstellen.
+Unlock.name: Napkins, Unlock.unlockName: Servietten, Unlock.description Kann Servietten in Textil-Fabrik herstellen.
+Unlock.name: Newspapers, Unlock.unlockName: Zeitungen, Unlock.description Kann Zeitungen in der Papierfabrik produzieren.
+Unlock.name: Office Furniture, Unlock.unlockName: Büromöbel, Unlock.description Kann Büromöbel in der Schreinerei herstellen.
+Unlock.name: Oil, Unlock.unlockName: Öl, Unlock.description Kann Öl am Ölbohrer und Offshore-Ölbohrer produzieren.
+Unlock.name: Olive Oil, Unlock.unlockName: Olivenöl, Unlock.description Kann Olivenöl in Lebensmittel-Fabrik herstellen.
+Unlock.name: Olives, Unlock.unlockName: Oliven, Unlock.description Kann Oliven im Obstgarten herstellen.
+Unlock.name: Orange Juice, Unlock.unlockName: Orangensaft, Unlock.description Kann Orangensaft in der Getränkefabrik herstellen.
+Unlock.name: Orange Soda, Unlock.unlockName: Orangenlimo, Unlock.description Kann Orangensoda in der Getränkefabrik herstellen.
+Unlock.name: Oranges, Unlock.unlockName: Orangenfeld, Unlock.description Kann Orangen im Obstgarten produzieren.
+Unlock.name: Oven, Unlock.unlockName: Öfen, Unlock.description Kann Öfen in der Haushaltsgutfabrik herstellen.
+Unlock.name: Paint, Unlock.unlockName: Farbe, Unlock.description Kann Farbe in der petrochemischen Anlage herstellen.
+Unlock.name: Paper Roll, Unlock.unlockName: Papierrolle, Unlock.description Kann Papierrolle in der Papierfabrik herstellen.
+Unlock.name: Pizza, Unlock.unlockName: Pizza, Unlock.description Kann Pizza in der Essensfabrik herstellen.
+Unlock.name: Plastic, Unlock.unlockName: Plastik, Unlock.description Kann Plastik in der petrochemischen Anlage herstellen.
+Unlock.name: Plastic Furniture, Unlock.unlockName: Plastikmöbel, Unlock.description Kann Plastikmöbel in der Schreinerei herstellen.
+Unlock.name: Potatoes, Unlock.unlockName: Kartoffel, Unlock.description Kann Kartoffeln auf der Feldfruchtfarm produzieren.
+Unlock.name: Printed Paper, Unlock.unlockName: Bedrucktes Papier, Unlock.description Kann bedrucktes Papier in der Papierfabrik produzieren.
+Unlock.name: Radiator, Unlock.unlockName: Heizkörper, Unlock.description Kann Heizkörper in Haushaltsgüter-Fabrik herstellen.
+Unlock.name: Radio Receiver, Unlock.unlockName: Funkempfänger, Unlock.description Kann Funkempfänger in der Haushaltsgutfabrik herstellen.
+Unlock.name: Raw Rubber, Unlock.unlockName: Rohgummi, Unlock.description Kann Rohgummi im Obstgarten produzieren.
+Unlock.name: Refined Oil, Unlock.unlockName: Raffiniertes Öl, Unlock.description Kann raffiniertes Öl in der petrochemischen Anlage herstellen.
+Unlock.name: Refrigerator, Unlock.unlockName: Kühlschränke, Unlock.description Kann Kühlschränke in der Haushaltsgutfabrik herstellen.
+Unlock.name: Reinforced Wall, Unlock.unlockName: Verstärkte Wand, Unlock.description Kann Verstärkte Wand in Schreinerei herstellen.
+Unlock.name: Rubber, Unlock.unlockName: Gummi, Unlock.description Kann Gummi in der petrochemischen Anlage herstellen.
+Unlock.name: RubberTubes, Unlock.unlockName: Gummiröhren, Unlock.description Kann Gummiröhren in der petrochemischen Anlage herstellen.
+Unlock.name: Sand, Unlock.unlockName: Sand, Unlock.description Kann Sand im Sandsammler produzieren.
+Unlock.name: Sheep, Unlock.unlockName: Schafe, Unlock.description Kann Hammelfleisch und Wolle auf der Nutztierfarm produzieren.
+Unlock.name: Soda Water, Unlock.unlockName: Mineralwasser, Unlock.description Kann Mineralwasser in der Getränkefabrik herstellen.
+Unlock.name: Soup, Unlock.unlockName: Suppe, Unlock.description Kann Suppe in der Preservationsfabrik produzieren.
+Unlock.name: Steel, Unlock.unlockName: Stahl, Unlock.description Kann Stahl in der Glasfabrik & Schmelzerei produzieren.
+Unlock.name: Steel Barrels, Unlock.unlockName: Stahlfässer, Unlock.description Kann Stahlfässer in der Glasfabrik & Schmelzerei produzieren.
+Unlock.name: SteelFrame, Unlock.unlockName: Stahlrahmen, Unlock.description Kann Stahlrahmen in der Glasfabrik & Schmelzerei produzieren.
+Unlock.name: Stovetop, Unlock.unlockName: Herdplatten, Unlock.description Kann Herdplatten in der Haushaltsgutfabrik herstellen.
+Unlock.name: Sugar, Unlock.unlockName: Zuckerrohrfeld, Unlock.description Kann Zucker auf der Plantage produzieren.
+Unlock.name: Summer Clothes, Unlock.unlockName: Sommerkleidung, Unlock.description Kann Sommerkleidung in der Textilfabrik herstellen.
+Unlock.name: Teddy Bear, Unlock.unlockName: Teddybär, Unlock.description Kann Teddybär in der Spielzeugfabrik herstellen.
+Unlock.name: Telephone, Unlock.unlockName: Telefone, Unlock.description Kann Telefone in der Haushaltsgutfabrik herstellen.
+Unlock.name: Thin Cardboard, Unlock.unlockName: Dünne Pappe, Unlock.description Kann Dünne Pappe in Papierfabrik herstellen.
+Unlock.name: Tire, Unlock.unlockName: Reifen, Unlock.description Kann Reifen in der petrochemischen Anlage herstellen.
+Unlock.name: Toy Furniture, Unlock.unlockName: Spielzeugmöbel, Unlock.description Kann Spielzeugmöbel in der Spielzeugfabrik herstellen.
+Unlock.name: Toy Train Set, Unlock.unlockName: Spielzeugzug-Set, Unlock.description Kann Spielzeugzug-Set in der Spielzeugfabrik herstellen.
+Unlock.name: Vegetables, Unlock.unlockName: GEMÜSEFELD, Unlock.description Kann Gemüse auf der Feldfruchtfarm produzieren.
+Unlock.name: Vodka, Unlock.unlockName: Vodka, Unlock.description Kann Vodka in der Brauerei & Brennerei herstellen.
+Unlock.name: Waffles, Unlock.unlockName: Waffeln, Unlock.description Kann Waffeln in der Essensfabrik herstellen.
+Unlock.name: Wall Panels, Unlock.unlockName: Wandplatten, Unlock.description Kann Wandplatten in Schreinerei herstellen.
+Unlock.name: Wheat, Unlock.unlockName: WEIZENFELD, Unlock.description Kann Weizen auf der Feldfruchtfarm produzieren.
+Unlock.name: Wine, Unlock.unlockName: Wein, Unlock.description Kann Wein in der Brauerei & Brennerei herstellen.
+Unlock.name: Winter Clothes, Unlock.unlockName: Winterkleidung, Unlock.description Kann Winterkleidung in der Textilfabrik herstellen.
+Unlock.name: Wood, Unlock.unlockName: Holz, Unlock.description Kann Holz im Holzlager produzieren.
+Unlock.name: Wooden Barrels, Unlock.unlockName: Holzfässer, Unlock.description Kann Holzfässer in der Schreinerei herstellen.
+Unlock.name: Wooden Planks, Unlock.unlockName: Holzbretter, Unlock.description Kann Holzbretter in der Schreinerei herstellen.
+Unlock.name: Wooden Train, Unlock.unlockName: Holzzug, Unlock.description Kann Holzzug in der Spielzeugfabrik herstellen.
+Unlock.name: Work Clothes, Unlock.unlockName: Arbeitskleidung, Unlock.description Kann Arbeitskleidung in der Textilfabrik herstellen.
+Unlock.name: Yeast, Unlock.unlockName: Hefe, Unlock.description Kann Hefe in der Brauerei & Brennerei herstellen.
+Unlock.name: Axles, Unlock.unlockName: Achsen, Unlock.description Kann Achsen in der Autofabrik produzieren.
+Unlock.name: Berry Pie, Unlock.unlockName: Beerenkuchen, Unlock.description Kann Beerenkuchen in der Essensfabrik herstellen.
+Unlock.name: Binary Switcher, Unlock.unlockName: Binärer Schalter, Unlock.description Kann Binären Schalter in Haushaltsgüter-Fabrik herstellen.
+Unlock.name: BodyChassis, Unlock.unlockName: Chassis, Unlock.description Kann Chassis in der Autofabrik produzieren.
+Unlock.name: Buttons, Unlock.unlockName: Buttons, Unlock.description Kann Buttons in petrochemischer Fabrik herstellen.
+Unlock.name: Capacitors, Unlock.unlockName: Kondensatoren, Unlock.description Kann Kondensatoren in Haushaltsgüter-Fabrik herstellen.
+Unlock.name: CarPrototype, Unlock.unlockName: Autoprototyp, Unlock.description Kann Auto-Prototyp in Prototypen-Fabrik herstellen.
+Unlock.name: Chicken Dinner, Unlock.unlockName: Hühnchen-Abendessen, Unlock.description Kann Hühnchen-Abendessen in Lebensmittel-Fabrik herstellen.
+Unlock.name: Combustion Engine, Unlock.unlockName: Verbrennungsmotor, Unlock.description Kann Verbrennsungsmotoren in der Autofabrik produzieren.
+Unlock.name: Computer Memory, Unlock.unlockName: Computerspeicher, Unlock.description Kann Computerspeicher in Glashütte & Schmelze herstellen.
+Unlock.name: Cooked Vegetables, Unlock.unlockName: Gekochtes Gemüse, Unlock.description Kann Gekochtes Gemüse in Lebensmittel-Fabrik herstellen.
+Unlock.name: Dinner Container, Unlock.unlockName: Abendessen-Behälter, Unlock.description Kann Abendessen-Behälter in Papierfabrik herstellen.
+Unlock.name: Engine Block, Unlock.unlockName: Motorblock, Unlock.description Kann Motorblock in Haushaltsgüter-Fabrik herstellen.
+Unlock.name: Exterior Body, Unlock.unlockName: Äußere Karosserie, Unlock.description Kann Äußere Karosserien in der Autofabrik produzieren.
+Unlock.name: First Computer, Unlock.unlockName: Erster Computer, Unlock.description Kann Ersten Computer in Prototyp-Fabrik herstellen.
+Unlock.name: Fried Chicken, Unlock.unlockName: Frittiertes Hühnchen, Unlock.description Kann Frittiertes Hühnchen in Lebensmittel-Fabrik herstellen.
+Unlock.name: Glass Tubes, Unlock.unlockName: Glasrohre, Unlock.description Kann Glasrohre in Glashütte & Schmelze herstellen.
+Unlock.name: Interface, Unlock.unlockName: Anschluss, Unlock.description Kann Anschluss in petrochemischer Fabrik herstellen.
+Unlock.name: Interior Body, Unlock.unlockName: Innerer Chassis, Unlock.description Kann Innere Chassis in der Autofabrik produzieren.
+Unlock.name: Plastic Cutlery, Unlock.unlockName: Plastikbesteck, Unlock.description Kann Plastikbesteck in petrochemischer Fabrik herstellen.
+Unlock.name: Premade Dinner, Unlock.unlockName: Fertiggericht-Abendessen, Unlock.description Kann Fertiggericht-Abendessen in Prototyp-Fabrik herstellen.
+Unlock.name: Processor, Unlock.unlockName: Prozessor, Unlock.description Kann Prozessor in Haushaltsgüter-Fabrik herstellen.
+Unlock.name: Punch Cards, Unlock.unlockName: Lochkarten, Unlock.description Kann Lochkarten in Papierfabrik herstellen.
+Unlock.name: Rolling Chassis, Unlock.unlockName: Fahrwerk, Unlock.description Kann Fahrwerke in der Autofabrik produzieren.
+Unlock.name: Water Tower AoE, Unlock.unlockName: +10 Felder Bewässerungsreichweite, Unlock.description Füge 10 Felder zur Sammelreichweite des Bewässerungsturms hinzu
+Unlock.name: Water, Unlock.unlockName: WASSERPUMPE, Unlock.description Kann Wasser am Wassersiphon produzieren.
+Unlock.name: Water Siphon, Unlock.unlockName: WASSERSIPHON, Unlock.description 
+Unlock.name: +2 Crop Fields, Unlock.unlockName: +2 Feldfrucht-Felder, Unlock.description Kann 2 zusätzliche Feldfrucht-Felder platzieren
+Unlock.name: +2 Orchard Fields, Unlock.unlockName: +2 Obstgartenfelder, Unlock.description Kann 2 zusätzliche Obstgarten-Felder platzieren
+Unlock.name: +2 Plantation Fields, Unlock.unlockName: +2 Plantagenfelder, Unlock.description Kann 2 zusätzliche Plantagenfelder platzieren
+Unlock.name: Deforestation, Unlock.unlockName: +2 Nutztierfelder, Unlock.description Kann 2 zusätzliche Nutztierfelder platzieren
+Unlock.name: Quilt, Unlock.unlockName: Steppdecke, Unlock.description Kann Steppdecken in der Textilfabrik produzieren.
+Unlock.name: Couch, Unlock.unlockName: Sofa, Unlock.description Kann Sofas in der Schreinerei produzieren.
+Unlock.name: HardCiderDonuts, Unlock.unlockName: Apfelwein-Donuts, Unlock.description Kann Apfelwein-Donuts in der Essensfabrik produzieren.
+Unlock.name: +2 Offshore Harvesters, Unlock.unlockName: +2 Offshore-Ernter, Unlock.description Kann 2 zusätzliche Offshore-basierte Ernter platzieren
+Unlock.name: EasterEggs, Unlock.unlockName: Ostereier, Unlock.description Du kannst Ostereier in der Spielzeugfabrik herstellen.
