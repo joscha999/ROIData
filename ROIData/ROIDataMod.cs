@@ -112,7 +112,7 @@ namespace ROIData {
 			ActivateEvents();
 			//SettlementModifier.ForceGrowth(Player.hq.region.settlement, 100000);
 			//ShopProductPatcher.PrintShopData();
-			SpeedyBoi.Register();
+			//SpeedyBoi.Register();
 
 			return true;
 		}
