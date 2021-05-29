@@ -80,7 +80,8 @@ namespace ROIData {
         private void TimeManager_onDayEnd(GameDate gd)
         {
             WebConnectionHandler.SendData(this);
-        }
+			Debug.Log("Date.Now: " + Date.Now + ", UnixDays: " + Date.Now.UnixDays);
+		}
 
         private bool TryActivateEvent(out WorldEventManager wem, out WorldEventAgent wea) {
 			wea = null;
@@ -111,9 +112,6 @@ namespace ROIData {
 			}
 
 			ActivateEvents();
-			//SettlementModifier.ForceGrowth(Player.hq.region.settlement, 100000);
-			//ShopProductPatcher.PrintShopData();
-			//SpeedyBoi.Register();
 
 			return true;
 		}
@@ -131,6 +129,10 @@ namespace ROIData {
 
         private void ActivateEvents() {
 			CustomStaticEvent.CreateLongTermEvent().TryTrigger();
+
+			//pause at start - tasks take it from here
+			TaskSystem.TimeManager.canAdvanceTime = false;
+
 			//CustomStaticEvent.CreateResearchSpeedEvent(100).TryTrigger();
 			//CustomStaticEvent.CreateMessageEvent(new EventParams.MessageEventParameters("Hallo Welt,Hallo Welt")).TryTrigger();
 			//CustomStaticEvent.CreateDemandEvent(new EventParams.IntProductEventParameters("-50,Potato,Marbles")).TryTrigger();
