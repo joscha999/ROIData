@@ -15,10 +15,13 @@ namespace ROIData.Patching {
         private static SettlementManager SettlementManager = ManagerBehaviour<SettlementManager>.instance;
         private static List<SettlementBase> Settlements = SettlementManager.settlements;
 
-        private static readonly List<ReplaceInformation> ReplaceInfo = new List<ReplaceInformation>() {
-            new ReplaceInformation {
-                Settlement = "Zuckerrost", Shop = "Lokal", OldProduct = "Pizza", NewProduct = "Burgers"
-            },
+		private static readonly List<ReplaceInformation> ReplaceInfo = new List<ReplaceInformation>() {
+			new ReplaceInformation {
+				Settlement = "Zuckerrost", Shop = "Lokal", OldProduct = "Pizza", NewProduct = "Burgers"
+			},
+			new ReplaceInformation {
+				Settlement = "Zuckerrost", Shop = "Lokal", OldProduct = "BerryPie", NewProduct = "OrangeSoda"
+			},
             new ReplaceInformation {
                 Settlement = "Zuckerrost", Shop = "BAUTEIL-GESCHÄFT", OldProduct = "RubberTubes", NewProduct = "InteriorBody"
             },

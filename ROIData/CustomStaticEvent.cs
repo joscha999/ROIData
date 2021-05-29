@@ -27,9 +27,6 @@ namespace ROIData {
         public static IntProductEventParameters ProductDemandEventData300
 			= new IntProductEventParameters("300,Toy Train Set");
 
-		//price modifiers to adjust map-generated prices to task-expected prices
-
-
         public static int ResearchSpeedBoost = 100;
 
         public static WorldEventEffectData ResearchBoostEvent
@@ -88,7 +85,7 @@ namespace ROIData {
             .Build();
 
         public static List<WorldEventEffectData> WorldEventEffects = new List<WorldEventEffectData> {
-            ResearchBoostEvent, ProductPriceEvent, ProductDemandEvent, ProductDemandEvent33, ProductDemandEvent300,
+            ResearchBoostEvent, /*ProductPriceEvent, ProductDemandEvent, ProductDemandEvent33, ProductDemandEvent300,*/
 			MakeEffectForProduct(7, "OrangeSoda"), MakeEffectForProduct(-9, "Headlights"), MakeEffectForProduct(9, "Marbles"),
 			MakeEffectForProduct(85, "Telephone"), MakeEffectForProduct(87, "CannedFish"), MakeEffectForProduct(25, "Toy Train Set"),
 			MakeEffectForProduct(-6, "Beer"), MakeEffectForProduct(-6, "Burgers"), MakeEffectForProduct(-20, "InteriorBody")
