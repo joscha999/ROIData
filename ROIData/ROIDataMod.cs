@@ -23,7 +23,6 @@ namespace ROIData {
 		public static Dictionary<CustomEventType, CustomStaticEvent> EventTypeCustomEventPairs
 			= new Dictionary<CustomEventType, CustomStaticEvent>();
 		public static SpeedControls SpeedControls = ManagerBehaviour<SpeedControls>.instance;
-		public static AnalyticsManager AnalyticsManager => CachedManagerBehaviour<AnalyticsManager>.instance;
 
 		private bool alreadySubscribed;
 		private bool activatedEvent;
@@ -121,58 +120,47 @@ namespace ROIData {
 
 			//pause at start - tasks take it from here
 			TaskSystem.TimeManager.canAdvanceTime = false;
-
-			//CustomStaticEvent.CreateResearchSpeedEvent(100).TryTrigger();
-			//CustomStaticEvent.CreateMessageEvent(new EventParams.MessageEventParameters("Hallo Welt,Hallo Welt")).TryTrigger();
-			//CustomStaticEvent.CreateDemandEvent(new EventParams.IntProductEventParameters("-50,Potato,Marbles")).TryTrigger();
-			//CustomStaticEvent.CreateProductPriceEvent(new EventParams.IntProductEventParameters("100,Fish,Marbles")).TryTrigger(); //Fish $3,82k
 		}
 
-		private CustomStaticEvent RevolveEvent(CustomEventType type) {
-            switch (type) {
-                case CustomEventType.ResearchSpeed: return CustomStaticEvent.CreateResearchSpeedEvent(100);
-                case CustomEventType.PollutionFine: return CustomStaticEvent.CreatePollutionFineEvent(100_000);
-				case CustomEventType.Grant: return CustomStaticEvent.CreateGrantEvent(new EventParams.IntStringEventParameters("100000,Sie erhalten eine Belohnung."));
-                case CustomEventType.Fine: return CustomStaticEvent.CreateFineEvent(new EventParams.IntStringEventParameters("100000,Sie erhalten eine Strafe."));
-                case CustomEventType.Upkeep: return CustomStaticEvent.CreateUpkeepEvent(50);
-                case CustomEventType.TrainShipNetworkSpeed: return CustomStaticEvent.CreateNetworkSpeedEvent(500);
-                case CustomEventType.TrainShipDispatchCost: return CustomStaticEvent.CreateDispactCostEvent(500);
-                case CustomEventType.Demand: return CustomStaticEvent.CreateDemandEvent(new EventParams.IntProductEventParameters("-50,Potato,Marbles"));
-                case CustomEventType.BuildingCost: return CustomStaticEvent.CreateBuildingCostEvent(50);
-                default: return null;
-            }
-        }
+		//private CustomStaticEvent RevolveEvent(CustomEventType type) {
+  //          switch (type) {
+  //              case CustomEventType.ResearchSpeed: return CustomStaticEvent.CreateResearchSpeedEvent(100);
+  //              case CustomEventType.PollutionFine: return CustomStaticEvent.CreatePollutionFineEvent(100_000);
+		//		case CustomEventType.Grant: return CustomStaticEvent.CreateGrantEvent(new EventParams.IntStringEventParameters("100000,Sie erhalten eine Belohnung."));
+  //              case CustomEventType.Fine: return CustomStaticEvent.CreateFineEvent(new EventParams.IntStringEventParameters("100000,Sie erhalten eine Strafe."));
+  //              case CustomEventType.Upkeep: return CustomStaticEvent.CreateUpkeepEvent(50);
+  //              case CustomEventType.TrainShipNetworkSpeed: return CustomStaticEvent.CreateNetworkSpeedEvent(500);
+  //              case CustomEventType.TrainShipDispatchCost: return CustomStaticEvent.CreateDispactCostEvent(500);
+  //              case CustomEventType.Demand: return CustomStaticEvent.CreateDemandEvent(new EventParams.IntProductEventParameters("-50,Potato,Marbles"));
+  //              case CustomEventType.BuildingCost: return CustomStaticEvent.CreateBuildingCostEvent(50);
+  //              default: return null;
+  //          }
+  //      }
 
-		private void StopEvent(CustomStaticEvent customEvent) {
-			foreach (IWorldEventAgent worldEventAgent in Reflection.GetField<List<IWorldEventAgent>>(typeof(WorldEventManager),
-				"_worldEventAgents", ManagerBehaviour<WorldEventManager>.instance)) {
-				foreach (StaticWorldEvent item in new List<StaticWorldEvent>(worldEventAgent.GetActiveStaticEvents())) {
-                    if (item.data.eventName == customEvent.Name) {
-						worldEventAgent.EndEvent(item);
-					}
-				}
-			}
-		}
+		//private void StopEvent(CustomStaticEvent customEvent) {
+		//	foreach (IWorldEventAgent worldEventAgent in Reflection.GetField<List<IWorldEventAgent>>(typeof(WorldEventManager),
+		//		"_worldEventAgents", ManagerBehaviour<WorldEventManager>.instance)) {
+		//		foreach (StaticWorldEvent item in new List<StaticWorldEvent>(worldEventAgent.GetActiveStaticEvents())) {
+  //                  if (item.data.eventName == customEvent.Name)
+		//				worldEventAgent.EndEvent(item);
+		//		}
+		//	}
+		//}
 
-        private void AwaitAndExecuteActions() {
-			//TODO: every 20 seconds, get action inputs from WebInterface
-			//Trigger
-			var receivedTrigger = 1000; //ResearchBoost
-			CustomEventType receivedKey = (CustomEventType)receivedTrigger;
+   //     private void AwaitAndExecuteActions() {
+			//var receivedTrigger = 1000;
+			//CustomEventType receivedKey = (CustomEventType)receivedTrigger;
 
-			if (!EventTypeCustomEventPairs.TryGetValue(receivedKey, out CustomStaticEvent customEvent)) {
-				customEvent = RevolveEvent(receivedKey);
-				customEvent?.TryTrigger();
+			//if (!EventTypeCustomEventPairs.TryGetValue(receivedKey, out CustomStaticEvent customEvent)) {
+			//	customEvent = RevolveEvent(receivedKey);
+			//	customEvent?.TryTrigger();
 
-				//only add to list when not null and not onetimevent, i.e., a Fine or Grant will not be added to the list.
-                if (customEvent != null && !customEvent.OneTimeEvent) {
-					EventTypeCustomEventPairs.Add(receivedKey, customEvent);
-					//CustomEventDebug.PrintEventData(); //Added
-				}
-			} else {
-				StopEvent(customEvent);
-				EventTypeCustomEventPairs.Remove(receivedKey);
-			}
-        }
+   //             if (customEvent != null && !customEvent.OneTimeEvent)
+			//		EventTypeCustomEventPairs.Add(receivedKey, customEvent);
+			//} else {
+			//	StopEvent(customEvent);
+			//	EventTypeCustomEventPairs.Remove(receivedKey);
+			//}
+   //     }
 	}
 }

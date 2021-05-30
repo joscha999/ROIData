@@ -16,15 +16,14 @@ namespace ROIData {
         public string Name => StaticWorldEventData?.eventName ?? "N/A";
         public bool OneTimeEvent { get; private set; }
 
-        public static IntProductEventParameters ProductPriceEventData
-			= new IntProductEventParameters("100,Marbles");
-        public static IntProductEventParameters ProductDemandEventData
-			= new IntProductEventParameters("100,OrangeSoda,Headlights,CannedFish,Telephone,Burgers");
-        //new
-        public static IntProductEventParameters ProductDemandEventData33
-			= new IntProductEventParameters("33,Marbles,Beer");
-        public static IntProductEventParameters ProductDemandEventData300
-			= new IntProductEventParameters("300,Toy Train Set");
+   //     public static IntProductEventParameters ProductPriceEventData
+			//= new IntProductEventParameters("100,Marbles");
+   //     public static IntProductEventParameters ProductDemandEventData
+			//= new IntProductEventParameters("100,OrangeSoda,Headlights,CannedFish,Telephone,Burgers");
+   //     public static IntProductEventParameters ProductDemandEventData33
+			//= new IntProductEventParameters("33,Marbles,Beer");
+   //     public static IntProductEventParameters ProductDemandEventData300
+			//= new IntProductEventParameters("300,Toy Train Set");
 
         public static int ResearchSpeedBoost = 1000;
 
@@ -33,55 +32,53 @@ namespace ROIData {
             .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
             .Build();
 
-        public static WorldEventEffectData ProductPriceEvent
-			= new CustomEffectData(WorldEventEffectType.ProductPrice, false, ProductPriceEventData.Modifier, 0, 0)
-            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
-            .AddProductFilter(
-                new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
-                .WithProducts(ProductPriceEventData.Products)
-                .Build())
-            .AddBuildingFilter(
-                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
-                .Build())
-            .Build();
+   //     public static WorldEventEffectData ProductPriceEvent
+			//= new CustomEffectData(WorldEventEffectType.ProductPrice, false, ProductPriceEventData.Modifier, 0, 0)
+   //         .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+   //         .AddProductFilter(
+   //             new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
+   //             .WithProducts(ProductPriceEventData.Products)
+   //             .Build())
+   //         .AddBuildingFilter(
+   //             new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
+   //             .Build())
+   //         .Build();
 
-        public static WorldEventEffectData ProductDemandEvent
-			= new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData.Modifier, 0, 0)
-            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
-            .AddProductFilter(
-                new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
-                .WithProducts(ProductDemandEventData.Products)
-                .Build())
-            .AddBuildingFilter(
-                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
-                .Build())
-            .Build();
+   //     public static WorldEventEffectData ProductDemandEvent
+			//= new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData.Modifier, 0, 0)
+   //         .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+   //         .AddProductFilter(
+   //             new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
+   //             .WithProducts(ProductDemandEventData.Products)
+   //             .Build())
+   //         .AddBuildingFilter(
+   //             new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
+   //             .Build())
+   //         .Build();
 
-        //new
-        public static WorldEventEffectData ProductDemandEvent33
-			= new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData33.Modifier, 0, 0)
-            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
-            .AddProductFilter(
-                new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
-                .WithProducts(ProductDemandEventData33.Products)
-                .Build())
-            .AddBuildingFilter(
-                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
-                .Build())
-            .Build();
+   //     public static WorldEventEffectData ProductDemandEvent33
+			//= new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData33.Modifier, 0, 0)
+   //         .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+   //         .AddProductFilter(
+   //             new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
+   //             .WithProducts(ProductDemandEventData33.Products)
+   //             .Build())
+   //         .AddBuildingFilter(
+   //             new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
+   //             .Build())
+   //         .Build();
 
-        //new
-        public static WorldEventEffectData ProductDemandEvent300
-			= new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData300.Modifier, 0, 0)
-            .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
-            .AddProductFilter(
-                new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
-                .WithProducts(ProductDemandEventData300.Products)
-                .Build())
-            .AddBuildingFilter(
-                new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
-                .Build())
-            .Build();
+   //     public static WorldEventEffectData ProductDemandEvent300
+			//= new CustomEffectData(WorldEventEffectType.Demand, false, ProductDemandEventData300.Modifier, 0, 0)
+   //         .SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+   //         .AddProductFilter(
+   //             new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
+   //             .WithProducts(ProductDemandEventData300.Products)
+   //             .Build())
+   //         .AddBuildingFilter(
+   //             new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
+   //             .Build())
+   //         .Build();
 
         public static List<WorldEventEffectData> WorldEventEffects = new List<WorldEventEffectData> {
             ResearchBoostEvent /*ProductPriceEvent, ProductDemandEvent, ProductDemandEvent33, ProductDemandEvent300,*/
@@ -90,21 +87,21 @@ namespace ROIData {
 			MakeEffectForProduct(-6, "Beer"), MakeEffectForProduct(-6, "Burgers"), MakeEffectForProduct(-20, "InteriorBody")*/
         };
 
-		private static WorldEventEffectData MakeEffectForProduct(int modifier, string product) {
-			var productInfo = new ProductDefinition[]{ GameData.instance.GetAssetsRO(typeof(ProductDefinition))
-					.FirstOrDefault(p => p.name == product) as ProductDefinition };
+		//private static WorldEventEffectData MakeEffectForProduct(int modifier, string product) {
+		//	var productInfo = new ProductDefinition[]{ GameData.instance.GetAssetsRO(typeof(ProductDefinition))
+		//			.FirstOrDefault(p => p.name == product) as ProductDefinition };
 
-			return new CustomEffectData(WorldEventEffectType.ProductPrice, false, modifier, 0, 0)
-				.SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
-				.AddProductFilter(
-					new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
-					.WithProducts(productInfo)
-					.Build())
-				.AddBuildingFilter(
-					new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
-					.Build())
-				.Build();
-	}
+		//	return new CustomEffectData(WorldEventEffectType.ProductPrice, false, modifier, 0, 0)
+		//		.SetApplyOption(WorldEventEffectApplyOption.LongTermModifier)
+		//		.AddProductFilter(
+		//			new CustomProductFilter(WorldEventEffectFilterAmount.All, false)
+		//			.WithProducts(productInfo)
+		//			.Build())
+		//		.AddBuildingFilter(
+		//			new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
+		//			.Build())
+  //              .Build();
+	 //   }
 
         public CustomStaticEvent WithStaticWorldEventData(StaticWorldEventData staticWorldEventData)
         {
@@ -146,8 +143,7 @@ namespace ROIData {
                             WorldEventEffects)
                         .Build())
                     .WithName("Einstellungen")
-                    .WithDescription("Für die Gesamtdauer der Aufgaben ist die Forschungsgeschwindigkeit erhöht. " +
-                    "Weiterhin sind Nachfrage und Preise für einige Produkte angepasst.")
+                    .WithDescription("Für die Gesamtdauer der Aufgaben ist die Forschungsgeschwindigkeit erhöht.")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
                     .WithWhen(-1)
                     .Build())
@@ -279,7 +275,7 @@ namespace ROIData {
                     .WithName("[Strafe] Umweltverschmutzung")
                     .WithDescription("Strafe aufgrund erhöhter Emissionswerte.")
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
-                    .WithWhen(-1) //1
+                    .WithWhen(-1)
                     .IsBad()
                     .Build())
                 .WithWorldCreationParams(
@@ -308,7 +304,7 @@ namespace ROIData {
                     .WithName("[Strafe] Personalisierte Strafe")
                     .WithDescription(parameters.Message)
                     .WithTrigger(WorldEventTriggerMode.MANUAL)
-                    .WithWhen(-1) //1
+                    .WithWhen(-1)
                     .IsBad()
                     .Build())
                 .WithWorldCreationParams(
@@ -510,12 +506,6 @@ namespace ROIData {
             var listOfBuildingTags = new List<BuildingTag> {
                 GameData.instance.GetAsset<BuildingTag>("Factory")
             };
-            //var listOfProductTags = new List<ProductTag>();
-
-            //IList<Building> WEEbuildings = new List<Building>();
-            //IList<ProductDefinition> WEEproducts = new List<ProductDefinition>();
-            //IList<Recipe> WEErecipes = new List<Recipe>();
-            //IList<Vehicle> WEEvehicles = new List<Vehicle>();
 
             var buildingFilter = new CustomBuildingFilter(WorldEventEffectFilterAmount.All, false)
                 .Build();
