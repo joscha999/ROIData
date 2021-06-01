@@ -99,6 +99,7 @@
     <Compile Include="Models\AssignmentAction.cs" />
     <Compile Include="Models\AssignmentTask.cs" />
     <Compile Include="Patching\BuildingManagerCanBuildPatcher.cs" />
+    <Compile Include="Patching\AuctionDefinitionGenerateAuctionPatcher.cs" />
     <Compile Include="Patching\SettlementGenerationPatcher.cs" />
     <Compile Include="Patching\ShopDemandPatcher.cs" />
     <Compile Include="Patching\ShopPricePatcher.cs" />
