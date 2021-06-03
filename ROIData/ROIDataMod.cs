@@ -110,7 +110,7 @@ namespace ROIData {
 				return false;
 			}
 
-			ActivateEvents();
+            ActivateEvents();
 
 			return true;
 		}

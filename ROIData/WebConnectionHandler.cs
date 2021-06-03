@@ -24,6 +24,7 @@ namespace ROIData
 		private static string sdpath = System.IO.Path.Combine(
 					Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RiseOfIndustry", "SaveData");
 		private static float RealTimeSinceLastUpdate;
+		private static double LastBalanceAmount = PlayerBalanceCalculator.GetPlayerBalance();
 
 		public static void Update(ROIDataMod mod)
         {
@@ -43,7 +44,7 @@ namespace ROIData
 				SteamID = (long)SteamUser.GetSteamID().m_SteamID,
 				UnixDays = TimeStampCalculator.GetTimeStamp().UnixDays,
 				PassedTime = Time.realtimeSinceStartup,
-				Profit = PlayerProfitCalculator.GetProfit(),
+				Profit = PlayerBalanceCalculator.GetPlayerBalance() - LastBalanceAmount,
 				CompanyValue = CompanyValueCalculator.GetCompanyValue(),
 				DemandSatisfaction = DemandSatisfactionCalculator.GetProductDemandInfos(),
 				MachineUptime = MachineUptimeCalculator.GetAverageMachineUptime(),
@@ -55,6 +56,7 @@ namespace ROIData
 				Balance = PlayerBalanceCalculator.GetPlayerBalance()
 			};
 
+			LastBalanceAmount = PlayerBalanceCalculator.GetPlayerBalance();
 			var jsonData = JsonConvert.SerializeObject(sdm);
 			Directory.CreateDirectory(sdpath);
 
@@ -71,8 +73,6 @@ namespace ROIData
 			}
 
 			Debug.Log(jsonData);
-			//TechTreeCalculator.PrintInformation();
-			//PollutionCalculator.GetAveragePollutionAdv();
 			mod.StartCoroutine(PostRequest(postAddress, jsonData));
 		}
 
