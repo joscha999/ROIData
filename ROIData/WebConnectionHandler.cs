@@ -45,7 +45,7 @@ namespace ROIData
 				PassedTime = Time.realtimeSinceStartup,
 				Profit = PlayerProfitCalculator.GetProfit(),
 				CompanyValue = CompanyValueCalculator.GetCompanyValue(),
-				DemandSatisfaction = DemandSatisfactionCalculator.RemainingDemands(),
+				DemandSatisfaction = DemandSatisfactionCalculator.GetProductDemandInfos(),
 				MachineUptime = MachineUptimeCalculator.GetAverageMachineUptime(),
 				LoansList = LoanCalculator.GetLoansList(),
 				AveragePollution = PollutionCalculator.GetAveragePollution(),

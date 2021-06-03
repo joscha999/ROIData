@@ -108,7 +108,7 @@
     <Compile Include="Calculators\PlayerBalanceCalculator.cs" />
     <Compile Include="Calculators\PlayerProfitCalculator.cs" />
     <Compile Include="Calculators\PollutionCalculator.cs" />
-    <Compile Include="ProductInfo.cs" />
+    <Compile Include="ProductDemandInfo.cs" />
     <Compile Include="Calculators\RegionCountCalculator.cs" />
     <Compile Include="ROIDataMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

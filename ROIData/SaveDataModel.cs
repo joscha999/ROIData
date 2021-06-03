@@ -17,7 +17,7 @@ namespace Planspiel.Models {
 
         public double CompanyValue { get; set; }
 
-        public List<ProductInfo> DemandSatisfaction { get; set; }
+        public List<ProductDemandInfo> DemandSatisfaction { get; set; }
 
         /// <summary>
         /// Average machine uptime.

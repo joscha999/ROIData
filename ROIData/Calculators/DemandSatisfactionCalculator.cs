@@ -38,31 +38,31 @@ namespace ROIData {
             return offset;
         }
 
-        public static List<ProductInfo> RemainingDemands() {
+        //public static List<ProductDemandInfo> RemainingDemands() {
 
-            List<ProductInfo> listOfRemainingDemands = new List<ProductInfo>();
+        //    List<ProductDemandInfo> listOfRemainingDemands = new List<ProductDemandInfo>();
 
-            foreach (Shop shop in Shops) {
-                foreach (KeyValuePair<ProductDefinition, int> shopDemand in Reflection.GetField<Dictionary<ProductDefinition, int>>(typeof(Shop), "_demand", shop)) {
-                    ProductDefinition product = shopDemand.Key;
-                    int demand = shopDemand.Value * 2;
-                    int sales = shop.GetSoldCount(ROIDataMod.Player, product, new GamePeriod(0, 0, 29));
+        //    foreach (Shop shop in Shops) {
+        //        foreach (KeyValuePair<ProductDefinition, int> shopDemand in Reflection.GetField<Dictionary<ProductDefinition, int>>(typeof(Shop), "_demand", shop)) {
+        //            ProductDefinition product = shopDemand.Key;
+        //            int demand = shopDemand.Value * 2;
+        //            int sales = shop.GetSoldCount(ROIDataMod.Player, product, new GamePeriod(0, 0, 29));
 
-                    if (sales > 0) {
-                        int offset = Math.Abs(sales - demand);
-                        string productName = product.productName;
+        //            if (sales > 0) {
+        //                int offset = Math.Abs(sales - demand);
+        //                string productName = product.productName;
 
-                        listOfRemainingDemands.Add(new ProductInfo(productName, offset));
-                    }
-                }
-            }
+        //                listOfRemainingDemands.Add(new ProductInfo(productName, offset));
+        //            }
+        //        }
+        //    }
 
-            return listOfRemainingDemands;
-        }
+        //    return listOfRemainingDemands;
+        //}
 
         //This method returns the ProductInfo for all shops, regardless of settlement.
-        public static List<ProductInfo> GetProductInfos() {
-            List<ProductInfo> productInfos = new List<ProductInfo>();
+        public static List<ProductDemandInfo> GetProductDemandInfos() {
+            List<ProductDemandInfo> productInfos = new List<ProductDemandInfo>();
             List<SettlementBase> settlements = ManagerBehaviour<SettlementManager>.instance.settlements;
 
             foreach (var settlement in settlements) {
@@ -73,7 +73,7 @@ namespace ROIData {
                         int productSalesLastMonth = shop.GetSoldCount(ROIDataMod.Player, productDefinition, GamePeriod.month);
 
                         if (productSalesLastMonth > 0) {
-                            productInfos.Add(new ProductInfo(productDefinition.productName, Math.Abs(productSalesLastMonth - productDemand)));
+                            productInfos.Add(new ProductDemandInfo(productDefinition.productName, settlement.settlementName, shop.buildingName, productDemand, productSalesLastMonth));
                         }
                     }
                 }
