@@ -59,5 +59,27 @@ namespace ROIData {
 
             return listOfRemainingDemands;
         }
+
+        //This method returns the ProductInfo for all shops, regardless of settlement.
+        public static List<ProductInfo> GetProductInfos() {
+            List<ProductInfo> productInfos = new List<ProductInfo>();
+            List<SettlementBase> settlements = ManagerBehaviour<SettlementManager>.instance.settlements;
+
+            foreach (var settlement in settlements) {
+                foreach (var shop in settlement.buildings.shops) {
+                    foreach (var shopDemand in Reflection.GetField<Dictionary<ProductDefinition, int>>(typeof(Shop), "_demand", shop)) {
+                        ProductDefinition productDefinition = shopDemand.Key;
+                        int productDemand = shopDemand.Value;
+                        int productSalesLastMonth = shop.GetSoldCount(ROIDataMod.Player, productDefinition, GamePeriod.month);
+
+                        if (productSalesLastMonth > 0) {
+                            productInfos.Add(new ProductInfo(productDefinition.productName, Math.Abs(productSalesLastMonth - productDemand)));
+                        }
+                    }
+                }
+            }
+
+            return productInfos;
+        }
     }
 }
