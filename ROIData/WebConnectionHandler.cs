@@ -52,7 +52,7 @@ namespace ROIData
 				BuildingCount = BuildingCountCalculator.GetBuildingCount(),
 				RegionCount = RegionCountCalculator.GetRegionsCount(),
 				UnlockedResearchCount = TechTreeCalculator.GetTechTreeUnlocks(),
-				Balance = PlayerBalance.GetPlayerBalance()
+				Balance = PlayerBalanceCalculator.GetPlayerBalance()
 			};
 
 			var jsonData = JsonConvert.SerializeObject(sdm);

@@ -65,7 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildingCountCalculator.cs" />
+    <Compile Include="Calculators\BuildingCountCalculator.cs" />
     <Compile Include="CustomData\CustomBuildSettings.cs" />
     <Compile Include="CustomData\CustomCreationParams.cs" />
     <Compile Include="CustomData\CustomDataDifficulty.cs" />
@@ -73,12 +73,12 @@
     <Compile Include="CustomData\CustomStaticEventData.cs" />
     <Compile Include="CustomFilters\CustomNetworkFilter.cs" />
     <Compile Include="CustomStaticEvent.cs" />
-    <Compile Include="CompanyValueCalculator.cs" />
+    <Compile Include="Calculators\CompanyValueCalculator.cs" />
     <Compile Include="CustomFilters\CustomBuildingFilter.cs" />
     <Compile Include="CustomFilters\CustomProductFilter.cs" />
     <Compile Include="CustomFilters\CustomRecipeFilter.cs" />
     <Compile Include="CustomFilters\CustomVehicleFilter.cs" />
-    <Compile Include="DemandSatisfactionCalculator.cs" />
+    <Compile Include="Calculators\DemandSatisfactionCalculator.cs" />
     <Compile Include="Date.cs" />
     <Compile Include="EventParams\IntProductEventParameters.cs" />
     <Compile Include="EventParams\EventParameters.cs" />
@@ -93,9 +93,9 @@
     <Compile Include="HelperClasses\ReplaceInformation.cs" />
     <Compile Include="HelperClasses\SettlementModifier.cs" />
     <Compile Include="HelperClasses\SpeedyBoi.cs" />
-    <Compile Include="LoanCalculator.cs" />
+    <Compile Include="Calculators\LoanCalculator.cs" />
     <Compile Include="LoanInfo.cs" />
-    <Compile Include="MachineUptimeCalculator.cs" />
+    <Compile Include="Calculators\MachineUptimeCalculator.cs" />
     <Compile Include="Models\AssignmentAction.cs" />
     <Compile Include="Models\AssignmentTask.cs" />
     <Compile Include="Patching\BuildingManagerCanBuildPatcher.cs" />
@@ -105,17 +105,17 @@
     <Compile Include="Patching\ShopDemandPatcher.cs" />
     <Compile Include="Patching\ShopPricePatcher.cs" />
     <Compile Include="Patching\ShopProductPatcher.cs" />
-    <Compile Include="PlayerBalance.cs" />
-    <Compile Include="PlayerProfitCalculator.cs" />
-    <Compile Include="PollutionCalculator.cs" />
+    <Compile Include="Calculators\PlayerBalanceCalculator.cs" />
+    <Compile Include="Calculators\PlayerProfitCalculator.cs" />
+    <Compile Include="Calculators\PollutionCalculator.cs" />
     <Compile Include="ProductInfo.cs" />
-    <Compile Include="RegionCountCalculator.cs" />
+    <Compile Include="Calculators\RegionCountCalculator.cs" />
     <Compile Include="ROIDataMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveDataModel.cs" />
     <Compile Include="TaskSystem.cs" />
-    <Compile Include="TechTreeCalculator.cs" />
-    <Compile Include="TimeStampCalculator.cs" />
+    <Compile Include="Calculators\TechTreeCalculator.cs" />
+    <Compile Include="Calculators\TimeStampCalculator.cs" />
     <Compile Include="WebConnectionHandler.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -14,13 +14,5 @@ namespace ROIData {
             return ROIDataMod.Player.buildings.recipeUsers.Average(f => f.GetComponent<BuildingAnalysis>()
                             .GetLastMonthValue(f.GetComponent<Upkeep>().upkeepAnalysisItemDef) / 100);
         }
-
-        //double uptimeSum = 0;
-
-        //foreach (RecipeUser factory in factories) {
-        //    BuildingAnalysis buildingAnalysis = factory.GetComponent<BuildingAnalysis>();
-        //    Upkeep upkeep = factory.GetComponent<Upkeep>();
-        //    uptimeSum += (buildingAnalysis.GetLastMonthValue(upkeep.uptimeAnalysisItemDef) / 100);
-        //}
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ProjectAutomata;
 
 namespace ROIData {
-    public class PlayerBalance {
+    public class PlayerBalanceCalculator {
 
         public static double GetPlayerBalance() => ManagerBehaviour<MoneyManager>.instance.GetBalance(ROIDataMod.Player.Get<MoneyAgent>());
     }
