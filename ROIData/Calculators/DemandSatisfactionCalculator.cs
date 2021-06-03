@@ -73,7 +73,7 @@ namespace ROIData {
                         int productSalesLastMonth = shop.GetSoldCount(ROIDataMod.Player, productDefinition, GamePeriod.month);
 
                         if (productSalesLastMonth > 0) {
-                            productInfos.Add(new ProductDemandInfo(productDefinition.productName, settlement.settlementName, shop.buildingName, productDemand, productSalesLastMonth));
+                            productInfos.Add(new ProductDemandInfo(productDefinition.productName, settlement.settlementName, shop.name, productDemand, productSalesLastMonth));
                         }
                     }
                 }
