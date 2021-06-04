@@ -12,7 +12,7 @@ namespace ROIData {
                 return 1;
 
             return ROIDataMod.Player.buildings.recipeUsers.Average(f => f.GetComponent<BuildingAnalysis>()
-                            .GetLastMonthValue(f.GetComponent<Upkeep>().upkeepAnalysisItemDef) / 100);
+                            .GetLastMonthValue(f.GetComponent<Upkeep>().uptimeAnalysisItemDef) / 100);
         }
     }
 }
