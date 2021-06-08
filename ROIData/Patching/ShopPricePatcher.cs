@@ -12,6 +12,9 @@ namespace ROIData.Patching {
     [HarmonyPatch(typeof(Shop))]
     [HarmonyPatch("GetPrice")]
     public class ShopPricePatcher {
+		private static readonly Dictionary<Shop, Dictionary<ProductDefinition, float>> ReplaceCache
+			= new Dictionary<Shop, Dictionary<ProductDefinition, float>>();
+
         private static readonly List<ReplaceInformation> ReplaceInfo = new List<ReplaceInformation> {
             //OrangeSoda
             new ReplaceInformation {
@@ -151,17 +154,33 @@ namespace ROIData.Patching {
         }
 
         static void Postfix(Shop __instance, ref float __result, ref ProductDefinition product) {
-            foreach (var settlement in ManagerBehaviour<SettlementManager>.instance.settlements) {
-                foreach (var shop in settlement.buildings.shops) {
-                    foreach (var ri in ReplaceInfo) {
-                        if (ri.Settlement != __instance.settlement.settlementName || ri.Shop != __instance.name)
-                            continue;
+			__result = GetNewPrice(__instance, product);
+		}
 
-                        if (product == ri.NewProductDef)
-                            __result = ri.NewPrice;
-                    }
-                }
-            }
-        }
+		private static float GetNewPrice(Shop s, ProductDefinition product) {
+			if (!ReplaceCache.TryGetValue(s, out var priceDict)) {
+				priceDict = new Dictionary<ProductDefinition, float>();
+				ReplaceCache.Add(s, priceDict);
+			}
+
+			if (!priceDict.TryGetValue(product, out var newPrice)) {
+				newPrice = FindNewPrice(s, product);
+				priceDict.Add(product, newPrice);
+			}
+
+			return newPrice;
+		}
+
+		private static float FindNewPrice(Shop s, ProductDefinition product) {
+			foreach (var ri in ReplaceInfo) {
+				if (ri.Settlement != s.settlement.settlementName || ri.Shop != s.name)
+					continue;
+
+				if (product == ri.NewProductDef)
+					return ri.NewPrice;
+			}
+
+			return s.GetPrice(product, ROIDataMod.Player);
+		}
     }
 }
