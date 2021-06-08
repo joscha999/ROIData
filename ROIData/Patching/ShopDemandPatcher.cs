@@ -11,6 +11,9 @@ namespace ROIData.Patching {
     [HarmonyPatch(typeof(Shop))]
     [HarmonyPatch("UpdateDemand")]
     public class ShopDemandPatcher {
+        private static readonly Dictionary<Shop, Dictionary<ProductDefinition, int>> ReplaceCache
+            = new Dictionary<Shop, Dictionary<ProductDefinition, int>>();
+
         private static readonly List<ReplaceInformation> ReplaceInfo = new List<ReplaceInformation> {
             //OrangeSoda
             new ReplaceInformation {
@@ -133,15 +136,40 @@ namespace ROIData.Patching {
 
         static void Postfix(Shop __instance) {
             var _demand = Reflection.GetField<Dictionary<ProductDefinition, int>>(typeof(Shop), "_demand", __instance);
-            foreach (var item in __instance.sold) {
-                foreach (var ri in ReplaceInfo) {
-                    if (ri.Settlement != __instance.settlement.settlementName || ri.Shop != __instance.name)
-                        continue;
-
-                    if (item == ri.NewProductDef)
-                        _demand[item] = ri.NewDemand;
-                }
+            foreach (var product in __instance.sold) {
+                if (GetNewDemand(__instance, product, out var newDemand))
+                    _demand[product] = newDemand;
             }
+        }
+
+        private static bool GetNewDemand(Shop s, ProductDefinition product, out int newDemand) {
+            if (!ReplaceCache.TryGetValue(s, out var demandDict)) {
+                demandDict = new Dictionary<ProductDefinition, int>();
+                ReplaceCache.Add(s, demandDict);
+            }
+
+            if (demandDict.TryGetValue(product, out newDemand)) {
+                return true;
+            } else if (FindNewDemand(s, product, out newDemand)) {
+                demandDict.Add(product, newDemand);
+                return true;
+            }
+
+            newDemand = 0;
+            return false;
+        }
+
+        private static bool FindNewDemand(Shop s, ProductDefinition product, out int newDemand) {
+            foreach (var ri in ReplaceInfo) {
+                if (ri.Settlement != s.settlement.settlementName || ri.Shop != s.name)
+                    continue;
+
+                if (product == ri.NewProductDef)
+                     newDemand = ri.NewDemand;
+            }
+
+            newDemand = 0;
+            return false;
         }
     }
 }
