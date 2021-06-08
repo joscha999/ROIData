@@ -10,7 +10,7 @@ namespace ROIData.Models {
 	{
 		public int ID { get; set; }
 		public bool Started { get; set; }
-		public int GroupSteamID { get; set; } = -1;
+		public long GroupSteamID { get; set; } = -1;
 		public int SecondsFromStart { get; set; }
 		public AssignmentActionType Type { get; set; }
 		public string Value { get; set; }

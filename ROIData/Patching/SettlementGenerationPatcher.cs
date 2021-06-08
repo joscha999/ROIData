@@ -10,8 +10,8 @@ using ROIData.HelperClasses;
 
 namespace ROIData.Patching {
     
-    [HarmonyPatch(typeof(SettlementsWGOperation))]
-    [HarmonyPatch("MakeSettlement")]
+    //[HarmonyPatch(typeof(SettlementsWGOperation))]
+    //[HarmonyPatch("MakeSettlement")]
     public class SettlementGenerationPatcher {
         private static Dictionary<string, int> SettlementPopulationDict = new Dictionary<string, int>() {
             {"Effie", 300_000}, {"Point Venture", 100_000}, {"Sammy Martinez", 100_000}, 

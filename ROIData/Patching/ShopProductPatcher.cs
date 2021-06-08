@@ -54,6 +54,46 @@ namespace ROIData.Patching {
             },
             new ReplaceInformation {
                 Settlement = "Zuckerrost", Shop = "BAUTEIL-GESCHÄFT", OldProduct = "Axles", NewProduct = "Headlights"
+            },
+            //English
+            new ReplaceInformation {
+                Settlement = "Zuckerrost", Shop = "Diner", OldProduct = "Pizza", NewProduct = "Burgers"
+            },
+            new ReplaceInformation {
+                Settlement = "Zuckerrost", Shop = "Diner", OldProduct = "BerryPie", NewProduct = "OrangeSoda"
+            },
+            new ReplaceInformation {
+                Settlement = "Zuckerrost", Shop = "PARTS SHOP", OldProduct = "RubberTubes", NewProduct = "InteriorBody"
+            },
+            new ReplaceInformation {
+                Settlement = "Zuckerrost", Shop = "Grocery Store", OldProduct = "CannedFish", NewProduct = "Flour"
+            },
+            new ReplaceInformation {
+                Settlement = "Irmgardshausen", Shop = "Toy Store", OldProduct = "Toy Train Set", NewProduct = "Toy Furniture"
+            },
+            new ReplaceInformation {
+                Settlement = "Irmgardshausen", Shop = "Diner", OldProduct = "Burgers", NewProduct = "BerrySmoothie"
+            },
+            new ReplaceInformation {
+                Settlement = "Irmgardshausen", Shop = "PARTS SHOP", OldProduct = "InteriorBody", NewProduct = "Headlights"
+            },
+            new ReplaceInformation {
+                Settlement = "Magdalenenhütte", Shop = "Grocery Store", OldProduct = "Flour", NewProduct = "CannedFish"
+            },
+            new ReplaceInformation {
+                Settlement = "Magdalenenhütte", Shop = "Toy Store", OldProduct = "Marbles", NewProduct = "Fluff"
+            },
+            new ReplaceInformation {
+                Settlement = "Leutingen", Shop = "Grocery Store", OldProduct = "BagOfChips", NewProduct = "CannedFish"
+            },
+            new ReplaceInformation {
+                Settlement = "Leutingen", Shop = "Toy Store", OldProduct = "Marbles", NewProduct = "Fluff"
+            },
+            new ReplaceInformation {
+                Settlement = "Zuckerrost", Shop = "Hardware Store", OldProduct = "Gas", NewProduct = "Marbles"
+            },
+            new ReplaceInformation {
+                Settlement = "Zuckerrost", Shop = "PARTS SHOP", OldProduct = "Axles", NewProduct = "Headlights"
             }
         };
 
@@ -64,7 +104,7 @@ namespace ROIData.Patching {
                 sb.AppendLine("Shops in settlement: " + settlement.settlementName);
 
                 foreach (var shop in settlement.buildings.shops) {
-                    sb.AppendLine("Shop: " + shop.name);
+                    sb.AppendLine("Shop: " + shop.building.name);
 
                     foreach (var product in shop.sold) {
                         sb.Append(product.name + ";");
