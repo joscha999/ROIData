@@ -154,33 +154,40 @@ namespace ROIData.Patching {
         }
 
         static void Postfix(Shop __instance, ref float __result, ref ProductDefinition product) {
-			__result = GetNewPrice(__instance, product);
+			if (GetNewPrice(__instance, product, out var newPrice))
+				__result = newPrice;
 		}
 
-		private static float GetNewPrice(Shop s, ProductDefinition product) {
+		private static bool GetNewPrice(Shop s, ProductDefinition product, out float newPrice) {
 			if (!ReplaceCache.TryGetValue(s, out var priceDict)) {
 				priceDict = new Dictionary<ProductDefinition, float>();
 				ReplaceCache.Add(s, priceDict);
 			}
 
-			if (!priceDict.TryGetValue(product, out var newPrice)) {
-				newPrice = FindNewPrice(s, product);
+			if (priceDict.TryGetValue(product, out newPrice)) {
+				return true;
+			} else if (FindNewPrice(s, product, out newPrice)) {
 				priceDict.Add(product, newPrice);
+				return true;
 			}
 
-			return newPrice;
+			newPrice = 0;
+			return false;
 		}
 
-		private static float FindNewPrice(Shop s, ProductDefinition product) {
+		private static bool FindNewPrice(Shop s, ProductDefinition product, out float newPrice) {
 			foreach (var ri in ReplaceInfo) {
 				if (ri.Settlement != s.settlement.settlementName || ri.Shop != s.name)
 					continue;
 
-				if (product == ri.NewProductDef)
-					return ri.NewPrice;
+				if (product == ri.NewProductDef) {
+					newPrice = ri.NewPrice;
+					return true;
+				}
 			}
 
-			return s.GetPrice(product, ROIDataMod.Player);
+			newPrice = 0;
+			return false;
 		}
     }
 }
