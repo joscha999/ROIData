@@ -164,8 +164,10 @@ namespace ROIData.Patching {
                 if (ri.Settlement != s.settlement.settlementName || ri.Shop != s.name)
                     continue;
 
-                if (product == ri.NewProductDef)
-                     newDemand = ri.NewDemand;
+                if (product == ri.NewProductDef) {
+                    newDemand = ri.NewDemand;
+                    return true;
+                }
             }
 
             newDemand = 0;
