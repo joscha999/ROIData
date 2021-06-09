@@ -72,13 +72,13 @@ namespace ROIData {
 			if (!activatedEvent && TryActivateEvent(out var eventManager, out var eventAgent))
 				activatedEvent = true;
 
-			//WebConnectionHandler.Update(this);
-			//TaskSystem.Update();
+			WebConnectionHandler.Update(this);
+			TaskSystem.Update();
 		}
 
         private void TimeManager_onDayEnd(GameDate gd)
         {
-            //WebConnectionHandler.SendData(this);
+            WebConnectionHandler.SendData(this);
 			Debug.Log("Date.Now: " + Date.Now + ", UnixDays: " + Date.Now.UnixDays);
 		}
 
@@ -111,8 +111,6 @@ namespace ROIData {
 			}
 
             ActivateEvents();
-			SpeedyBoi.Register();
-			ShopProductPatcher.PrintShopData();
 
 			return true;
 		}
@@ -121,7 +119,7 @@ namespace ROIData {
 			CustomStaticEvent.CreateLongTermEvent().TryTrigger();
 
 			//pause at start - tasks take it from here
-			//TaskSystem.TimeManager.canAdvanceTime = false;
+			TaskSystem.TimeManager.canAdvanceTime = false;
 		}
 
 		//private CustomStaticEvent RevolveEvent(CustomEventType type) {
